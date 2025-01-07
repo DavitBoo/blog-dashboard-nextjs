@@ -40,3 +40,62 @@ a {
     color-scheme: dark;
   }
 }
+
+
+/* custom css */
+
+.container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+.postItem,
+.commentItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.postItem h3,
+.commentItem p {
+  margin: 0;
+}
+
+.toggleButton,
+.deleteButton {
+  padding: 5px 10px;
+  border: none;
+  background-color: #0070f3;
+  color: white;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.toggleButton:hover,
+.deleteButton:hover {
+  background-color: #005bb5;
+}
+
+.toggleButton.unpublish {
+  background-color: #f5222d;
+}
+
+.toggleButton.unpublish:hover {
+  background-color: #cf1322;
+}
+
+
