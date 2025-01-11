@@ -1,42 +1,57 @@
 'use client';
 
-import { useState } from 'react';
-import { Editor } from '@tinymce/tinymce-react';
+import React, { useState } from 'react';
 import { createPost } from '../../../../utils/api';
+import RichTextEditor from '../../../components/RichTextEditor';
 
 const NewPost = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await createPost({ title, content });
-    alert('Post created!');
+    if (!title || !content) {
+      setError('Title and content are required.');
+      return;
+    }
+
+    try {
+      await createPost({ title, content, published: false });
+      setTitle('');
+      setContent('');
+      setError('');
+      setSuccess(true);
+    } catch (err) {
+      console.error(err);
+      setError('Failed to create post. Please try again.');
+    }
   };
 
   return (
-    <div>
+    <div className="container">
       <h1>Create New Post</h1>
+      {error && <p className="error">{error}</p>}
+      {success && <p className="success">Post created successfully!</p>}
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          required
-        />
-        <Editor
-          apiKey="TINYMCE_API_KEY"
-          value={content}
-          onEditorChange={(newValue) => setContent(newValue)}
-          init={{
-            height: 400,
-            menubar: false,
-            plugins: ['link', 'table', 'lists'],
-            toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent',
-          }}
-        />
-        <button type="submit">Create Post</button>
+        <div className="form-group">
+          <label htmlFor="title">Title</label>
+          <input
+            id="title"
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="input"
+          />
+        </div>
+        <div className="form-group">
+          <label>Content</label>
+          <RichTextEditor value={content} onChange={setContent} />
+        </div>
+        <button type="submit" className="button">
+          Create Post
+        </button>
       </form>
     </div>
   );
