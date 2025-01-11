@@ -1,34 +1,61 @@
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+// Helper function to get the JWT token
+const getAuthHeaders = () => {
+  const token = localStorage.getItem("token"); // Adjust based on how you store tokens
+  if (!token) {
+    throw new Error("User is not authenticated");
+  }
+  return {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  };
+};
+
 export const fetchPosts = async () => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts`);
-    return response.json();
-  };
-  
-  export const togglePublishPost = async (id: number, publish: boolean) => {
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts/${id}`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ published: publish }),
-    });
-  };
-  
-  export const createPost = async (post: { title: string; content: string }) => {
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(post),
-    });
-  };
-  
-  export const fetchCommentsByPostId = async (postId: string) => {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/posts/${postId}/comments`
-    );
-    return response.json();
-  };
-  
-  export const deleteComment = async (id: number) => {
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/comments/${id}`, {
-      method: 'DELETE',
-    });
-  };
-  
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts`);
+  return response.json();
+};
+
+// Toggle post publish status (protected)
+export const togglePublishPost = async (id: number, publish: boolean) => {
+  const response = await fetch(`${API_URL}/posts/${id}`, {
+    method: "PATCH",
+    headers: getAuthHeaders(),
+    body: JSON.stringify({ published: publish }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to update post");
+  }
+};
+
+export const createPost = async (post: { title: string; content: string; published: boolean }) => {
+  const response = await fetch("/api/posts", {
+    method: "POST",
+    headers: getAuthHeaders(),
+    body: JSON.stringify(post),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to create post");
+  }
+
+  return await response.json();
+};
+
+export const fetchCommentsByPostId = async (postId: string) => {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts/${postId}/comments`);
+  return response.json();
+};
+
+export const deleteComment = async (id: number) => {
+  const response = await fetch(`${API_URL}/comments/${id}`, {
+    method: 'DELETE',
+    headers: getAuthHeaders(),
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to delete comment');
+  }
+};
