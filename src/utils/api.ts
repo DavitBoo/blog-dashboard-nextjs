@@ -1,3 +1,12 @@
+// ! aquí - check a ver si funciona con la API
+/* 
+  Aunque queda:
+  Login: Obtain a JWT token upon successful login and store it (e.g., in localStorage).
+  Attach Token: Include the token in Authorization headers for protected requests.
+  Error Handling: Handle 401 Unauthorized errors by redirecting users to the login page.
+
+  If API does not work after it ensure the backend middleware is properly configured at in API project passport.js
+*/
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 // Helper function to get the JWT token
