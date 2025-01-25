@@ -35,12 +35,15 @@ export const togglePublishPost = async (id: number, publish: boolean) => {
   }
 };
 
-export const createPost = async (post: { title: string; content: string; published: boolean }) => {
+export const createPost = async (formData: FormData) => {
   const response = await fetch("/api/posts", {
     method: "POST",
     headers: getAuthHeaders(),
-    body: JSON.stringify(post),
+    body: formData,
   });
+
+  // ! error 404 al intentar acceder a POST /api/posts
+  console.log(response);
 
   if (!response.ok) {
     throw new Error("Failed to create post");

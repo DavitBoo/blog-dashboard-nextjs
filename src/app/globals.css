@@ -1,12 +1,32 @@
+@font-face {
+  font-family: "Raleway";
+  src: url("../assets/fonts/Raleway-VariableFont_wght.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Monsterrat";
+  src: url("../assets/fonts/Montserrat-VariableFont_wght.ttf");
+}
+
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  --color-border: #4d5258;
+  --color-font-primary: #e5e7e6;
+  --color-primary: #955eb4;
+  --color-primary-darker: #4b2d5c;
+  --color-background: #282429;
+  --color-background-lighter: rgb(51, 47, 53);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #ffffff;
+    --foreground: #171717;
+  
+   
   }
 }
 
@@ -17,9 +37,11 @@ body {
 }
 
 body {
-  
-  font-family: Arial, Helvetica, sans-serif;
-  
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Raleway;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 * {
@@ -50,6 +72,11 @@ a {
 
 h1 {
   font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+p {
+  line-height: 1.6;
   margin-bottom: 20px;
 }
 
@@ -81,6 +108,29 @@ label {
 
 .button:hover {
   background-color: #005bb5;
+}
+
+
+
+.btn {
+  padding: 0.75rem 1rem;
+
+  appearance: none;
+  border: none;
+  border-radius: 4px;
+  background: linear-gradient(to bottom, var(--color-primary), var(--color-primary-darker));
+  cursor: pointer;
+  background-size: 1px 100px;
+  transition: 0.2s ease;
+
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--color-font-primary)
+}
+
+.btn:hover {
+  text-decoration: none;
+  background-position: 100px;
 }
 
 .toolbar {
@@ -197,17 +247,37 @@ ul {
   margin-bottom: 10px;
 }
 
-.form-group {
+/* --- new post --- */
+.creator-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 1rem;
+}
+
+.creator-container form {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 2rem;
+
+  /* background-color: var(--color-background-lighter); */
+  border-radius: 16px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+}
+
+.form-field {
   margin-bottom: 15px;
 }
 
-.form-group label {
+.form-field label {
   display: block;
   margin-bottom: 5px;
   color: #000;
 }
 
-.form-group input {
+.form-field input {
   width: 100%;
   padding: 8px;
   border: 1px solid #ccc;
