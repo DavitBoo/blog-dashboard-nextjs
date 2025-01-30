@@ -36,7 +36,7 @@ export const togglePublishPost = async (id: number, publish: boolean) => {
 };
 
 export const createPost = async (formData: FormData) => {
-  const response = await fetch("/api/posts", {
+  const response = await fetch(`${API_URL}/posts/`, {
     method: "POST",
     headers: getAuthHeaders(),
     body: formData,
