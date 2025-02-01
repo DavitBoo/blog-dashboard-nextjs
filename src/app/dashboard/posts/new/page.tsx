@@ -16,13 +16,12 @@ const NewPost = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [labelList, setLabelList] = useState<ILabel[]>([]);
+  const [selectedLabels, setSelectedLabels] = useState<string[]>([])
 
   useEffect(() => {
     const fetchData = async () => {
       const data = await fetchLabels();
       setLabelList(data);
-      // setCurrentView('Other');
-      // localStorage.setItem('currentView', 'Other');
     };
     fetchData();
   }, []);
@@ -72,23 +71,22 @@ const NewPost = () => {
           <h1 className="add-article-heading">Añadir artículo</h1>
         </header>
         <div className="labels-container">
-              <label htmlFor="labels">Labels</label>
               <DisplayLabelsAdd
                 labelList={labelList}
-                // selectedLabels={selectedLabels}
-                // setSelectedLabels={setSelectedLabels}
+                selectedLabels={selectedLabels}
+                setSelectedLabels={setSelectedLabels}
               />
             </div>
-        <div className="form-field">
-          <label htmlFor="title">Title</label>
-          <input id="title" type="text" value={title} onChange={(e) => setTitle(e.target.value)} className="input" />
+        <div className="add-article-title-container">
+          <h2>Título</h2>
+          <input id="title" type="text" value={title} onChange={(e) => setTitle(e.target.value)}/>
         </div>
         <div className="form-field">
           <label htmlFor="cover">Cover image</label>
           <input required type="file" name="cover" id="cover" onChange={handleCoverChange} />
         </div>
         <div className="form-field">
-          <label>Content</label>
+        <h2>Contentenido</h2>
           <RichTextEditor value={content} onChange={setContent} />
         </div>
         <button type="submit" className="button">

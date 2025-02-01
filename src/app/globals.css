@@ -18,7 +18,8 @@
   --color-primary: #955eb4;
   --color-primary-darker: #4b2d5c;
   --color-background: #282429;
-  --color-background-lighter: rgb(51, 47, 53);
+  --color-background-lighter: #332f35;
+  --card-background: #332d38;
   --cta: #d68f26;
 }
 
@@ -80,6 +81,41 @@ a {
   text-decoration: none;
 }
 
+form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 0;
+  font-size: 1rem;
+}
+
+input,
+textarea {
+  font-size: 1em;
+  padding: 0.5rem;
+  border: 1px solid var(--color-font-secondary);
+  border-radius: 4px;
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  background-color: var(--card-background);
+  color: var(--color-font-secondary);
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+}
+
+label:not(~ [type='checkbox']) {
+  pointer-events: none;
+  font-size: 1em;
+  position: absolute;
+  left: 0.5rem;
+  transition: all 0.2s;
+  color: var(--color-font-secondary);
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
@@ -133,6 +169,7 @@ p {
   display: flex;
   gap: 10px;
   margin-bottom: 10px;
+  flex-wrap: wrap;
 }
 
 .toolbar button {
@@ -330,9 +367,6 @@ ul {
 }
 
 .creator-container form {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
   gap: 1rem;
   padding: 2rem;
 
@@ -374,7 +408,7 @@ ul {
 }
 
 .checkbox-container input[type='checkbox'] {
-  /* display: none; */
+  display: none;
 }
 
 .checkbox-container input[type='checkbox'] + label {

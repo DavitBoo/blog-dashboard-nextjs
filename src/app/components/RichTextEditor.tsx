@@ -1,11 +1,16 @@
-'use client';
+"use client";
 
-import { Color } from '@tiptap/extension-color';
-import ListItem from '@tiptap/extension-list-item';
-import TextStyle from '@tiptap/extension-text-style';
-import { EditorProvider, useCurrentEditor } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
-import React from 'react';
+import { Color } from "@tiptap/extension-color";
+import ListItem from "@tiptap/extension-list-item";
+import TextStyle from "@tiptap/extension-text-style";
+import { EditorProvider, useCurrentEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
+import { common, createLowlight } from "lowlight";
+
+const lowlight = createLowlight(common);
+
+import React from "react";
 
 const MenuBar = () => {
   const { editor } = useCurrentEditor();
@@ -18,93 +23,79 @@ const MenuBar = () => {
     <div className="toolbar">
       <button
         onClick={() => editor.chain().focus().toggleBold().run()}
-        className={editor.isActive('bold') ? 'active' : ''}
+        className={editor.isActive("bold") ? "active" : ""}
       >
         Bold
       </button>
       <button
         onClick={() => editor.chain().focus().toggleItalic().run()}
-        className={editor.isActive('italic') ? 'active' : ''}
+        className={editor.isActive("italic") ? "active" : ""}
       >
         Italic
       </button>
       <button
-          onClick={() => editor.chain().focus().toggleStrike().run()}
-          disabled={
-            !editor.can()
-              .chain()
-              .focus()
-              .toggleStrike()
-              .run()
-          }
-          className={editor.isActive('strike') ? 'is-active' : ''}
-        >
-          Strike
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleCode().run()}
-          disabled={
-            !editor.can()
-              .chain()
-              .focus()
-              .toggleCode()
-              .run()
-          }
-          className={editor.isActive('code') ? 'is-active' : ''}
-        >
-          Code
-        </button>
-        <button onClick={() => editor.chain().focus().unsetAllMarks().run()}>
-          Clear marks
-        </button>
-        <button onClick={() => editor.chain().focus().clearNodes().run()}>
-          Clear nodes
-        </button>
-      <button
-        onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-        className={editor.isActive('heading', { level: 1 }) ? 'active' : ''}
+        onClick={() => editor.chain().focus().toggleStrike().run()}
+        className={editor.isActive("strike") ? "is-active" : ""}
       >
-        H1
+        Strike
+      </button>
+      <button
+        onClick={() => editor.chain().focus().toggleCode().run()}
+        className={editor.isActive("code") ? "is-active" : ""}
+      >
+        Code
+      </button>
+      <button
+        onClick={() => editor.chain().focus().toggleCodeBlock().run()}
+        className={editor.isActive("codeBlock") ? "active" : ""}
+      >
+        Code Block
       </button>
       <button
         onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-        className={editor.isActive('heading', { level: 2 }) ? 'active' : ''}
+        className={editor.isActive("heading", { level: 2 }) ? "active" : ""}
       >
         H2
       </button>
       <button
-          onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-          className={editor.isActive('heading', { level: 3 }) ? 'is-active' : ''}
-        >
-          H3
-        </button>
+        onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+        className={editor.isActive("heading", { level: 3 }) ? "is-active" : ""}
+      >
+        H3
+      </button>
       <button
-          onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
-          className={editor.isActive('heading', { level: 4 }) ? 'is-active' : ''}
-        >
-          H4
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleHeading({ level: 5 }).run()}
-          className={editor.isActive('heading', { level: 5 }) ? 'is-active' : ''}
-        >
-          H5
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleHeading({ level: 6 }).run()}
-          className={editor.isActive('heading', { level: 6 }) ? 'is-active' : ''}
-        >
-          H6
-        </button>
+        onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
+        className={editor.isActive("heading", { level: 4 }) ? "is-active" : ""}
+      >
+        H4
+      </button>
+      <button
+        onClick={() => editor.chain().focus().toggleHeading({ level: 5 }).run()}
+        className={editor.isActive("heading", { level: 5 }) ? "is-active" : ""}
+      >
+        H5
+      </button>
+      <button
+        onClick={() => editor.chain().focus().toggleHeading({ level: 6 }).run()}
+        className={editor.isActive("heading", { level: 6 }) ? "is-active" : ""}
+      >
+        H6
+      </button>
       <button
         onClick={() => editor.chain().focus().toggleBulletList().run()}
-        className={editor.isActive('bulletList') ? 'active' : ''}
+        className={editor.isActive("bulletList") ? "active" : ""}
+      >Bullet list</button>
+      <button onClick={() => editor.chain().focus().unsetAllMarks().run()}>Clear marks</button>
+      <button onClick={() => editor.chain().focus().clearNodes().run()}>Clear nodes</button>
+      <button
+        onClick={() => editor.chain().focus().toggleBulletList().run()}
+        className={editor.isActive("bulletList") ? "active" : ""}
       >
         Bullet List
       </button>
       <button
         onClick={() => editor.chain().focus().toggleOrderedList().run()}
-        className={editor.isActive('orderedList') ? 'active' : ''}
+        className={editor.isActive("orderedList") ? "active" : ""}
       >
         Ordered List
       </button>
@@ -112,12 +103,7 @@ const MenuBar = () => {
   );
 };
 
-const extensions = [
-  Color,
-  TextStyle,
-  ListItem,
-  StarterKit,
-];
+const extensions = [Color, TextStyle, ListItem, StarterKit, CodeBlockLowlight.configure({ lowlight })];
 
 type RichTextEditorProps = {
   value: string;
