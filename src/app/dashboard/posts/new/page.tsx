@@ -1,8 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
-import { createPost } from "../../../../utils/api";
+import React, { useEffect, useState } from "react";
+import { createPost, fetchLabels } from "../../../../utils/api";
 import RichTextEditor from "../../../components/RichTextEditor";
+import BackButton from "../../../components/BackButton";
+import DisplayLabelsAdd from "./DisplayLabelsAdd/DisplayLabelsAdd";
+
+import {ILabel} from "../../../../interfaces/Label";
+
 
 const NewPost = () => {
   const [title, setTitle] = useState("");
@@ -10,6 +15,18 @@ const NewPost = () => {
   const [content, setContent] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+  const [labelList, setLabelList] = useState<ILabel[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await fetchLabels();
+      setLabelList(data);
+      // setCurrentView('Other');
+      // localStorage.setItem('currentView', 'Other');
+    };
+    fetchData();
+  }, []);
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,10 +44,10 @@ const NewPost = () => {
         formData.append("cover", cover);
       }
 
-      await createPost(formData); 
+      await createPost(formData);
       setTitle("");
       setContent("");
-      setCover(null); 
+      setCover(null);
       setError("");
       setSuccess(true);
     } catch (err) {
@@ -47,10 +64,21 @@ const NewPost = () => {
 
   return (
     <div className="creator-container">
-      <h2>Create a blog post</h2>
       {error && <p className="error">{error}</p>}
       {success && <p className="success">Post created successfully!</p>}
       <form onSubmit={handleSubmit}>
+        <BackButton />
+        <header className="add-article-header">
+          <h1 className="add-article-heading">Añadir artículo</h1>
+        </header>
+        <div className="labels-container">
+              <label htmlFor="labels">Labels</label>
+              <DisplayLabelsAdd
+                labelList={labelList}
+                // selectedLabels={selectedLabels}
+                // setSelectedLabels={setSelectedLabels}
+              />
+            </div>
         <div className="form-field">
           <label htmlFor="title">Title</label>
           <input id="title" type="text" value={title} onChange={(e) => setTitle(e.target.value)} className="input" />

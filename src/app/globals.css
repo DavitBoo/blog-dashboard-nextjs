@@ -14,10 +14,12 @@
 
   --color-border: #4d5258;
   --color-font-primary: #e5e7e6;
+  --color-font-secondary: #b0aebb;
   --color-primary: #955eb4;
   --color-primary-darker: #4b2d5c;
   --color-background: #282429;
   --color-background-lighter: rgb(51, 47, 53);
+  --cta: #d68f26;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -320,10 +322,11 @@ ul {
 
 /* --- new post --- */
 .creator-container {
+  max-width: 70ch;
+  margin: auto;
   display: flex;
   flex-direction: column;
-  height: 100%;
-  gap: 1rem;
+  padding-top: 1rem;
 }
 
 .creator-container form {
@@ -353,4 +356,72 @@ ul {
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
+}
+
+/* label - tags */
+.labels-container {
+  margin-bottom: 1.5em;
+}
+
+
+.create-article-label-list {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  max-width: 100%;
+}
+
+.checkbox-container input[type='checkbox'] {
+  /* display: none; */
+}
+
+.checkbox-container input[type='checkbox'] + label {
+  color: var(--color-font-secondary);
+  display: inline-block;
+  padding: 4px 10px;
+  margin: 0;
+  cursor: pointer;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+}
+
+.checkbox-container input[type='checkbox']:checked + label {
+  background-color: var(--cta);
+  color: var(--color-font-primary);
+}
+
+
+
+
+/* ---- components ---- */
+/*info text*/
+
+.info-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5em;
+}
+
+/* back button */
+.back-btn {
+  all: unset;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.8em;
+  color: var(--color-font-secondary);
+  cursor: pointer;
+  margin-top: 1em;
+}
+
+.back-btn:hover {
+  background: none;
+  color: var(--cta);
+}
+
+.back-btn:focus {
+  outline: none;
 }

@@ -1,13 +1,6 @@
-// ! aquí - check a ver si funciona con la API
-// ! ######### queda conectar las modificaciones de los posts, algo pasa con la ruta de el boton de publicar.
-/* 
-  Aunque queda:
-  Login: Obtain a JWT token upon successful login and store it (e.g., in localStorage).
-  Attach Token: Include the token in Authorization headers for protected requests.
-  Error Handling: Handle 401 Unauthorized errors by redirecting users to the login page.
 
-  If API does not work after it ensure the backend middleware is properly configured at in API project passport.js
-*/
+// ! ######### queda conectar las modificaciones de los posts, algo pasa con la ruta de el boton de publicar.
+
 
 import { getAuthHeaders } from "./authHeader";
 
@@ -66,4 +59,18 @@ export const deleteComment = async (id: number) => {
   if (!response.ok) {
     throw new Error('Failed to delete comment');
   }
+};
+
+
+export const fetchLabels = async () => {
+  const response = await fetch(`${API_URL}/labels/`, {
+    method: 'GET',
+    headers: getAuthHeaders(),
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch labels');
+  }
+
+  return response.json();
 };
