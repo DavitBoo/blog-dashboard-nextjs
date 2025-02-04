@@ -1,4 +1,4 @@
 export interface ILabel {
-    _id: string;
+    id: string;
     name: string;
   }

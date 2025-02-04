@@ -16,10 +16,10 @@ const DisplayLabelsAdd = ({ labelList, selectedLabels, setSelectedLabels }: { la
 
   return (
     <div className="create-article-label-list">
-      {labelList.map((label, i) => {
+      {labelList.map((label) => {
         return (
-          <div key={label._id} className="checkbox-container">
-            <input type="checkbox" id={label.name} name={label.name} value={label._id} onChange={handleTagCheckboxChange}/>
+          <div key={label.id} className="checkbox-container">
+            <input type="checkbox" id={label.name} name={label.name} value={label.id} onChange={handleTagCheckboxChange}/>
             <label htmlFor={label.name}>{label.name}</label>
           </div>
         )

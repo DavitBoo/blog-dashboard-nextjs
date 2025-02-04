@@ -1,8 +1,16 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { ChangeEvent } from 'react';
 import { createPost, fetchLabels } from "../../../../utils/api";
-import RichTextEditor from "../../../components/RichTextEditor";
+import dynamic from 'next/dynamic';
+const RichTextEditor = dynamic(
+  () => import('../../../components/RichTextEditor'),
+  {
+    ssr: false,
+    loading: () => <p>Loading editor...</p>
+  }
+);
 import BackButton from "../../../components/BackButton";
 import DisplayLabelsAdd from "./DisplayLabelsAdd/DisplayLabelsAdd";
 
@@ -17,6 +25,7 @@ const NewPost = () => {
   const [success, setSuccess] = useState(false);
   const [labelList, setLabelList] = useState<ILabel[]>([]);
   const [selectedLabels, setSelectedLabels] = useState<string[]>([])
+  const [isPublished, setIsPublished] = useState(false)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,18 +44,18 @@ const NewPost = () => {
     }
 
     try {
-      const formData = new FormData();
-      console.log(formData);
-      formData.append("title", title);
-      formData.append("content", content);
-      if (cover) {
-        formData.append("cover", cover);
-      }
+      const postData = {
+      title,
+      content,
+      labels: selectedLabels,
+      isPublished
+      };
 
-      await createPost(formData);
+      await createPost(postData);
       setTitle("");
       setContent("");
-      setCover(null);
+      setSelectedLabels([]);
+      setIsPublished(false);
       setError("");
       setSuccess(true);
     } catch (err) {
@@ -55,11 +64,10 @@ const NewPost = () => {
     }
   };
 
-  const handleCoverChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setCover(e.target.files[0]);
-    }
+  const handleIsPublishedCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setIsPublished(event.target.checked);
   };
+
 
   return (
     <div className="creator-container">
@@ -82,13 +90,20 @@ const NewPost = () => {
           <input id="title" type="text" value={title} onChange={(e) => setTitle(e.target.value)}/>
         </div>
         <div className="form-field">
-          <label htmlFor="cover">Cover image</label>
-          <input required type="file" name="cover" id="cover" onChange={handleCoverChange} />
-        </div>
-        <div className="form-field">
         <h2>Contentenido</h2>
           <RichTextEditor value={content} onChange={setContent} />
         </div>
+        <div className="create-article-publish-options">
+              <div className="checkbox-container">
+                <input
+                  type="checkbox"
+                  id="publishArticle"
+                  name="publishArticle"
+                  onChange={handleIsPublishedCheckboxChange}
+                />
+                <label htmlFor="publishArticle">Publicar artículo</label>
+              </div>
+            </div>
         <button type="submit" className="button">
           Create Post
         </button>

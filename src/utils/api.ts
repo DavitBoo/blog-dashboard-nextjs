@@ -27,13 +27,22 @@ export const togglePublishPost = async (id: number, publish: boolean) => {
     throw new Error("Failed to update post");
   }
 };
-
-export const createPost = async (formData: FormData) => {
+export const createPost = async (postData: {
+  title: string;
+  content: string;
+  labels: string[];
+  isPublished: boolean;
+}) => {
+  console.log(postData.labels);
   const response = await fetch(`${API_URL}/posts/`, {
     method: "POST",
-    headers: getAuthHeaders(),
-    body: formData,
+    headers: {
+      ...getAuthHeaders(),
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(postData),
   });
+
 
   // ! error 404 al intentar acceder a POST /api/posts
   console.log(response);
