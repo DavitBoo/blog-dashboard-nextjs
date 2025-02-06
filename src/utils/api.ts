@@ -80,6 +80,6 @@ export const fetchLabels = async () => {
   if (!response.ok) {
     throw new Error('Failed to fetch labels');
   }
-
+  
   return response.json();
 };
