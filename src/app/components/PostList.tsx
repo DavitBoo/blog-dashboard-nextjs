@@ -1,6 +1,9 @@
-'use client';
+"use client";
 
-import React from 'react';
+import React, { useState } from "react";
+
+import ConfirmArticleDelete from "./ConfirmArticleDelete";
+import { FaTrashAlt } from "react-icons/fa";
 
 type Post = {
   id: number;
@@ -14,23 +17,42 @@ type PostListProps = {
 };
 
 const PostList: React.FC<PostListProps> = ({ posts, onTogglePublish }) => {
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedPostId, setSelectedPostId] = useState<number | null>(null);
+
+  const handleDelete = (postId: number) => {
+    setSelectedPostId(postId);
+    setShowDeleteModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowDeleteModal(false);
+    setSelectedPostId(null);
+  };
+
   return (
-    <ul>
-      {posts.map((post) => (
-        <li key={post.id} className="postItem">
-          <div>
-            <h3>{post.title}</h3>
-            <p>Status: {post.published ? 'Published' : 'Unpublished'}</p>
-          </div>
-          <button
-            className="toggleButton"
-            onClick={() => onTogglePublish(post.id, post.published)}
-          >
-            {post.published ? 'Unpublish' : 'Publish'}
-          </button>
-        </li>
-      ))}
-    </ul>
+    <>
+      {showDeleteModal && selectedPostId && (
+        <ConfirmArticleDelete isOpen={showDeleteModal} onClose={handleCloseModal} postId={selectedPostId} />
+      )}
+      <ul>
+        {posts.map((post) => (
+          <li key={post.id} className="postItem">
+            <div>
+              <h3>{post.title}</h3>
+              <p>Status: {post.published ? "Published" : "Unpublished"}</p>
+            </div>
+            <button className="toggleButton" onClick={() => onTogglePublish(post.id, post.published)}>
+              {post.published ? "Unpublish" : "Publish"}
+            </button>
+
+            <button className="toggleButton" onClick={() => handleDelete(post.id)}>
+              Borrar artículo <FaTrashAlt />
+            </button>
+          </li>
+        ))}
+      </ul>
+    </>
   );
 };
 

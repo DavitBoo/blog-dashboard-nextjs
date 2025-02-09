@@ -27,6 +27,7 @@ export const togglePublishPost = async (id: number, publish: boolean) => {
     throw new Error("Failed to update post");
   }
 };
+
 export const createPost = async (postData: {
   title: string;
   content: string;
@@ -44,7 +45,6 @@ export const createPost = async (postData: {
   });
 
 
-  // ! error 404 al intentar acceder a POST /api/posts
   console.log(response);
 
   if (!response.ok) {
@@ -52,6 +52,18 @@ export const createPost = async (postData: {
   }
 
   return await response.json();
+};
+
+
+export const deletePost = async (id: number) => {
+  const response = await fetch(`${API_URL}/posts/${id}`, {
+    method: "DELETE",
+    headers: getAuthHeaders(),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to delete post");
+  }
 };
 
 export const fetchCommentsByPostId = async (postId: string) => {
