@@ -14,6 +14,15 @@ export const fetchPosts = async () => {
   return response.json();
 };
 
+export const fetchPostById = async (id: number) => {
+  console.log(id);
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts/${id}`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch post');
+  }
+  return response.json();
+};
+
 // Toggle post publish status (protected)
 export const togglePublishPost = async (id: number, publish: boolean) => {
   console.log(getAuthHeaders());

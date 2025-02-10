@@ -4,6 +4,8 @@ import React, { useState } from "react";
 
 import ConfirmArticleDelete from "./ConfirmArticleDelete";
 import { FaTrashAlt } from "react-icons/fa";
+import Link from "next/link";
+
 
 type Post = {
   id: number;
@@ -46,6 +48,9 @@ const PostList: React.FC<PostListProps> = ({ posts, onTogglePublish }) => {
               {post.published ? "Unpublish" : "Publish"}
             </button>
 
+            <Link href={`./posts/edit/${post.id}`} className="toggleButton">
+              Editar
+            </Link>
             <button className="toggleButton" onClick={() => handleDelete(post.id)}>
               Borrar artículo <FaTrashAlt />
             </button>
