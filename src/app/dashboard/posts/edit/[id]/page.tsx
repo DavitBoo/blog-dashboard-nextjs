@@ -2,23 +2,19 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { ChangeEvent } from 'react';
-import { createPost, fetchLabels, fetchPostById } from "../../../../../utils/api";
-import dynamic from 'next/dynamic';
-const RichTextEditor = dynamic(
-  () => import('../../../../components/RichTextEditor'),
-  {
-    ssr: false,
-    loading: () => <p>Loading editor...</p>
-  }
-);
+import { ChangeEvent } from "react";
+import { createPost, editPost, fetchLabels, fetchPostById } from "../../../../../utils/api";
+import dynamic from "next/dynamic";
+const RichTextEditor = dynamic(() => import("../../../../components/RichTextEditor"), {
+  ssr: false,
+  loading: () => <p>Loading editor...</p>,
+});
 import BackButton from "../../../../components/BackButton";
 import DisplayLabelsAdd from "../../new/DisplayLabelsAdd/DisplayLabelsAdd";
 
 import { ILabel } from "../../../../../interfaces/Label";
 
 const EditPost = () => {
-  const router = useRouter();
   const params = useParams();
   const postId = params?.id;
 
@@ -36,7 +32,7 @@ const EditPost = () => {
       try {
         const labels = await fetchLabels();
         const post = await fetchPostById(parseInt(postId as string));
-        
+
         setLabelList(labels);
         if (post) {
           setTitle(post.title);
@@ -70,7 +66,11 @@ const EditPost = () => {
         isPublished,
       };
 
-      await createPost(postData);
+      if (!postId || typeof postId !== "string") {
+        throw new Error("Invalid post ID");
+      }
+      console.log("pues no voy y me guardo?");
+      await editPost(postData, postId);
       setSuccess(true);
     } catch (err) {
       console.error(err);
@@ -84,10 +84,10 @@ const EditPost = () => {
 
   return (
     <div className="creator-container">
+      <BackButton />
       {error && <p className="error">{error}</p>}
       {success && <p className="success">Post updated successfully!</p>}
       <form onSubmit={handleSubmit}>
-        <BackButton />
         <header className="add-article-header">
           <h1 className="add-article-heading">Editar artículo</h1>
         </header>

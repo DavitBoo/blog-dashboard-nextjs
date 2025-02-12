@@ -7,7 +7,7 @@ import { getAuthHeaders } from "./authHeader";
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const fetchPosts = async () => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts/backend/`, {
+  const response = await fetch(`${API_URL}/posts/backend/`, {
       method: "GET",
       headers: getAuthHeaders(),
 });
@@ -16,7 +16,7 @@ export const fetchPosts = async () => {
 
 export const fetchPostById = async (id: number) => {
   console.log(id);
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts/${id}`);
+  const response = await fetch(`${API_URL}/posts/${id}`);
   if (!response.ok) {
     throw new Error('Failed to fetch post');
   }
@@ -44,7 +44,7 @@ export const createPost = async (postData: {
   isPublished: boolean;
 }) => {
   console.log(postData.labels);
-  const response = await fetch(`${API_URL}/posts/`, {
+  const response = await fetch(`${API_URL}}/posts/`, {
     method: "POST",
     headers: {
       ...getAuthHeaders(),
@@ -75,8 +75,23 @@ export const deletePost = async (id: number) => {
   }
 };
 
+export const editPost = async (postData: {}, id: string) => {
+  const response = await fetch(`${API_URL}/posts/${id}`, {
+    method: "PATCH",
+    headers: {
+      ...getAuthHeaders(),
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(postData),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to update post");
+  }
+}
+
 export const fetchCommentsByPostId = async (postId: string) => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts/${postId}/comments`);
+  const response = await fetch(`${API_URL}/posts/${postId}/comments`);
   return response.json();
 };
 

@@ -15,6 +15,7 @@
   --color-border: #4d5258;
   --color-font-primary: #e5e7e6;
   --color-font-secondary: #b0aebb;
+  --color-font-tertiary: #a192a6;
   --color-primary: #955eb4;
   --color-primary-darker: #4b2d5c;
   --color-background: #282429;
@@ -434,7 +435,46 @@ ul {
 }
 
 
+/* --- label manage --- */
+.manage-labels-page {
+  max-width: 70ch;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+}
 
+.manage-labels-container {
+  margin-top: 1rem;
+  padding: 1em;
+  background-color: var(--card-background);
+  color: var(--color-font-secondary);
+  border-radius: 4px;
+}
+
+.manage-labels-heading {
+  font-size: 1.5em;
+}
+
+.registered-tasks-list-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: solid 1px var(--color-font-tertiary);
+  border-radius: 4px;
+  height: 1.5em;
+}
+
+.registered-tasks-list-item span {
+  padding-left: 1rem;
+}
+
+.label-options-divider {
+  height: 100%;
+  width: 1px;
+  background-color: var(--color-font-tertiary);
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
 
 /* ---- components ---- */
 /*info text*/
