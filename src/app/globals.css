@@ -22,6 +22,9 @@
   --color-background-lighter: #332f35;
   --card-background: #332d38;
   --cta: #d68f26;
+
+  --btn-danger: #c4455c;
+  --btn-danger-hover: #a23a4b;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -91,8 +94,7 @@ form {
 }
 
 input,
-textarea
- {
+textarea {
   font-size: 1em;
   padding: 0.5rem;
   border: 1px solid var(--color-font-secondary);
@@ -109,13 +111,12 @@ textarea
   border: 1px solid var(--color-font-secondary);
 }
 
-
 input:focus,
 textarea:focus {
   outline: none;
 }
 
-label:not(~ [type='checkbox']) {
+label:not(~ [type="checkbox"]) {
   pointer-events: none;
   font-size: 1em;
   position: absolute;
@@ -286,31 +287,31 @@ ul {
   color: var(--color-font-primary);
 }
 
-.login-container input[type='email'],
-.login-container input[type='password'] {
+.login-container input[type="email"],
+.login-container input[type="password"] {
   border: solid 1px var(--color-primary);
-  margin-bottom: .25rem;
+  margin-bottom: 0.25rem;
 }
 
-.login-container input[type='email']:hover,
-.login-container input[type='password']:hover {
+.login-container input[type="email"]:hover,
+.login-container input[type="password"]:hover {
   outline: solid 1px #d2008f;
 }
 
-.login-container input[type='email'] + label,
-.login-container input[type='password'] + label {
+.login-container input[type="email"] + label,
+.login-container input[type="password"] + label {
   top: 0.4em;
 }
 
-.login-container input[type='email']:focus,
-.login-container input[type='password']:focus {
+.login-container input[type="email"]:focus,
+.login-container input[type="password"]:focus {
   outline: solid 2px #d2008f;
 }
 
-.login-container input[type='email']:focus + label,
-.login-container input[type='password']:focus + label,
-.login-container input[type='email']:not(:focus):valid ~ label,
-.login-container input[type='password']:not(:focus):valid ~ label {
+.login-container input[type="email"]:focus + label,
+.login-container input[type="password"]:focus + label,
+.login-container input[type="email"]:not(:focus):valid ~ label,
+.login-container input[type="password"]:not(:focus):valid ~ label {
   top: -1.4em;
 }
 
@@ -405,7 +406,6 @@ ul {
   margin-bottom: 1.5em;
 }
 
-
 .create-article-label-list {
   display: flex;
   justify-content: flex-start;
@@ -415,11 +415,11 @@ ul {
   max-width: 100%;
 }
 
-.checkbox-container input[type='checkbox'] {
+.checkbox-container input[type="checkbox"] {
   display: none;
 }
 
-.checkbox-container input[type='checkbox'] + label {
+.checkbox-container input[type="checkbox"] + label {
   color: var(--color-font-secondary);
   display: inline-block;
   padding: 4px 10px;
@@ -429,11 +429,10 @@ ul {
   border-radius: 4px;
 }
 
-.checkbox-container input[type='checkbox']:checked + label {
+.checkbox-container input[type="checkbox"]:checked + label {
   background-color: var(--cta);
   color: var(--color-font-primary);
 }
-
 
 /* --- label manage --- */
 .manage-labels-page {
@@ -474,6 +473,32 @@ ul {
   background-color: var(--color-font-tertiary);
   margin-left: 1rem;
   margin-right: 1rem;
+}
+
+.registered-tasks-list-item .options-container {
+  display: flex;
+  gap: 0.5rem;
+  padding-right: 1rem;
+}
+
+.manage-labels-page .label-edit-button {
+  all: unset;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  color: var(--btn-danger);
+}
+
+.manage-labels-page .label-delete-button {
+  all: unset;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  color: var(--btn-danger-hover);
 }
 
 /* ---- components ---- */

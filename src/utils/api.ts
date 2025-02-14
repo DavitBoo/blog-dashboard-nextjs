@@ -119,3 +119,17 @@ export const fetchLabels = async () => {
   
   return response.json();
 };
+
+
+export const deleteLabel = async (id: string) => {
+  const response = await fetch(`${API_URL}/labels/${id}`, {
+    method: 'DELETE',
+    headers: getAuthHeaders(),
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to delete label');
+  }
+
+  return response
+}
