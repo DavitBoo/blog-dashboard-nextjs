@@ -107,6 +107,33 @@ export const deleteComment = async (id: number) => {
 };
 
 
+export const createLabel = async (label: { name: string }) => {
+  try {
+    const response = await fetch(`${API_URL}/labels/`, {
+      method: "POST",
+      headers: {
+        ...getAuthHeaders(),
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(label),
+    });
+
+    console.log("Response status:", response.status);
+    console.log("Response headers:", response.headers);
+    const data = await response.json();
+    console.log("Response body:", data);
+
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}: ${data.message || "Failed to create label"}`);
+    }
+
+    return data;
+  } catch (error) {
+    console.error("createLabel error:", error);
+    throw error;
+  }
+};
+
 export const fetchLabels = async () => {
   const response = await fetch(`${API_URL}/labels/`, {
     method: 'GET',

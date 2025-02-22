@@ -501,6 +501,10 @@ ul {
   color: var(--btn-danger-hover);
 }
 
+  .manage-labels-page .newLabel_input {
+  margin-bottom: 1.5em;
+}
+
 /* ---- components ---- */
 /*info text*/
 
