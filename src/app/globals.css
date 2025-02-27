@@ -481,7 +481,10 @@ ul {
   padding-right: 1rem;
 }
 
-.manage-labels-page .label-edit-button {
+.manage-labels-page .label-edit-button,
+.manage-labels-page .label-save-button,
+.manage-labels-page .label-cancel-button,
+.manage-labels-page .label-delete-button {
   all: unset;
   height: 100%;
   display: flex;
@@ -491,17 +494,7 @@ ul {
   color: var(--btn-danger);
 }
 
-.manage-labels-page .label-delete-button {
-  all: unset;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  color: var(--btn-danger-hover);
-}
-
-  .manage-labels-page .newLabel_input {
+.manage-labels-page .newLabel_input {
   margin-bottom: 1.5em;
 }
 

@@ -160,3 +160,20 @@ export const deleteLabel = async (id: string) => {
 
   return response
 }
+
+export const updateLabel = async (id: string, label: { name: string }) => {
+  const response = await fetch(`${API_URL}/labels/${id}`, {
+    method: 'PATCH',
+    headers: {
+      ...getAuthHeaders(),
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(label),
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to update label');
+  }
+  
+  return response.json(); // Add this to get the updated label data
+}

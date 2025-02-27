@@ -6,9 +6,8 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 import { ILabel } from "../../../interfaces/Label";
-import { createLabel, deleteLabel, fetchLabels } from "@/utils/api";
-import { FaEdit, FaTimes } from "react-icons/fa";
-import UpdateTagModal from "./UpdateTagModal/UpdateLabelModal";
+import { createLabel, deleteLabel, fetchLabels, updateLabel } from "@/utils/api";
+import { FaEdit, FaTimes, FaCheck, FaTimesCircle } from "react-icons/fa";
 
 const page = () => {
   const router = useRouter();
@@ -18,10 +17,8 @@ const page = () => {
   const [labelList, setLabelList] = useState<ILabel[]>();
   const [newLabel, setNewLabel] = useState<string>("");
 
-  const [showUpdateModal, setShowUpdateModal] = useState<boolean>(false);
-
-  const [updateLabelId, setUpdateLabelId] = useState<string | null>(null);
-  const [updateLabelName, setUpdateLabelName] = useState<string>("");
+  const [editingLabelId, setEditingLabelId] = useState<string | null>(null);
+  const [editingLabelName, setEditingLabelName] = useState<string>("");
 
   const fetchLabelList = async () => {
     const data = await fetchLabels();
@@ -36,19 +33,18 @@ const page = () => {
     setInfoTextMessage("Tags updated");
     setShowInfoText(true);
     setTimeout(() => {
-      router.push("/dashboard/manageLabels"); // Equivalente a navigate()
+      router.push("/dashboard/manageLabels");
     }, 3000);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newLabel.trim()) return; // Evitar envíos vacíos
+    if (!newLabel.trim()) return;
 
     try {
       const newLabelData = await createLabel({ name: newLabel });
-
-      setNewLabel(""); // Limpiar el input
-      setLabelList((prev) => [...(prev ?? []), newLabelData]); // Agregar la nueva etiqueta al estado
+      setNewLabel("");
+      setLabelList((prev) => [...(prev ?? []), newLabelData]);
       successfulSubmit();
     } catch (error) {
       console.error("Error creating label:", error);
@@ -57,22 +53,44 @@ const page = () => {
     }
   };
 
-  const handleTagUpdate = (id: string, name: string) => {
-    setUpdateLabelId(id);
-    setUpdateLabelName(name);
-    setShowUpdateModal(true);
+  const handleEditClick = (id: string, name: string) => {
+    setEditingLabelId(id);
+    setEditingLabelName(name);
+  };
+
+  const handleEditChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditingLabelName(e.target.value);
+  };
+
+  const handleEditSave = async () => {
+    if (!editingLabelId || !editingLabelName.trim()) return;
+
+    try {
+      await updateLabel(editingLabelId, { name: editingLabelName });
+      setLabelList((prev) => prev?.map(label => label.id === editingLabelId ? { ...label, name: editingLabelName } : label));
+      setEditingLabelId(null);
+    } catch (error) {
+      console.error("Error updating label:", error);
+      setInfoTextMessage("Error updating label");
+      setShowInfoText(true);
+    }
+  };
+
+  const handleEditCancel = () => {
+    setEditingLabelId(null);
   };
 
   const handleTagDelete = async (id: string) => {
     if (window.confirm("Are you sure you want to delete this label?")) {
       try {
         const res = await deleteLabel(id);
-
         if (res.ok) {
           successfulSubmit();
           fetchLabelList();
         }
-      } catch (error) {}
+      } catch (error) {
+        console.error("Error deleting label:", error);
+      }
     }
   };
 
@@ -86,23 +104,33 @@ const page = () => {
           <div className="create-article-label-list">
             <ul>
               {labelList &&
-                labelList.map((label) => {
-                  return (
-                    <li key={label.id} className="registered-tasks-list-item">
+                labelList.map((label) => (
+                  <li key={label.id} className="registered-tasks-list-item">
+                    {editingLabelId === label.id ? (
+                      <input
+                        type="text"
+                        value={editingLabelName}
+                        onChange={handleEditChange}
+                        autoFocus
+                      />
+                    ) : (
                       <span>{label.name}</span>
-                      <div className="label-options-divider">
-                        <div className="options-container">
-                          <div className="label-edit-button" onClick={() => handleTagUpdate(label.id, label.name)}>
-                            <FaEdit aria-label="Edit tag" />
-                          </div>
-                          <div className="label-delete-button" onClick={() => handleTagDelete(label.id)}>
-                            <FaTimes aria-label="Delete tag" />
-                          </div>
-                        </div>
+                    )}
+                    <div className="label-options-divider">
+                      <div className="options-container">
+                        {editingLabelId === label.id ? (
+                          <>
+                            <FaCheck className="label-save-button" onClick={handleEditSave} />
+                            <FaTimesCircle className="label-cancel-button" onClick={handleEditCancel} />
+                          </>
+                        ) : (
+                          <FaEdit className="label-edit-button" onClick={() => handleEditClick(label.id, label.name)} />
+                        )}
+                        <FaTimes className="label-delete-button" onClick={() => handleTagDelete(label.id)} />
                       </div>
-                    </li>
-                  );
-                })}
+                    </div>
+                  </li>
+                ))}
             </ul>
           </div>
           <div className="manage-labels-title-container">
@@ -117,14 +145,8 @@ const page = () => {
               onChange={(e) => setNewLabel(e.target.value)}
             />
           </div>
-          <button type="submit" className="submitLabelBtn">
-            Etiqueta lista
-          </button>
+          <button type="submit" className="submitLabelBtn">Etiqueta lista</button>
         </form>
-        {showUpdateModal && 
-          <UpdateTagModal
-          showUpdateModal={showUpdateModal}/>
-        }
       </div>
     </main>
   );
