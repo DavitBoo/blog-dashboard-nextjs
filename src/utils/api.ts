@@ -1,6 +1,4 @@
-
 // ! ######### queda conectar las modificaciones de los posts, algo pasa con la ruta de el boton de publicar.
-
 
 import { getAuthHeaders } from "./authHeader";
 
@@ -8,9 +6,9 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const fetchPosts = async () => {
   const response = await fetch(`${API_URL}/posts/backend/`, {
-      method: "GET",
-      headers: getAuthHeaders(),
-});
+    method: "GET",
+    headers: getAuthHeaders("application/json"),
+  });
   return response.json();
 };
 
@@ -18,7 +16,7 @@ export const fetchPostById = async (id: number) => {
   console.log(id);
   const response = await fetch(`${API_URL}/posts/${id}`);
   if (!response.ok) {
-    throw new Error('Failed to fetch post');
+    throw new Error("Failed to fetch post");
   }
   return response.json();
 };
@@ -28,7 +26,7 @@ export const togglePublishPost = async (id: number, publish: boolean) => {
   console.log(getAuthHeaders());
   const response = await fetch(`${API_URL}/posts/${id}`, {
     method: "PATCH",
-    headers: getAuthHeaders(),
+    headers: getAuthHeaders("application/json"),
     body: JSON.stringify({ published: publish }),
   });
 
@@ -42,19 +40,30 @@ export const createPost = async (postData: {
   content: string;
   labels: string[];
   isPublished: boolean;
+  cover?: File | null;
 }) => {
-  console.log(postData.labels);
-  const response = await fetch(`${API_URL}}/posts/`, {
+  const formData = new FormData();
+  formData.append("title", postData.title);
+  formData.append("content", postData.content);
+  formData.append("labels", JSON.stringify(postData.labels));
+  formData.append("isPublished", JSON.stringify(postData.isPublished));
+  if (postData.cover) {
+    formData.append("cover", postData.cover);
+  }
+
+  // Debug: muestra lo que se está enviando
+  for (const [key, value] of formData.entries()) {
+    console.log(key, value);
+  }
+  // hasta aquí formData correcto
+
+  const response = await fetch(`${API_URL}/posts/`, {
     method: "POST",
     headers: {
-      ...getAuthHeaders(),
-      'Content-Type': 'application/json'
+      ...getAuthHeaders(), // NO incluir 'Content-Type' aquí (el navegador lo establecerá automáticamente)
     },
-    body: JSON.stringify(postData),
+    body: formData,
   });
-
-
-  console.log(response);
 
   if (!response.ok) {
     throw new Error("Failed to create post");
@@ -62,7 +71,6 @@ export const createPost = async (postData: {
 
   return await response.json();
 };
-
 
 export const deletePost = async (id: number) => {
   const response = await fetch(`${API_URL}/posts/${id}`, {
@@ -79,8 +87,8 @@ export const editPost = async (postData: {}, id: string) => {
   const response = await fetch(`${API_URL}/posts/${id}`, {
     method: "PATCH",
     headers: {
-      ...getAuthHeaders(),
-      'Content-Type': 'application/json'
+      ...getAuthHeaders("application/json"),
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(postData),
   });
@@ -88,7 +96,7 @@ export const editPost = async (postData: {}, id: string) => {
   if (!response.ok) {
     throw new Error("Failed to update post");
   }
-}
+};
 
 export const fetchCommentsByPostId = async (postId: string) => {
   const response = await fetch(`${API_URL}/posts/${postId}/comments`);
@@ -97,22 +105,21 @@ export const fetchCommentsByPostId = async (postId: string) => {
 
 export const deleteComment = async (id: number) => {
   const response = await fetch(`${API_URL}/comments/${id}`, {
-    method: 'DELETE',
-    headers: getAuthHeaders(),
+    method: "DELETE",
+    headers: getAuthHeaders("application/json"),
   });
 
   if (!response.ok) {
-    throw new Error('Failed to delete comment');
+    throw new Error("Failed to delete comment");
   }
 };
-
 
 export const createLabel = async (label: { name: string }) => {
   try {
     const response = await fetch(`${API_URL}/labels/`, {
       method: "POST",
       headers: {
-        ...getAuthHeaders(),
+        ...getAuthHeaders("application/json"),
         "Content-Type": "application/json",
       },
       body: JSON.stringify(label),
@@ -136,44 +143,43 @@ export const createLabel = async (label: { name: string }) => {
 
 export const fetchLabels = async () => {
   const response = await fetch(`${API_URL}/labels/`, {
-    method: 'GET',
-    headers: getAuthHeaders(),
+    method: "GET",
+    headers: getAuthHeaders("application/json"),
   });
 
   if (!response.ok) {
-    throw new Error('Failed to fetch labels');
+    throw new Error("Failed to fetch labels");
   }
-  
+
   return response.json();
 };
 
-
 export const deleteLabel = async (id: string) => {
   const response = await fetch(`${API_URL}/labels/${id}`, {
-    method: 'DELETE',
-    headers: getAuthHeaders(),
+    method: "DELETE",
+    headers: getAuthHeaders("application/json"),
   });
 
   if (!response.ok) {
-    throw new Error('Failed to delete label');
+    throw new Error("Failed to delete label");
   }
 
-  return response
-}
+  return response;
+};
 
 export const updateLabel = async (id: string, label: { name: string }) => {
   const response = await fetch(`${API_URL}/labels/${id}`, {
-    method: 'PATCH',
+    method: "PATCH",
     headers: {
       ...getAuthHeaders(),
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(label),
   });
 
   if (!response.ok) {
-    throw new Error('Failed to update label');
+    throw new Error("Failed to update label");
   }
-  
+
   return response.json(); // Add this to get the updated label data
-}
+};

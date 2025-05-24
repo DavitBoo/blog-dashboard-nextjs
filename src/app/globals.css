@@ -9,28 +9,32 @@
 }
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* --background: #ffffff;
+  --foreground: #171717; */
 
-  --color-border: #4d5258;
-  --color-font-primary: #e5e7e6;
-  --color-font-secondary: #b0aebb;
-  --color-font-tertiary: #a192a6;
-  --color-primary: #955eb4;
-  --color-primary-darker: #4b2d5c;
-  --color-background: #282429;
-  --color-background-lighter: #332f35;
-  --card-background: #332d38;
-  --cta: #d68f26;
+  --color-border: #03658C; 
+  --color-font-primary: #02303F; 
+  --color-font-secondary: #03658C; 
+  --color-font-tertiary: #0388A6; 
+  
+  --color-primary: #04ADBF; 
+  --color-primary-darker: #03658C; 
+  
+  --color-background: #ffffff; 
+  --color-background-lighter: #F2FBFC; 
+  --card-background: #E6F7FA; 
 
-  --btn-danger: #c4455c;
-  --btn-danger-hover: #a23a4b;
+  --cta: #D9CB04; 
+
+  --btn-danger: #C4455C; 
+  --btn-danger-hover: #A23A4B; 
+
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #ffffff;
-    --foreground: #171717;
+    /* --background: #ffffff;
+    --foreground: #171717; */
   }
 }
 
@@ -41,8 +45,10 @@ body {
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
+  /* color: var(--foreground);
+  background: var(--background); */
+  color: var(--color-font-primary);
+  background-color: var(--color-background);
   font-family: Raleway;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

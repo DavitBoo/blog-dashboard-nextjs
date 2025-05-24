@@ -1,20 +1,23 @@
+export const getAuthHeaders = (contentType?: string) => {
+  const cookies = document.cookie.split(";").reduce((acc, cookie) => {
+    const [key, value] = cookie.trim().split("=");
+    acc[key] = value;
+    return acc;
+  }, {} as Record<string, string>);
 
-// Helper function to get the JWT token
-export const getAuthHeaders = () => {
-    // Parse cookies to find the token
-    const cookies = document.cookie.split(";").reduce((acc, cookie) => {
-      const [key, value] = cookie.trim().split("=");
-      acc[key] = value;
-      return acc;
-    }, {} as Record<string, string>);
-  
-    const token = cookies["token"]; // Replace 'token' with your cookie's name
-    if (!token) {
-      throw new Error("User is not authenticated");
-    }
-  
-    return {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    };
+  const token = cookies["token"];
+  if (!token) {
+    throw new Error("User is not authenticated");
+  }
+
+  const headers: Record<string, string> = {
+    Authorization: `Bearer ${token}`
   };
+
+  // Solo añade Content-Type si se especifica
+  if (contentType) {
+    headers["Content-Type"] = contentType;
+  }
+
+  return headers;
+};
