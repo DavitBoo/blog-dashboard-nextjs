@@ -11,6 +11,8 @@ import { Table } from "@tiptap/extension-table";
 import { TableCell } from "@tiptap/extension-table-cell";
 import { TableHeader } from "@tiptap/extension-table-header";
 import { TableRow } from "@tiptap/extension-table-row";
+import Image from '@tiptap/extension-image';
+import CarouselExtension from './CarouselExtension';
 
 const lowlight = createLowlight(common);
 
@@ -22,6 +24,15 @@ const MenuBar = () => {
   if (!editor) {
     return null;
   }
+
+   const addCarousel = () => {
+    const urls = prompt('Enter image URLs separated by commas:');
+    if (urls) {
+      editor.commands.insertCarousel({
+        images: urls.split(',').map(url => url.trim()),
+      });
+    }
+  };
 
   return (
     <div className="toolbar">
@@ -123,6 +134,9 @@ const MenuBar = () => {
       <button onClick={() => editor.chain().focus().deleteTable().run()} disabled={!editor.can().deleteTable()}>
         Delete Table
       </button>
+      <button onClick={addCarousel}>
+        Add Carousel
+      </button>
     </div>
   );
 };
@@ -142,6 +156,8 @@ const extensions = [
   TableRow,
   TableHeader,
   TableCell,
+  Image,
+  CarouselExtension,
 ];
 
 type RichTextEditorProps = {
