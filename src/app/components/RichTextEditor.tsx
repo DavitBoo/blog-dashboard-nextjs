@@ -7,6 +7,10 @@ import { EditorProvider, useCurrentEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import { common, createLowlight } from "lowlight";
+import { Table } from "@tiptap/extension-table";
+import { TableCell } from "@tiptap/extension-table-cell";
+import { TableHeader } from "@tiptap/extension-table-header";
+import { TableRow } from "@tiptap/extension-table-row";
 
 const lowlight = createLowlight(common);
 
@@ -84,7 +88,9 @@ const MenuBar = () => {
       <button
         onClick={() => editor.chain().focus().toggleBulletList().run()}
         className={editor.isActive("bulletList") ? "active" : ""}
-      >Bullet list</button>
+      >
+        Bullet list
+      </button>
       <button onClick={() => editor.chain().focus().unsetAllMarks().run()}>Clear marks</button>
       <button onClick={() => editor.chain().focus().clearNodes().run()}>Clear nodes</button>
       <button
@@ -99,11 +105,44 @@ const MenuBar = () => {
       >
         Ordered List
       </button>
+      <button onClick={() => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()}>
+        Insert Table
+      </button>
+      <button onClick={() => editor.chain().focus().addColumnAfter().run()} disabled={!editor.can().addColumnAfter()}>
+        Add Column
+      </button>
+      <button onClick={() => editor.chain().focus().addRowAfter().run()} disabled={!editor.can().addRowAfter()}>
+        Add Row
+      </button>
+      <button onClick={() => editor.chain().focus().deleteColumn().run()} disabled={!editor.can().deleteColumn()}>
+        Delete Column
+      </button>
+      <button onClick={() => editor.chain().focus().deleteRow().run()} disabled={!editor.can().deleteRow()}>
+        Delete Row
+      </button>
+      <button onClick={() => editor.chain().focus().deleteTable().run()} disabled={!editor.can().deleteTable()}>
+        Delete Table
+      </button>
     </div>
   );
 };
 
-const extensions = [Color, TextStyle, ListItem, StarterKit, CodeBlockLowlight.configure({ lowlight })];
+const extensions = [
+  Color,
+  TextStyle,
+  ListItem,
+  StarterKit,
+  CodeBlockLowlight.configure({ lowlight }),
+  Table.configure({
+    resizable: true,
+    HTMLAttributes: {
+    class: 'rich-text-table',
+  },
+  }),
+  TableRow,
+  TableHeader,
+  TableCell,
+];
 
 type RichTextEditorProps = {
   value: string;

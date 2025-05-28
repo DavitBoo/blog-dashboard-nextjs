@@ -44,7 +44,7 @@ const NewPost = () => {
         content,
         labels: selectedLabels,
         isPublished,
-        cover, // nuevo campo
+        cover, 
       });
       setTitle("");
       setContent("");
