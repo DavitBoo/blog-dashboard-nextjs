@@ -446,6 +446,81 @@ ul {
   padding: 0;
 } 
 
+/* Estilos para el resaltado de sintaxis en bloques de código */
+.ProseMirror pre code.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 1em;
+  background-color: var(--card-background);
+  color: var(--color-font-secondary);
+  border-radius: 4px;
+}
+
+/* Estilos generales para elementos dentro del código */
+.ProseMirror code .hljs-keyword,
+.ProseMirror code .hljs-selector-tag,
+.ProseMirror code .hljs-built_in {
+  color: #d2008f; /* Color para palabras clave */
+  font-weight: bold;
+}
+
+.ProseMirror code .hljs-string,
+.ProseMirror code .hljs-title,
+.ProseMirror code .hljs-section,
+.ProseMirror code .hljs-attribute,
+.ProseMirror code .hljs-literal,
+.ProseMirror code .hljs-template-tag,
+.ProseMirror code .hljs-template-variable,
+.ProseMirror code .hljs-type,
+.ProseMirror code .hljs-addition {
+  color: #03658c; /* Color para strings */
+}
+
+.ProseMirror code .hljs-comment,
+.ProseMirror code .hljs-quote,
+.ProseMirror code .hljs-meta,
+.ProseMirror code .hljs-deletion {
+  color: #6a9955; /* Color para comentarios */
+  font-style: italic;
+}
+
+.ProseMirror code .hljs-number,
+.ProseMirror code .hljs-regexp,
+.ProseMirror code .hljs-link,
+.ProseMirror code .hljs-symbol {
+  color: #b5cea8; /* Color para números */
+}
+
+.ProseMirror code .hljs-variable,
+.ProseMirror code .hljs-template-variable {
+  color: #9cdcfe; /* Color para variables */
+}
+
+.ProseMirror code .hljs-function,
+.ProseMirror code .hljs-title.class_ {
+  color: #c1c14c; /* Color para funciones y clases */
+}
+
+.ProseMirror code .hljs-params {
+  color: #9cdcfe; /* Color para parámetros */
+}
+
+.ProseMirror code .hljs-doctag {
+  color: #608b4e; /* Color para documentación */
+  font-weight: bold;
+}
+
+/* Estilos para el fondo de líneas seleccionadas */
+.ProseMirror code .hljs-selection,
+.ProseMirror code .hljs-selection ::selection {
+  background-color: #264f78; /* Color de selección */
+}
+
+/* Estilo para los títulos dentro del código (si aplica) */
+.ProseMirror code .hljs-title.function_ {
+  color: #c4c44c;
+}
+
 /* Estilos generales para tablas en el editor */
 .ProseMirror table {
   border-collapse: collapse;
