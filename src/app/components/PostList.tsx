@@ -3,8 +3,9 @@
 import React, { useState } from "react";
 
 import ConfirmArticleDelete from "./ConfirmArticleDelete";
-import { FaTrashAlt } from "react-icons/fa";
+import { FaTrashAlt, FaEdit, FaEye } from 'react-icons/fa';
 import Link from "next/link";
+
 
 
 type Post = {
@@ -37,26 +38,56 @@ const PostList: React.FC<PostListProps> = ({ posts, onTogglePublish }) => {
       {showDeleteModal && selectedPostId && (
         <ConfirmArticleDelete isOpen={showDeleteModal} onClose={handleCloseModal} postId={selectedPostId} />
       )}
-      <ul>
+      
+      <div className="posts-grid">
         {posts.map((post) => (
-          <li key={post.id} className="postItem">
-            <div>
-              <h3>{post.title}</h3>
-              <p>Status: {post.published ? "Published" : "Unpublished"}</p>
+          <div key={post.id} className="post-card">
+            <div className="post-card-header">
+              <h3 className="post-title">{post.title}</h3>
+              <span className={`post-status ${post.published ? 'published' : 'draft'}`}>
+                {post.published ? "Published" : "Draft"}
+              </span>
             </div>
-            <button className="toggleButton" onClick={() => onTogglePublish(post.id, post.published)}>
-              {post.published ? "Unpublish" : "Publish"}
-            </button>
-
-            <Link href={`./posts/edit/${post.id}`} className="toggleButton">
-              Editar
-            </Link>
-            <button className="toggleButton" onClick={() => handleDelete(post.id)}>
-              Borrar artículo <FaTrashAlt />
-            </button>
-          </li>
+            
+            <div className="post-card-meta">
+              {/* <span className="post-date">Created: {new Date(post.createdAt).toLocaleDateString()}</span>
+              {post.excerpt && <p className="post-excerpt">{post.excerpt}</p>} */}
+            </div>
+            
+            <div className="post-card-actions">
+              <button 
+                className={`btn btn-sm ${post.published ? 'btn-secondary' : 'btn-primary'}`}
+                onClick={() => onTogglePublish(post.id, post.published)}
+              >
+                {post.published ? <FaEye /> : <FaEye />}
+                {post.published ? "Unpublish" : "Publish"}
+              </button>
+              
+              <Link href={`./posts/edit/${post.id}`} className="btn btn-sm btn-secondary">
+                <FaEdit /> Edit
+              </Link>
+              
+              <button 
+                className="btn btn-sm btn-danger" 
+                onClick={() => handleDelete(post.id)}
+              >
+                <FaTrashAlt /> Delete
+              </button>
+            </div>
+          </div>
         ))}
-      </ul>
+      </div>
+      
+      {posts.length === 0 && (
+        <div className="empty-state">
+          <span className="empty-icon">📝</span>
+          <h3>No posts yet</h3>
+          <p>Create your first blog post to get started</p>
+          <Link href="/dashboard/posts/new" className="btn btn-primary">
+            Create Your First Post
+          </Link>
+        </div>
+      )}
     </>
   );
 };

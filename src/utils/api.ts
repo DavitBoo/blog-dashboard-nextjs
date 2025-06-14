@@ -1,5 +1,3 @@
-// ! ######### queda conectar las modificaciones de los posts, algo pasa con la ruta de el boton de publicar.
-
 import { getAuthHeaders } from "./authHeader";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -9,6 +7,7 @@ export const fetchPosts = async () => {
     method: "GET",
     headers: getAuthHeaders("application/json"),
   });
+  console.log(response);
   return response.json();
 };
 
