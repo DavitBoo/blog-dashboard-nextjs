@@ -20,6 +20,8 @@ const EditPost = () => {
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [metaTitle, setMetaTitle] = useState("");
+  const [metaDescription, setMetaDescription] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [labelList, setLabelList] = useState<ILabel[]>([]);
@@ -37,6 +39,8 @@ const EditPost = () => {
         if (post) {
           setTitle(post.title);
           setContent(post.content);
+          setMetaTitle(post.metaTitle)
+          setMetaDescription(post.metaDescription)
           setSelectedLabels(post.labels.map((label: any) => label.id.toString()));
           setIsPublished(post.published);
         }
@@ -62,6 +66,8 @@ const EditPost = () => {
       const postData = {
         title,
         content,
+        metaTitle,
+        metaDescription,
         labels: selectedLabels,
         isPublished,
       };
@@ -69,7 +75,6 @@ const EditPost = () => {
       if (!postId || typeof postId !== "string") {
         throw new Error("Invalid post ID");
       }
-      console.log("pues no voy y me guardo?");
       await editPost(postData, postId);
       setSuccess(true);
     } catch (err) {
@@ -105,6 +110,15 @@ const EditPost = () => {
         <div className="form-field">
           <h2>Contenido</h2>
           {loading ? <p>Cargando contenido...</p> : <RichTextEditor value={content} onChange={setContent} />}
+        </div>
+        <div className="form-field">
+          <h2>Meta título (SEO)</h2>
+          <input type="text" value={metaTitle} onChange={(e) => setMetaTitle(e.target.value)} />
+        </div>
+
+        <div className="form-field">
+          <h2>Meta descripción</h2>
+          <textarea value={metaDescription} onChange={(e) => setMetaDescription(e.target.value)} />
         </div>
         <div className="create-article-publish-options">
           <div className="checkbox-container">

@@ -17,6 +17,8 @@ const NewPost = () => {
   const [title, setTitle] = useState("");
   const [cover, setCover] = useState<File | null>(null);
   const [content, setContent] = useState("");
+  const [metaTitle, setMetaTitle] = useState("");
+  const [metaDescription, setMetaDescription] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [labelList, setLabelList] = useState<ILabel[]>([]);
@@ -38,13 +40,15 @@ const NewPost = () => {
       return;
     }
 
-    try {      
+    try {
       await createPost({
         title,
         content,
+        metaTitle,
+        metaDescription,
         labels: selectedLabels,
         isPublished,
-        cover, 
+        cover,
       });
       setTitle("");
       setContent("");
@@ -98,6 +102,15 @@ const NewPost = () => {
         <div className="form-field">
           <h2>Contentenido</h2>
           <RichTextEditor value={content} onChange={setContent} />
+        </div>
+        <div className="form-field">
+          <h2>Meta título (SEO)</h2>
+          <input type="text" value={metaTitle} onChange={(e) => setMetaTitle(e.target.value)} />
+        </div>
+
+        <div className="form-field">
+          <h2>Meta descripción</h2>
+          <textarea value={metaDescription} onChange={(e) => setMetaDescription(e.target.value)} />
         </div>
         <div className="create-article-publish-options">
           <div className="checkbox-container">

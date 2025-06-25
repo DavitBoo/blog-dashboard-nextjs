@@ -37,6 +37,8 @@ export const togglePublishPost = async (id: number, publish: boolean) => {
 export const createPost = async (postData: {
   title: string;
   content: string;
+  metaTitle: string;
+  metaDescription: string;
   labels: string[];
   isPublished: boolean;
   cover?: File | null;
@@ -44,6 +46,8 @@ export const createPost = async (postData: {
   const formData = new FormData();
   formData.append("title", postData.title);
   formData.append("content", postData.content);
+  formData.append("metaTitle", postData.metaTitle);
+  formData.append("metaDescription", postData.metaDescription);
   formData.append("labels", JSON.stringify(postData.labels));
   formData.append("isPublished", JSON.stringify(postData.isPublished));
   if (postData.cover) {
