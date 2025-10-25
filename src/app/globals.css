@@ -8,27 +8,27 @@
   src: url("../assets/fonts/Montserrat-VariableFont_wght.ttf");
 }
 
-  :root {
-    /* --background: #ffffff;
+:root {
+  /* --background: #ffffff;
     --foreground: #171717; */
 
-    --color-border: #03658c;
-    --color-font-primary: #02303f;
-    --color-font-secondary: #03658c;
-    --color-font-tertiary: #0388a6;
+  --color-border: #03658c;
+  --color-font-primary: #02303f;
+  --color-font-secondary: #03658c;
+  --color-font-tertiary: #0388a6;
 
-    --color-primary: #04adbf;
-    --color-primary-darker: #03658c;
+  --color-primary: #04adbf;
+  --color-primary-darker: #03658c;
 
-    --color-background: #ffffff;
-    --color-background-lighter: #f2fbfc;
-    --card-background: #e6f7fa;
+  --color-background: #ffffff;
+  --color-background-lighter: #f2fbfc;
+  --card-background: #e6f7fa;
 
-    --cta: #d9cb04;
+  --cta: #d9cb04;
 
-    --btn-danger: #c4455c;
-    --btn-danger-hover: #a23a4b;
-  }
+  --btn-danger: #c4455c;
+  --btn-danger-hover: #a23a4b;
+}
 
 @media (prefers-color-scheme: dark) {
   :root {
@@ -132,6 +132,7 @@ label:not(~ [type="checkbox"]) {
   transition: all 0.2s;
   color: var(--color-font-secondary);
 }
+
 
 @media (prefers-color-scheme: dark) {
   html {
@@ -444,7 +445,7 @@ ul {
 .ProseMirror pre code {
   background-color: transparent;
   padding: 0;
-} 
+}
 
 /* Estilos para el resaltado de sintaxis en bloques de código */
 .ProseMirror pre code.hljs {
@@ -774,68 +775,301 @@ ul {
   color: var(--color-font-primary);
 }
 
-/* --- label manage --- */
+/* === Manage Labels Page Styles === */
+
 .manage-labels-page {
-  max-width: 70ch;
-  margin: auto;
-  display: flex;
-  flex-direction: column;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-.manage-labels-container {
-  margin-top: 1rem;
-  padding: 1em;
+.page-header-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.page-header-icon {
+  font-size: 2rem;
+  color: var(--color-primary-darker);
+  background-color: var(--card-background);
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+}
+
+.info-message {
+  margin-bottom: 1.5rem;
+}
+
+/* Grid Layout */
+.manage-labels-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+/* Section Styles */
+.labels-section,
+.create-label-section {
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(3, 101, 140, 0.1);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--color-border);
+}
+
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-font-primary);
+  margin: 0;
+}
+
+.labels-count {
   background-color: var(--card-background);
   color: var(--color-font-secondary);
-  border-radius: 4px;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  font-weight: 500;
 }
 
-.manage-labels-heading {
-  font-size: 1.5em;
-}
-
-.registered-tasks-list-item {
+/* Labels List */
+.labels-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.label-item {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  border: solid 1px var(--color-font-tertiary);
-  border-radius: 4px;
-  height: 1.5em;
+  padding: 1rem 1.25rem;
+  background-color: var(--card-background);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  transition: all 0.2s ease;
 }
 
-.registered-tasks-list-item span {
-  padding-left: 1rem;
+.label-item:hover {
+  background-color: var(--color-background-lighter);
+  border-color: var(--color-primary);
+  box-shadow: 0 2px 8px rgba(3, 101, 140, 0.1);
 }
 
-.label-options-divider {
-  height: 100%;
-  width: 1px;
-  background-color: var(--color-font-tertiary);
-  margin-left: 1rem;
-  margin-right: 1rem;
+.label-content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
 }
 
-.registered-tasks-list-item .options-container {
+.label-icon {
+  color: var(--color-primary-darker);
+  font-size: 1rem;
+}
+
+.label-name {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--color-font-primary);
+}
+
+.label-edit-input {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  border: 2px solid var(--color-primary);
+  border-radius: 6px;
+  font-size: 1rem;
+  background-color: var(--color-background);
+  color: var(--color-font-primary);
+}
+
+.label-edit-input:focus {
+  outline: none;
+  border-color: var(--color-primary-darker);
+  box-shadow: 0 0 0 3px rgba(3, 101, 140, 0.1);
+}
+
+/* Label Actions */
+.label-actions {
   display: flex;
   gap: 0.5rem;
-  padding-right: 1rem;
-}
-
-.manage-labels-page .label-edit-button,
-.manage-labels-page .label-save-button,
-.manage-labels-page .label-cancel-button,
-.manage-labels-page .label-delete-button {
-  all: unset;
-  height: 100%;
-  display: flex;
-  justify-content: center;
   align-items: center;
-  cursor: pointer;
-  color: var(--btn-danger);
 }
 
-.manage-labels-page .newLabel_input {
-  margin-bottom: 1.5em;
+.btn-icon {
+  all: unset;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.875rem;
+}
+
+.btn-icon:hover {
+  transform: scale(1.05);
+}
+
+.btn-edit {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.btn-edit:hover {
+  background-color: var(--color-primary-darker);
+}
+
+.btn-success {
+  background-color: #16a34a;
+  color: white;
+}
+
+.btn-success:hover {
+  background-color: #15803d;
+}
+
+.btn-icon.btn-secondary {
+  background-color: #6b7280;
+  color: white;
+}
+
+.btn-icon.btn-secondary:hover {
+  background-color: #4b5563;
+}
+
+.btn-icon.btn-danger {
+  background-color: var(--btn-danger);
+  color: white;
+}
+
+.btn-icon.btn-danger:hover {
+  background-color: var(--btn-danger-hover);
+}
+
+/* Empty State */
+.empty-labels {
+  text-align: center;
+  padding: 3rem 2rem;
+  color: var(--color-font-secondary);
+}
+
+.empty-labels .empty-icon {
+  font-size: 3rem;
+  color: var(--color-border);
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.empty-labels p {
+  margin: 0;
+  font-size: 1rem;
+}
+
+/* Create Label Form */
+.create-label-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-font-primary);
+  margin: 0;
+  position: static;
+}
+
+.label-input {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  font-size: 1rem;
+  background-color: var(--card-background);
+  color: var(--color-font-primary);
+  transition: all 0.2s ease;
+}
+
+.label-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(3, 101, 140, 0.1);
+  background-color: var(--color-background);
+}
+
+.label-input::placeholder {
+  color: var(--color-font-secondary);
+  opacity: 0.6;
+}
+
+.btn-create {
+  width: 100%;
+  padding: 0.875rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  justify-content: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .manage-labels-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .page-header-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .label-item {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .label-actions {
+    justify-content: flex-end;
+  }
+
+  .labels-section,
+  .create-label-section {
+    padding: 1rem;
+  }
 }
 
 /* ---- components ---- */

@@ -10,7 +10,7 @@ export default function BackButton() {
     };
 
     return (
-        <button className="back-btn" onClick={goToPreviousPage}>
+        <button className="back-btn mb-4" onClick={goToPreviousPage}>
             <FaArrowLeft /> volver
         </button>
     );

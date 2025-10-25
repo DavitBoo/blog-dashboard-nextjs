@@ -7,7 +7,7 @@ import React, { useEffect, useState } from "react";
 
 import { ILabel } from "../../../interfaces/Label";
 import { createLabel, deleteLabel, fetchLabels, updateLabel } from "@/utils/api";
-import { FaEdit, FaTimes, FaCheck, FaTimesCircle } from "react-icons/fa";
+import { FaEdit, FaTimes, FaCheck, FaTimesCircle, FaTag, FaPlus } from "react-icons/fa";
 
 const page = () => {
   const router = useRouter();
@@ -30,10 +30,10 @@ const page = () => {
   }, []);
 
   const successfulSubmit = () => {
-    setInfoTextMessage("Tags updated");
+    setInfoTextMessage("Etiquetas actualizadas correctamente");
     setShowInfoText(true);
     setTimeout(() => {
-      router.push("/dashboard/manageLabels");
+      setShowInfoText(false);
     }, 3000);
   };
 
@@ -48,8 +48,9 @@ const page = () => {
       successfulSubmit();
     } catch (error) {
       console.error("Error creating label:", error);
-      setInfoTextMessage("Error creating label");
+      setInfoTextMessage("Error al crear la etiqueta");
       setShowInfoText(true);
+      setTimeout(() => setShowInfoText(false), 3000);
     }
   };
 
@@ -69,10 +70,14 @@ const page = () => {
       await updateLabel(editingLabelId, { name: editingLabelName });
       setLabelList((prev) => prev?.map(label => label.id === editingLabelId ? { ...label, name: editingLabelName } : label));
       setEditingLabelId(null);
+      setInfoTextMessage("Etiqueta actualizada");
+      setShowInfoText(true);
+      setTimeout(() => setShowInfoText(false), 3000);
     } catch (error) {
       console.error("Error updating label:", error);
-      setInfoTextMessage("Error updating label");
+      setInfoTextMessage("Error al actualizar la etiqueta");
       setShowInfoText(true);
+      setTimeout(() => setShowInfoText(false), 3000);
     }
   };
 
@@ -81,15 +86,20 @@ const page = () => {
   };
 
   const handleTagDelete = async (id: string) => {
-    if (window.confirm("Are you sure you want to delete this label?")) {
+    if (window.confirm("¿Estás seguro de que quieres eliminar esta etiqueta?")) {
       try {
         const res = await deleteLabel(id);
         if (res.ok) {
-          successfulSubmit();
           fetchLabelList();
+          setInfoTextMessage("Etiqueta eliminada");
+          setShowInfoText(true);
+          setTimeout(() => setShowInfoText(false), 3000);
         }
       } catch (error) {
         console.error("Error deleting label:", error);
+        setInfoTextMessage("Error al eliminar la etiqueta");
+        setShowInfoText(true);
+        setTimeout(() => setShowInfoText(false), 3000);
       }
     }
   };
@@ -97,56 +107,127 @@ const page = () => {
   return (
     <main className="manage-labels-page">
       <BackButton />
-      <div className="manage-labels-container">
-        {showInfoText && <InfoText message={infoTextMessage} />}
-        <form onSubmit={handleSubmit}>
-          <h1 className="manage-labels-heading">Etiquetas</h1>
-          <div className="create-article-label-list">
-            <ul>
-              {labelList &&
-                labelList.map((label) => (
-                  <li key={label.id} className="registered-tasks-list-item">
-                    {editingLabelId === label.id ? (
-                      <input
-                        type="text"
-                        value={editingLabelName}
-                        onChange={handleEditChange}
-                        autoFocus
-                      />
-                    ) : (
-                      <span>{label.name}</span>
-                    )}
-                    <div className="label-options-divider">
-                      <div className="options-container">
-                        {editingLabelId === label.id ? (
-                          <>
-                            <FaCheck className="label-save-button" onClick={handleEditSave} />
-                            <FaTimesCircle className="label-cancel-button" onClick={handleEditCancel} />
-                          </>
-                        ) : (
-                          <FaEdit className="label-edit-button" onClick={() => handleEditClick(label.id, label.name)} />
-                        )}
-                        <FaTimes className="label-delete-button" onClick={() => handleTagDelete(label.id)} />
-                      </div>
+      
+      {/* Page Header */}
+      <div className="page-header">
+        <div className="page-header-content">
+          <div className="page-header-icon">
+            <FaTag />
+          </div>
+          <div>
+            <h1 className="page-title">Gestión de Etiquetas</h1>
+            <p className="page-subtitle">Organiza y administra las etiquetas de tus artículos</p>
+          </div>
+        </div>
+      </div>
+
+      {showInfoText && (
+        <div className="info-message">
+          <InfoText message={infoTextMessage} />
+        </div>
+      )}
+
+      <div className="manage-labels-grid">
+        {/* Existing Labels Section */}
+        <div className="labels-section">
+          <div className="section-header">
+            <h2 className="section-title">Etiquetas Existentes</h2>
+            <span className="labels-count">{labelList?.length || 0} etiquetas</span>
+          </div>
+
+          {labelList && labelList.length > 0 ? (
+            <ul className="labels-list">
+              {labelList.map((label) => (
+                <li key={label.id} className="label-item">
+                  {editingLabelId === label.id ? (
+                    <input
+                      type="text"
+                      value={editingLabelName}
+                      onChange={handleEditChange}
+                      className="label-edit-input"
+                      autoFocus
+                    />
+                  ) : (
+                    <div className="label-content">
+                      <FaTag className="label-icon" />
+                      <span className="label-name">{label.name}</span>
                     </div>
-                  </li>
-                ))}
+                  )}
+                  
+                  <div className="label-actions">
+                    {editingLabelId === label.id ? (
+                      <>
+                        <button 
+                          className="btn-icon btn-success" 
+                          onClick={handleEditSave}
+                          title="Guardar"
+                        >
+                          <FaCheck />
+                        </button>
+                        <button 
+                          className="btn-icon btn-secondary" 
+                          onClick={handleEditCancel}
+                          title="Cancelar"
+                        >
+                          <FaTimesCircle />
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <button 
+                          className="btn-icon btn-edit" 
+                          onClick={() => handleEditClick(label.id, label.name)}
+                          title="Editar"
+                        >
+                          <FaEdit />
+                        </button>
+                        <button 
+                          className="btn-icon btn-danger" 
+                          onClick={() => handleTagDelete(label.id)}
+                          title="Eliminar"
+                        >
+                          <FaTimes />
+                        </button>
+                      </>
+                    )}
+                  </div>
+                </li>
+              ))}
             </ul>
+          ) : (
+            <div className="empty-labels">
+              <FaTag className="empty-icon" />
+              <p>No hay etiquetas creadas todavía</p>
+            </div>
+          )}
+        </div>
+
+        {/* Create New Label Section */}
+        <div className="create-label-section">
+          <div className="section-header">
+            <h2 className="section-title">Nueva Etiqueta</h2>
           </div>
-          <div className="manage-labels-title-container">
-            <h2>Nueva etiqueta:</h2>
-            <input
-              type="text"
-              id="newLabel"
-              name="newLabel"
-              className="newLabel_input"
-              placeholder="algunas etiquetas"
-              value={newLabel}
-              onChange={(e) => setNewLabel(e.target.value)}
-            />
-          </div>
-          <button type="submit" className="submitLabelBtn">Etiqueta lista</button>
-        </form>
+
+          <form onSubmit={handleSubmit} className="create-label-form">
+            <div className="form-group">
+              <label htmlFor="newLabel">Nombre de la etiqueta</label>
+              <input
+                type="text"
+                id="newLabel"
+                name="newLabel"
+                className="label-input"
+                placeholder="Ej: Tecnología, Diseño, Marketing..."
+                value={newLabel}
+                onChange={(e) => setNewLabel(e.target.value)}
+              />
+            </div>
+            
+            <button type="submit" className="btn btn-primary btn-create">
+              <FaPlus />
+              Crear Etiqueta
+            </button>
+          </form>
+        </div>
       </div>
     </main>
   );
