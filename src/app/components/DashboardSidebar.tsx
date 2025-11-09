@@ -67,6 +67,12 @@ const DashboardSidebar = () => {
       icon: "🏷️",
       exact: true,
     },
+    {
+      href: "/dashboard/media",
+      label: "Media Manager",
+      icon: "📷",
+      exact: true,
+    },
   ];
 
   const isActive = (href: string, exact: boolean) => {
