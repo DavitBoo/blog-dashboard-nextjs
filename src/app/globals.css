@@ -133,7 +133,6 @@ label:not(~ [type="checkbox"]) {
   color: var(--color-font-secondary);
 }
 
-
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
@@ -1030,6 +1029,21 @@ ul {
   font-size: 1rem;
   font-weight: 600;
   justify-content: center;
+}
+
+/* ==== media manager ==== */
+/* --- progress bar --- */
+.progress-container {
+  width: 100%;
+  height: 8px;
+  background-color: var(--color-background);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.progress-bar {
+  height: 100%;
+  background-color: var(--color-primary);
+  transition: width 0.2s ease-in-out;
 }
 
 /* Responsive Design */
