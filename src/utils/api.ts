@@ -186,3 +186,111 @@ export const updateLabel = async (id: string, label: { name: string }) => {
 
   return response.json(); // Add this to get the updated label data
 };
+
+/* ---- media manager ---- */
+export const listImages = async () => {
+  try {
+    const response = await fetch(`${API_URL}/media/`, {
+      method: "GET",
+      headers: getAuthHeaders("application/json"),
+    });
+
+    console.log(response);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch images: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log("Images fetched:", data);
+    return data;
+  } catch (error) {
+    console.error("Error fetching images:", error);
+    throw error;
+  }
+};
+
+export const uploadImage = async (file: File): Promise<any> => {
+  const formData = new FormData();
+  formData.append("image", file);
+
+  const res = await fetch(`${API_URL}/media/upload/`, {
+    method: "POST",
+    headers: {
+      ...getAuthHeaders(), // NO incluir 'Content-Type' aquí (el navegador lo establecerá automáticamente)
+    },
+    body: formData,
+  });
+
+  if (!res.ok) {
+    const error = await res.json().catch(() => ({}));
+    throw new Error(error.error || "Error uploading image");
+  }
+
+  return res.json();
+};
+
+export const deleteImage = async (fileName: string): Promise<void> => {
+  try {
+    const response = await fetch(`${API_URL}/media/${fileName}`, {
+      method: "DELETE",
+      headers: getAuthHeaders("application/json"),
+    });
+
+    console.log("Delete response status:", response.status);
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('❌ Error deleting image:', errorText);
+      
+      let errorData;
+      try {
+        errorData = JSON.parse(errorText);
+      } catch {
+        errorData = { error: errorText };
+      }
+      
+      throw new Error(errorData.error || `Failed to delete image: ${response.status}`);
+    }
+
+    console.log('✅ Image deleted successfully:', fileName);
+    
+  } catch (error) {
+    console.error('💥 Delete image failed:', error);
+    throw error;
+  }
+};
+
+export const deleteMultipleImages = async (fileNames: string[]): Promise<void> => {
+  try {
+    const response = await fetch(`${API_URL}/media/batch/delete`, {
+      method: "DELETE",
+      headers: {
+        ...getAuthHeaders("application/json"),
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ fileNames }),
+    });
+
+    console.log("Batch delete response status:", response.status);
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('❌ Error deleting multiple images:', errorText);
+      
+      let errorData;
+      try {
+        errorData = JSON.parse(errorText);
+      } catch {
+        errorData = { error: errorText };
+      }
+      
+      throw new Error(errorData.error || `Failed to delete images: ${response.status}`);
+    }
+
+    console.log('✅ Images deleted successfully:', fileNames);
+    
+  } catch (error) {
+    console.error('💥 Batch delete failed:', error);
+    throw error;
+  }
+};
