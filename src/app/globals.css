@@ -76,10 +76,12 @@ button {
   background-color: var(--color-primary);
   color: var(--color-font-primary);
 }
+
 button:hover {
   background-color: var(--color-primary-darker);
   border-color: var(--color-primary-darker);
 }
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
@@ -454,7 +456,8 @@ ul {
 .ProseMirror code .hljs-keyword,
 .ProseMirror code .hljs-selector-tag,
 .ProseMirror code .hljs-built_in {
-  color: #d2008f; /* Color para palabras clave */
+  color: #d2008f;
+  /* Color para palabras clave */
   font-weight: bold;
 }
 
@@ -467,14 +470,16 @@ ul {
 .ProseMirror code .hljs-template-variable,
 .ProseMirror code .hljs-type,
 .ProseMirror code .hljs-addition {
-  color: #03658c; /* Color para strings */
+  color: #03658c;
+  /* Color para strings */
 }
 
 .ProseMirror code .hljs-comment,
 .ProseMirror code .hljs-quote,
 .ProseMirror code .hljs-meta,
 .ProseMirror code .hljs-deletion {
-  color: #6a9955; /* Color para comentarios */
+  color: #6a9955;
+  /* Color para comentarios */
   font-style: italic;
 }
 
@@ -482,32 +487,38 @@ ul {
 .ProseMirror code .hljs-regexp,
 .ProseMirror code .hljs-link,
 .ProseMirror code .hljs-symbol {
-  color: #b5cea8; /* Color para números */
+  color: #b5cea8;
+  /* Color para números */
 }
 
 .ProseMirror code .hljs-variable,
 .ProseMirror code .hljs-template-variable {
-  color: #9cdcfe; /* Color para variables */
+  color: #9cdcfe;
+  /* Color para variables */
 }
 
 .ProseMirror code .hljs-function,
 .ProseMirror code .hljs-title.class_ {
-  color: #c1c14c; /* Color para funciones y clases */
+  color: #c1c14c;
+  /* Color para funciones y clases */
 }
 
 .ProseMirror code .hljs-params {
-  color: #9cdcfe; /* Color para parámetros */
+  color: #9cdcfe;
+  /* Color para parámetros */
 }
 
 .ProseMirror code .hljs-doctag {
-  color: #608b4e; /* Color para documentación */
+  color: #608b4e;
+  /* Color para documentación */
   font-weight: bold;
 }
 
 /* Estilos para el fondo de líneas seleccionadas */
 .ProseMirror code .hljs-selection,
 .ProseMirror code .hljs-selection ::selection {
-  background-color: #264f78; /* Color de selección */
+  background-color: #264f78;
+  /* Color de selección */
 }
 
 /* Estilo para los títulos dentro del código (si aplica) */
@@ -632,8 +643,8 @@ ul {
   outline: solid 1px #d2008f;
 }
 
-.login-container input[type="email"] + label,
-.login-container input[type="password"] + label {
+.login-container input[type="email"]+label,
+.login-container input[type="password"]+label {
   top: 0.4em;
 }
 
@@ -642,10 +653,10 @@ ul {
   outline: solid 2px #d2008f;
 }
 
-.login-container input[type="email"]:focus + label,
-.login-container input[type="password"]:focus + label,
-.login-container input[type="email"]:not(:focus):valid ~ label,
-.login-container input[type="password"]:not(:focus):valid ~ label {
+.login-container input[type="email"]:focus+label,
+.login-container input[type="password"]:focus+label,
+.login-container input[type="email"]:not(:focus):valid~label,
+.login-container input[type="password"]:not(:focus):valid~label {
   top: -1.4em;
 }
 
@@ -753,7 +764,7 @@ ul {
   display: none;
 }
 
-.checkbox-container input[type="checkbox"] + label {
+.checkbox-container input[type="checkbox"]+label {
   color: var(--color-font-secondary);
   display: inline-block;
   padding: 4px 10px;
@@ -763,7 +774,7 @@ ul {
   border-radius: 4px;
 }
 
-.checkbox-container input[type="checkbox"]:checked + label {
+.checkbox-container input[type="checkbox"]:checked+label {
   background-color: var(--cta);
   color: var(--color-font-primary);
 }
@@ -798,6 +809,109 @@ ul {
 }
 
 /* Grid Layout */
+
+/* ========================================================================= */
+/* --- MEDIA PICKER MODAL & TIPTAP IMAGE STYLING --- */
+/* ========================================================================= */
+
+.ProseMirror img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1.5rem auto;
+  border-radius: 6px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--color-font-secondary);
+}
+
+.media-picker-dialog {
+  width: 90%;
+  padding: 0;
+  margin: auto;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background: var(--color-background);
+  color: var(--color-font-primary);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.media-picker-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(3px);
+}
+
+.media-picker-header {
+  padding: 16px 24px;
+  border-bottom: 2px solid var(--color-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--color-background-lighter);
+}
+
+.media-picker-header h2 {
+  margin: 0;
+  font-size: 1.4rem;
+  color: var(--color-primary-darker);
+}
+
+.media-picker-close {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: var(--color-font-secondary);
+  transition: color 0.2s;
+  padding: 0;
+}
+
+.media-picker-close:hover {
+  color: var(--btn-danger);
+}
+
+.media-picker-body {
+  padding: 24px;
+  max-height: 65vh;
+  overflow-y: auto;
+}
+
+.media-picker-empty {
+  text-align: center;
+  padding: 40px;
+  color: var(--color-font-secondary);
+  opacity: 0.8;
+}
+
+.media-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.media-picker-item {
+  border: 2px solid transparent;
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.media-picker-item:hover {
+  transform: translateY(-3px);
+  border-color: var(--color-primary);
+  box-shadow: 0 6px 12px rgba(4, 173, 191, 0.2);
+}
+
+.media-picker-item img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  display: block;
+}
+
 .manage-labels-grid {
   display: grid;
   grid-template-columns: 2fr 1fr;
@@ -1040,6 +1154,7 @@ ul {
   border-radius: 4px;
   overflow: hidden;
 }
+
 .progress-bar {
   height: 100%;
   background-color: var(--color-primary);
