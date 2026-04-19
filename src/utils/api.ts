@@ -294,3 +294,122 @@ export const deleteMultipleImages = async (fileNames: string[]): Promise<void> =
     throw error;
   }
 };
+
+/* ---- Project Categories ---- */
+export const createProjectCategory = async (category: { name: string }) => {
+  try {
+    const response = await fetch(`${API_URL}/project-categories/`, {
+      method: "POST",
+      headers: {
+        ...getAuthHeaders("application/json"),
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(category),
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || "Failed to create category");
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const fetchProjectCategories = async () => {
+  const response = await fetch(`${API_URL}/project-categories/`, {
+    method: "GET",
+    headers: getAuthHeaders("application/json"),
+  });
+  if (!response.ok) throw new Error("Failed to fetch project categories");
+  return response.json();
+};
+
+export const updateProjectCategory = async (id: string, category: { name: string }) => {
+  const response = await fetch(`${API_URL}/project-categories/${id}`, {
+    method: "PATCH",
+    headers: {
+      ...getAuthHeaders(),
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(category),
+  });
+  if (!response.ok) throw new Error("Failed to update category");
+  return response.json();
+};
+
+export const deleteProjectCategory = async (id: string) => {
+  const response = await fetch(`${API_URL}/project-categories/${id}`, {
+    method: "DELETE",
+    headers: getAuthHeaders("application/json"),
+  });
+  if (!response.ok) throw new Error("Failed to delete category");
+  return response;
+};
+
+/* ---- Projects ---- */
+export const fetchProjects = async () => {
+  const response = await fetch(`${API_URL}/projects/backend/`, {
+    method: "GET",
+    headers: getAuthHeaders("application/json"),
+  });
+  return response.json();
+};
+
+export const fetchProjectById = async (id: number) => {
+  const response = await fetch(`${API_URL}/projects/${id}`);
+  if (!response.ok) throw new Error("Failed to fetch project");
+  return response.json();
+};
+
+export const createProject = async (projectData: {
+  title: string;
+  content: string;
+  categoryId: string | null;
+  isPublished: boolean;
+  cover?: File | null;
+}) => {
+  const formData = new FormData();
+  formData.append("title", projectData.title);
+  formData.append("content", projectData.content);
+  formData.append("isPublished", JSON.stringify(projectData.isPublished));
+  if (projectData.categoryId) formData.append("categoryId", projectData.categoryId);
+  if (projectData.cover) formData.append("cover", projectData.cover);
+
+  const response = await fetch(`${API_URL}/projects/`, {
+    method: "POST",
+    headers: getAuthHeaders(),
+    body: formData,
+  });
+  if (!response.ok) throw new Error("Failed to create project");
+  return await response.json();
+};
+
+export const editProject = async (id: string, projectData: {
+  title: string;
+  content: string;
+  categoryId: string | null;
+  isPublished: boolean;
+  cover?: File | null;
+}) => {
+  const formData = new FormData();
+  formData.append("title", projectData.title);
+  formData.append("content", projectData.content);
+  formData.append("isPublished", JSON.stringify(projectData.isPublished));
+  if (projectData.categoryId !== null) formData.append("categoryId", projectData.categoryId);
+  if (projectData.cover) formData.append("cover", projectData.cover);
+
+  const response = await fetch(`${API_URL}/projects/${id}`, {
+    method: "PATCH",
+    headers: getAuthHeaders(),
+    body: formData,
+  });
+  if (!response.ok) throw new Error("Failed to update project");
+  return await response.json();
+};
+
+export const deleteProject = async (id: number) => {
+  const response = await fetch(`${API_URL}/projects/${id}`, {
+    method: "DELETE",
+    headers: getAuthHeaders(),
+  });
+  if (!response.ok) throw new Error("Failed to delete project");
+};

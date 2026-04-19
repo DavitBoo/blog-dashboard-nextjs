@@ -68,6 +68,28 @@ const DashboardSidebar = () => {
       exact: true,
     },
     {
+      label: "Proyectos",
+      icon: "🗂️",
+      children: [
+        {
+          href: "/dashboard/projects",
+          label: "Manage Projects",
+          exact: false,
+        },
+        {
+          href: "/dashboard/projects/new",
+          label: "Create New Project",
+          exact: true,
+        },
+      ],
+    },
+    {
+      href: "/dashboard/projectCategories",
+      label: "Project Categories",
+      icon: "📂",
+      exact: true,
+    },
+    {
       href: "/dashboard/media",
       label: "Media Manager",
       icon: "📷",
