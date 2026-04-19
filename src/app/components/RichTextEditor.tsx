@@ -13,6 +13,8 @@ import { TableHeader } from "@tiptap/extension-table-header";
 import { TableRow } from "@tiptap/extension-table-row";
 import Image from '@tiptap/extension-image';
 import CarouselExtension from './CarouselExtension';
+import MediaPickerModal from './MediaPickerModal';
+import { useState } from "react";
 
 const lowlight = createLowlight(common);
 
@@ -20,10 +22,16 @@ import React from "react";
 
 const MenuBar = () => {
   const { editor } = useCurrentEditor();
+  const [isMediaPickerOpen, setIsMediaPickerOpen] = useState(false);
 
   if (!editor) {
     return null;
   }
+
+  const handleImageSelect = (url: string) => {
+    editor.chain().focus().setImage({ src: url }).run();
+    setIsMediaPickerOpen(false);
+  };
 
    const addCarousel = () => {
     const urls = prompt('Enter image URLs separated by commas:');
@@ -134,9 +142,21 @@ const MenuBar = () => {
       <button onClick={() => editor.chain().focus().deleteTable().run()} disabled={!editor.can().deleteTable()}>
         Delete Table
       </button>
-      <button onClick={addCarousel}>
-        Add Carousel
-      </button>
+
+      <div style={{ display: 'inline-flex', gap: '5px', marginLeft: '10px', borderLeft: '1px solid #ccc', paddingLeft: '10px' }}>
+        <button className="bg-primary text-white" onClick={() => setIsMediaPickerOpen(true)} title="Insertar Imagen de Mediateca">
+          Add Image
+        </button>
+        <button className="bg-secondary text-white" onClick={addCarousel} title="Insertar Carrusel de Imágenes">
+          Add Carousel
+        </button>
+      </div>
+
+      <MediaPickerModal 
+        isOpen={isMediaPickerOpen} 
+        onClose={() => setIsMediaPickerOpen(false)} 
+        onSelectImage={handleImageSelect} 
+      />
     </div>
   );
 };
