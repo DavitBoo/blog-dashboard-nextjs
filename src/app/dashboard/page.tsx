@@ -1,36 +1,58 @@
 "use client";
-import { fetchPosts, fetchLabels } from "@/utils/api";
+import { fetchPosts, fetchLabels, fetchProjects, fetchAllComments } from "@/utils/api";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-const DashboardHome = () => {
+interface Stats {
+  totalPosts: number;
+  publishedPosts: number;
+  draftPosts: number;
+  totalViews: number;
+  totalLabels: number;
+  totalProjects: number;
+  totalComments: number;
+  hiddenComments: number;
+}
 
-  const [postNumber, setPostNumber] = useState(0);
-  const [labelNumber, setLabelNumber] = useState(0)
+const DashboardHome = () => {
+  const [stats, setStats] = useState<Stats>({
+    totalPosts: 0,
+    publishedPosts: 0,
+    draftPosts: 0,
+    totalViews: 0,
+    totalLabels: 0,
+    totalProjects: 0,
+    totalComments: 0,
+    hiddenComments: 0,
+  });
 
   useEffect(() => {
-    const getPosts = async () => {
-      try {
-        const data = await fetchPosts();
-        console.log(data);
-        setPostNumber(data.length);
-      } catch (error) {
-        console.error("Error fetching posts:", error);
+    const load = async () => {
+      const [posts, labels, projects, comments] = await Promise.allSettled([
+        fetchPosts(),
+        fetchLabels(),
+        fetchProjects(),
+        fetchAllComments(),
+      ]);
 
-      }
+      const postsData = posts.status === "fulfilled" ? posts.value ?? [] : [];
+      const labelsData = labels.status === "fulfilled" ? labels.value ?? [] : [];
+      const projectsData = projects.status === "fulfilled" ? projects.value ?? [] : [];
+      const commentsData = comments.status === "fulfilled" ? comments.value ?? [] : [];
+
+      setStats({
+        totalPosts: postsData.length,
+        publishedPosts: postsData.filter((p: any) => p.published).length,
+        draftPosts: postsData.filter((p: any) => !p.published).length,
+        totalViews: postsData.reduce((sum: number, p: any) => sum + (p.views ?? 0), 0),
+        totalLabels: labelsData.length,
+        totalProjects: projectsData.length,
+        totalComments: commentsData.length,
+        hiddenComments: commentsData.filter((c: any) => !c.approved).length,
+      });
     };
 
-    const getLabels =  async () => {
-      try {
-        const data = await fetchLabels();
-        setLabelNumber(data.length)
-      } catch (error) {
-        console.error("Error fetching labels:", error);
-      }
-    }
-
-    getPosts();
-    getLabels();
+    load();
   }, []);
 
   return (
@@ -40,103 +62,111 @@ const DashboardHome = () => {
         <p className="page-subtitle">Welcome to your content management dashboard</p>
       </div>
 
-      <div className="dashboard-cards">
+      {/* Stats row */}
+      <div className="dashboard-cards" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))" }}>
         <div className="dashboard-card">
-          <div className="card-header">
-            <span className="card-icon">📝</span>
-            <h3 className="card-title">Posts</h3>
-          </div>
+          <div className="card-header"><span className="card-icon">📝</span><h3 className="card-title">Posts</h3></div>
           <div className="card-content">
-            <p>Manage your blog posts, create new content, and edit existing articles.</p>
             <div className="card-stats">
               <div>
-                <div className="stat-number">{postNumber}</div>
-                <div className="stat-label">Total Posts</div>
+                <div className="stat-number">{stats.totalPosts}</div>
+                <div className="stat-label">Total</div>
               </div>
-              <Link href="/dashboard/posts" className="btn btn-primary">
-                Manage Posts
-              </Link>
+              <div>
+                <div className="stat-number" style={{ color: "var(--color-success, #22c55e)" }}>{stats.publishedPosts}</div>
+                <div className="stat-label">Publicados</div>
+              </div>
+              <div>
+                <div className="stat-number" style={{ color: "var(--color-warning, #f59e0b)" }}>{stats.draftPosts}</div>
+                <div className="stat-label">Borradores</div>
+              </div>
             </div>
+            <Link href="/dashboard/posts" className="btn btn-primary" style={{ marginTop: "0.75rem" }}>
+              Gestionar Posts
+            </Link>
           </div>
         </div>
 
         <div className="dashboard-card">
-          <div className="card-header">
-            <span className="card-icon">➕</span>
-            <h3 className="card-title">Create Content</h3>
-          </div>
+          <div className="card-header"><span className="card-icon">👁️</span><h3 className="card-title">Visitas</h3></div>
           <div className="card-content">
-            <p>Start writing a new blog post or article for your website.</p>
             <div className="card-stats">
               <div>
-                
+                <div className="stat-number">{stats.totalViews.toLocaleString()}</div>
+                <div className="stat-label">Vistas totales</div>
               </div>
-              <Link href="/dashboard/posts/new" className="btn btn-primary">
-                Create New Post
-              </Link>
             </div>
+            <Link href="/dashboard/myAnalytics" className="btn btn-primary" style={{ marginTop: "0.75rem" }}>
+              Ver Analytics
+            </Link>
           </div>
         </div>
 
-        {/* <div className="dashboard-card">
-          <div className="card-header">
-            <span className="card-icon">💬</span>
-            <h3 className="card-title">Comments</h3>
-          </div>
+        <div className="dashboard-card">
+          <div className="card-header"><span className="card-icon">💬</span><h3 className="card-title">Comentarios</h3></div>
           <div className="card-content">
-            <p>Review and moderate comments from your readers and visitors.</p>
             <div className="card-stats">
               <div>
-                <div className="stat-number">47</div>
-                <div className="stat-label">Pending Review</div>
+                <div className="stat-number">{stats.totalComments}</div>
+                <div className="stat-label">Total</div>
               </div>
-              <Link href="/dashboard/comments" className="btn btn-primary">
-                Manage Comments
-              </Link>
+              {stats.hiddenComments > 0 && (
+                <div>
+                  <div className="stat-number" style={{ color: "var(--color-danger, #ef4444)" }}>{stats.hiddenComments}</div>
+                  <div className="stat-label">Ocultos</div>
+                </div>
+              )}
             </div>
+            <Link href="/dashboard/comments" className="btn btn-primary" style={{ marginTop: "0.75rem" }}>
+              Moderar
+            </Link>
           </div>
-        </div> */}
+        </div>
 
         <div className="dashboard-card">
-          <div className="card-header">
-            <span className="card-icon">🏷️</span>
-            <h3 className="card-title">Labels</h3>
-          </div>
+          <div className="card-header"><span className="card-icon">🗂️</span><h3 className="card-title">Proyectos</h3></div>
           <div className="card-content">
-            <p>Organize your content with tags and categories for better navigation.</p>
             <div className="card-stats">
               <div>
-                <div className="stat-number">{labelNumber}</div>
-                <div className="stat-label">Active Labels</div>
+                <div className="stat-number">{stats.totalProjects}</div>
+                <div className="stat-label">Total</div>
               </div>
-              <Link href="/dashboard/manageLabels" className="btn btn-primary">
-                Manage Labels
-              </Link>
             </div>
+            <Link href="/dashboard/projects" className="btn btn-primary" style={{ marginTop: "0.75rem" }}>
+              Gestionar
+            </Link>
+          </div>
+        </div>
+
+        <div className="dashboard-card">
+          <div className="card-header"><span className="card-icon">🏷️</span><h3 className="card-title">Labels</h3></div>
+          <div className="card-content">
+            <div className="card-stats">
+              <div>
+                <div className="stat-number">{stats.totalLabels}</div>
+                <div className="stat-label">Activas</div>
+              </div>
+            </div>
+            <Link href="/dashboard/manageLabels" className="btn btn-primary" style={{ marginTop: "0.75rem" }}>
+              Gestionar
+            </Link>
           </div>
         </div>
       </div>
 
+      {/* Quick actions */}
       <div className="dashboard-card">
         <div className="card-header">
-          <span className="card-icon">📊</span>
-          <h3 className="card-title">Quick Actions</h3>
+          <span className="card-icon">⚡</span>
+          <h3 className="card-title">Acciones rápidas</h3>
         </div>
         <div className="card-content">
-          <p>Common tasks and shortcuts to help you manage your content efficiently.</p>
           <div style={{ display: "flex", gap: "1rem", marginTop: "1rem", flexWrap: "wrap" }}>
-            <Link href="/dashboard/posts/new" className="btn btn-secondary">
-              ➕ New Post
-            </Link>
-            <Link href="/dashboard/posts" className="btn btn-secondary">
-              📝 View All Posts
-            </Link>
-            <Link href="/dashboard/comments" className="btn btn-secondary">
-              💬 Review Comments
-            </Link>
-            <Link href="/dashboard/manageLabels" className="btn btn-secondary">
-              🏷️ Organize Labels
-            </Link>
+            <Link href="/dashboard/posts/new" className="btn btn-secondary">➕ Nuevo Post</Link>
+            <Link href="/dashboard/posts" className="btn btn-secondary">📝 Ver Posts</Link>
+            <Link href="/dashboard/comments" className="btn btn-secondary">💬 Moderar Comentarios</Link>
+            <Link href="/dashboard/myAnalytics" className="btn btn-secondary">📊 Analytics</Link>
+            <Link href="/dashboard/manageLabels" className="btn btn-secondary">🏷️ Labels</Link>
           </div>
         </div>
       </div>

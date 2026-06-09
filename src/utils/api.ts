@@ -102,7 +102,16 @@ export const editPost = async (postData: {}, id: string) => {
 };
 
 export const fetchCommentsByPostId = async (postId: string) => {
-  const response = await fetch(`${API_URL}/posts/${postId}/comments`);
+  const response = await fetch(`${API_URL}/comments/${postId}`);
+  return response.json();
+};
+
+export const fetchAllComments = async () => {
+  const response = await fetch(`${API_URL}/comments/`, {
+    method: "GET",
+    headers: getAuthHeaders("application/json"),
+  });
+  if (!response.ok) throw new Error("Failed to fetch comments");
   return response.json();
 };
 
@@ -111,10 +120,16 @@ export const deleteComment = async (id: number) => {
     method: "DELETE",
     headers: getAuthHeaders("application/json"),
   });
+  if (!response.ok) throw new Error("Failed to delete comment");
+};
 
-  if (!response.ok) {
-    throw new Error("Failed to delete comment");
-  }
+export const approveComment = async (id: number) => {
+  const response = await fetch(`${API_URL}/comments/${id}/approve`, {
+    method: "PATCH",
+    headers: getAuthHeaders("application/json"),
+  });
+  if (!response.ok) throw new Error("Failed to update comment");
+  return response.json();
 };
 
 export const createLabel = async (label: { name: string }) => {
