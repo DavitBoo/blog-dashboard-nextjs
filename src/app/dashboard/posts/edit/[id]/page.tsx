@@ -20,6 +20,9 @@ const EditPost = () => {
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [cover, setCover] = useState<File | null>(null);
+  const [coverPreview, setCoverPreview] = useState<string | null>(null);
+  const [currentCoverUrl, setCurrentCoverUrl] = useState<string | null>(null);
   const [metaTitle, setMetaTitle] = useState("");
   const [metaDescription, setMetaDescription] = useState("");
   const [error, setError] = useState("");
@@ -43,6 +46,7 @@ const EditPost = () => {
           setMetaDescription(post.metaDescription)
           setSelectedLabels(post.labels.map((label: any) => label.id.toString()));
           setIsPublished(post.published);
+          setCurrentCoverUrl(post.coverUrl ?? null);
         }
       } catch (error) {
         console.error("Error fetching post data:", error);
@@ -54,6 +58,16 @@ const EditPost = () => {
       fetchData();
     }
   }, [postId]);
+
+  useEffect(() => {
+    if (!cover) {
+      setCoverPreview(null);
+      return;
+    }
+    const objectUrl = URL.createObjectURL(cover);
+    setCoverPreview(objectUrl);
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [cover]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -70,6 +84,7 @@ const EditPost = () => {
         metaDescription,
         labels: selectedLabels,
         isPublished,
+        cover,
       };
 
       if (!postId || typeof postId !== "string") {
@@ -101,6 +116,33 @@ const EditPost = () => {
             labelList={labelList}
             selectedLabels={selectedLabels}
             setSelectedLabels={setSelectedLabels}
+          />
+        </div>
+        <div className="form-field">
+          <h2>Imagen destacada</h2>
+          {coverPreview ? (
+            <img
+              src={coverPreview}
+              alt="Vista previa de la nueva portada"
+              style={{ maxWidth: "200px", display: "block", marginBottom: "0.5rem" }}
+            />
+          ) : (
+            currentCoverUrl && (
+              <img
+                src={currentCoverUrl}
+                alt="Portada actual"
+                style={{ maxWidth: "200px", display: "block", marginBottom: "0.5rem" }}
+              />
+            )
+          )}
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => {
+              if (e.target.files && e.target.files[0]) {
+                setCover(e.target.files[0]);
+              }
+            }}
           />
         </div>
         <div className="add-article-title-container">

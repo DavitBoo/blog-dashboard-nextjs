@@ -86,19 +86,42 @@ export const deletePost = async (id: number) => {
   }
 };
 
-export const editPost = async (postData: {}, id: string) => {
+export const editPost = async (
+  postData: {
+    title: string;
+    content: string;
+    metaTitle: string;
+    metaDescription: string;
+    labels: string[];
+    isPublished: boolean;
+    cover?: File | null;
+  },
+  id: string
+) => {
+  const formData = new FormData();
+  formData.append("title", postData.title);
+  formData.append("content", postData.content);
+  formData.append("metaTitle", postData.metaTitle);
+  formData.append("metaDescription", postData.metaDescription);
+  formData.append("labels", JSON.stringify(postData.labels));
+  formData.append("isPublished", JSON.stringify(postData.isPublished));
+  if (postData.cover) {
+    formData.append("cover", postData.cover);
+  }
+
   const response = await fetch(`${API_URL}/posts/${id}`, {
     method: "PATCH",
     headers: {
-      ...getAuthHeaders("application/json"),
-      "Content-Type": "application/json",
+      ...getAuthHeaders(), // NO incluir 'Content-Type' aquí (el navegador lo establecerá automáticamente)
     },
-    body: JSON.stringify(postData),
+    body: formData,
   });
 
   if (!response.ok) {
     throw new Error("Failed to update post");
   }
+
+  return await response.json();
 };
 
 export const fetchCommentsByPostId = async (postId: string) => {

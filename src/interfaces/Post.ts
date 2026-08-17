@@ -6,6 +6,7 @@ interface IPost {
   id: number;
   title: string;
   content: string;
+  coverUrl?: string | null;
   published: boolean;
   authorId: number;
   author: IUser;
