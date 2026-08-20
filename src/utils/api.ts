@@ -1,6 +1,19 @@
 import { getAuthHeaders } from "./authHeader";
+import { IVidaCategoria, IVidaItemDetalle, IVidaItemListado, IVidaLibro, IVidaTag } from "@/interfaces/Vida";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+// El login expira a la hora (ver JWT_SECRET/expiresIn en userController del backend).
+// Pasado ese tiempo, cualquier petición autenticada devuelve 401 "Unauthorized" sin más
+// detalle — sin esto, cada función lo convertía en un "Failed to X" que no explica nada.
+const assertOk = async (response: Response, fallback: string) => {
+  if (response.ok) return;
+  if (response.status === 401) {
+    throw new Error("Tu sesión ha caducado. Cierra sesión y vuelve a iniciar sesión.");
+  }
+  const body = await response.json().catch(() => null);
+  throw new Error(body?.error || fallback);
+};
 
 export const fetchPosts = async () => {
   const response = await fetch(`${API_URL}/posts/backend/`, {
@@ -450,4 +463,219 @@ export const deleteProject = async (id: number) => {
     headers: getAuthHeaders(),
   });
   if (!response.ok) throw new Error("Failed to delete project");
+};
+
+/* ---- Vida: categorías (islas) ---- */
+export const fetchVidaCategorias = async (): Promise<IVidaCategoria[]> => {
+  const response = await fetch(`${API_URL}/vida/categorias/backend`, {
+    method: "GET",
+    headers: getAuthHeaders("application/json"),
+  });
+  await assertOk(response, "Failed to fetch categorias");
+  return response.json();
+};
+
+export const createVidaCategoria = async (data: Partial<IVidaCategoria>) => {
+  const response = await fetch(`${API_URL}/vida/categorias`, {
+    method: "POST",
+    headers: { ...getAuthHeaders(), "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  await assertOk(response, "Failed to create categoria");
+  return response.json();
+};
+
+export const updateVidaCategoria = async (id: number, data: Partial<IVidaCategoria>) => {
+  const response = await fetch(`${API_URL}/vida/categorias/${id}`, {
+    method: "PATCH",
+    headers: { ...getAuthHeaders(), "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  await assertOk(response, "Failed to update categoria");
+  return response.json();
+};
+
+export const deleteVidaCategoria = async (id: number) => {
+  const response = await fetch(`${API_URL}/vida/categorias/${id}`, {
+    method: "DELETE",
+    headers: getAuthHeaders(),
+  });
+  await assertOk(response, "Failed to delete categoria");
+};
+
+/* ---- Vida: tags ---- */
+export const fetchVidaTags = async (): Promise<IVidaTag[]> => {
+  const response = await fetch(`${API_URL}/vida/tags`, {
+    method: "GET",
+    headers: getAuthHeaders("application/json"),
+  });
+  await assertOk(response, "Failed to fetch tags");
+  return response.json();
+};
+
+export const createVidaTag = async (nombre: string) => {
+  const response = await fetch(`${API_URL}/vida/tags`, {
+    method: "POST",
+    headers: { ...getAuthHeaders(), "Content-Type": "application/json" },
+    body: JSON.stringify({ nombre }),
+  });
+  await assertOk(response, "Failed to create tag");
+  return response.json();
+};
+
+export const updateVidaTag = async (id: number, nombre: string) => {
+  const response = await fetch(`${API_URL}/vida/tags/${id}`, {
+    method: "PATCH",
+    headers: { ...getAuthHeaders(), "Content-Type": "application/json" },
+    body: JSON.stringify({ nombre }),
+  });
+  await assertOk(response, "Failed to update tag");
+  return response.json();
+};
+
+export const deleteVidaTag = async (id: number) => {
+  const response = await fetch(`${API_URL}/vida/tags/${id}`, {
+    method: "DELETE",
+    headers: getAuthHeaders(),
+  });
+  await assertOk(response, "Failed to delete tag");
+};
+
+/* ---- Vida: ítems ---- */
+export const fetchVidaItems = async (): Promise<IVidaItemListado[]> => {
+  const response = await fetch(`${API_URL}/vida/items/backend`, {
+    method: "GET",
+    headers: getAuthHeaders("application/json"),
+  });
+  await assertOk(response, "Failed to fetch items");
+  return response.json();
+};
+
+export const fetchVidaItemById = async (id: number): Promise<IVidaItemDetalle> => {
+  const response = await fetch(`${API_URL}/vida/items/${id}`, {
+    method: "GET",
+    headers: getAuthHeaders("application/json"),
+  });
+  await assertOk(response, "Failed to fetch item");
+  return response.json();
+};
+
+export interface IVidaItemPayload {
+  slug?: string;
+  categoriaId: number;
+  ambito: string | null;
+  titulo: string;
+  subtitulo: string | null;
+  resumen: string;
+  descripcion: string | null;
+  fechaInicio: string;
+  fechaFin: string | null;
+  precisionFecha: string;
+  enCurso: boolean;
+  destacado: boolean;
+  peso: number;
+  ciudad: string | null;
+  pais: string | null;
+  lat: number | null;
+  lng: number | null;
+  meta: Record<string, unknown>;
+  publicado: boolean;
+  tags: number[];
+  enlaces: { tipo: string; url: string; etiqueta: string | null }[];
+  media: { tipo: string; src: string; alt: string | null; principal: boolean }[];
+  relacionados: number[];
+}
+
+export const createVidaItem = async (data: IVidaItemPayload) => {
+  const response = await fetch(`${API_URL}/vida/items`, {
+    method: "POST",
+    headers: { ...getAuthHeaders(), "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  await assertOk(response, "Failed to create item");
+  return response.json();
+};
+
+export const updateVidaItem = async (id: number, data: IVidaItemPayload) => {
+  const response = await fetch(`${API_URL}/vida/items/${id}`, {
+    method: "PATCH",
+    headers: { ...getAuthHeaders(), "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  await assertOk(response, "Failed to update item");
+  return response.json();
+};
+
+export const deleteVidaItem = async (id: number) => {
+  const response = await fetch(`${API_URL}/vida/items/${id}`, {
+    method: "DELETE",
+    headers: getAuthHeaders(),
+  });
+  await assertOk(response, "Failed to delete item");
+};
+
+/* ---- Vida: libros / lecturas ---- */
+export const fetchVidaLibros = async (): Promise<IVidaLibro[]> => {
+  const response = await fetch(`${API_URL}/vida/libros/backend`, {
+    method: "GET",
+    headers: getAuthHeaders("application/json"),
+  });
+  await assertOk(response, "Failed to fetch libros");
+  return response.json();
+};
+
+export const fetchVidaLibroById = async (id: number): Promise<IVidaLibro> => {
+  const response = await fetch(`${API_URL}/vida/libros/${id}`, {
+    method: "GET",
+    headers: getAuthHeaders("application/json"),
+  });
+  await assertOk(response, "Failed to fetch libro");
+  return response.json();
+};
+
+export const createVidaLibro = async (data: Partial<IVidaLibro>) => {
+  const response = await fetch(`${API_URL}/vida/libros`, {
+    method: "POST",
+    headers: { ...getAuthHeaders(), "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  await assertOk(response, "Failed to create libro");
+  return response.json();
+};
+
+export const updateVidaLibro = async (id: number, data: Partial<IVidaLibro>) => {
+  const response = await fetch(`${API_URL}/vida/libros/${id}`, {
+    method: "PATCH",
+    headers: { ...getAuthHeaders(), "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  await assertOk(response, "Failed to update libro");
+  return response.json();
+};
+
+export const deleteVidaLibro = async (id: number) => {
+  const response = await fetch(`${API_URL}/vida/libros/${id}`, {
+    method: "DELETE",
+    headers: getAuthHeaders(),
+  });
+  await assertOk(response, "Failed to delete libro");
+};
+
+export const fetchVidaLecturasResumen = async (): Promise<{ cifra: string }> => {
+  const response = await fetch(`${API_URL}/vida/libros/resumen`, {
+    method: "GET",
+    headers: getAuthHeaders("application/json"),
+  });
+  await assertOk(response, "Failed to fetch resumen");
+  return response.json();
+};
+
+export const updateVidaLecturasResumen = async (cifra: string) => {
+  const response = await fetch(`${API_URL}/vida/libros/resumen`, {
+    method: "PATCH",
+    headers: { ...getAuthHeaders(), "Content-Type": "application/json" },
+    body: JSON.stringify({ cifra }),
+  });
+  await assertOk(response, "Failed to update resumen");
+  return response.json();
 };

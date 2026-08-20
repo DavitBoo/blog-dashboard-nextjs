@@ -95,6 +95,37 @@ const DashboardSidebar = () => {
       icon: "📷",
       exact: true,
     },
+    {
+      label: "Vida",
+      icon: "🏝️",
+      children: [
+        {
+          href: "/dashboard/vida/categorias",
+          label: "Islas (categorías)",
+          exact: true,
+        },
+        {
+          href: "/dashboard/vida/items",
+          label: "Ítems",
+          exact: false,
+        },
+        {
+          href: "/dashboard/vida/items/new",
+          label: "Nuevo ítem",
+          exact: true,
+        },
+        {
+          href: "/dashboard/vida/tags",
+          label: "Tags",
+          exact: true,
+        },
+        {
+          href: "/dashboard/vida/libros",
+          label: "Lecturas",
+          exact: false,
+        },
+      ],
+    },
   ];
 
   const isActive = (href: string, exact: boolean) => {

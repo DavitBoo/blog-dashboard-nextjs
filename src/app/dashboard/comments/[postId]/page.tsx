@@ -1,20 +1,22 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
 import { fetchCommentsByPostId, deleteComment } from '../../../../utils/api';
 import CommentList from '../../../components/CommentList';
 
 
-const CommentManagement = ({ params }: { params: { postId: string } }) => {
+const CommentManagement = () => {
+  const { postId } = useParams() as { postId: string };
   const [comments, setComments] = useState([]);
 
   useEffect(() => {
     const loadComments = async () => {
-      const data = await fetchCommentsByPostId(params.postId);
+      const data = await fetchCommentsByPostId(postId);
       setComments(data);
     };
     loadComments();
-  }, [params.postId]);
+  }, [postId]);
 
   const handleDelete = async (id: number) => {
     await deleteComment(id);
