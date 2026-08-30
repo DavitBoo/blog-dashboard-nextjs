@@ -1,27 +1,28 @@
 # Graph Report - blog-dashboard  (2026-08-30)
 
 ## Corpus Check
-- cluster-only mode — file stats not available
+- 63 files · ~16,605 words
+- Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 329 nodes · 649 edges · 21 communities (19 shown, 2 thin omitted)
+- 330 nodes · 648 edges · 21 communities (19 shown, 2 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `4ad0af73`
+- Built from commit: `f532db6a`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
-- api.ts
+- getAuthHeaders
 - dependencies
 - devDependencies
-- VidaItemForm.tsx
+- api.ts
 - compilerOptions
 - MediaGalery.tsx
 - RichTextEditor.tsx
-- BackButton.tsx
+- Post.ts
 - fetchPosts
 - comments/page.tsx
 - ConfirmArticleDelete.tsx
@@ -40,43 +41,43 @@
 4. `BackButton()` - 14 edges
 5. `fetchLabels()` - 10 edges
 6. `InfoText()` - 9 edges
-7. `fetchProjectCategories()` - 8 edges
-8. `fetchPosts()` - 8 edges
-9. `IVidaLibro` - 7 edges
-10. `ILabel` - 7 edges
+7. `fetchPosts()` - 8 edges
+8. `fetchProjectCategories()` - 8 edges
+9. `scripts` - 7 edges
+10. `VidaItemForm()` - 7 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `Props` --references--> `IVidaLibro`  [EXTRACTED]
-  src/app/components/VidaLibroForm.tsx → src/interfaces/Vida.ts
 - `Props` --references--> `IVidaItemListado`  [EXTRACTED]
   src/app/components/VidaItemList.tsx → src/interfaces/Vida.ts
+- `Props` --references--> `IVidaLibro`  [EXTRACTED]
+  src/app/components/VidaLibroForm.tsx → src/interfaces/Vida.ts
+- `CommentsPage()` --calls--> `fetchAllComments()`  [EXTRACTED]
+  src/app/dashboard/comments/page.tsx → src/utils/api.ts
 - `ImageCardProps` --references--> `Image`  [EXTRACTED]
   src/app/dashboard/media/ImageCard.tsx → src/interfaces/Image.ts
-- `ProjectCategoriesPage()` --calls--> `fetchProjectCategories()`  [EXTRACTED]
-  src/app/dashboard/projectCategories/page.tsx → src/utils/api.ts
-- `DashboardHome()` --calls--> `fetchLabels()`  [EXTRACTED]
-  src/app/dashboard/page.tsx → src/utils/api.ts
+- `AnalyticsPage()` --calls--> `fetchPosts()`  [EXTRACTED]
+  src/app/dashboard/myAnalytics/page.tsx → src/utils/api.ts
 
 ## Import Cycles
 - None detected.
 
 ## Communities (21 total, 2 thin omitted)
 
-### Community 0 - "api.ts"
-Cohesion: 0.15
-Nodes (32): Props, InfoText(), Props, page(), IProjectCategory, ProjectCategoriesPage(), CategoriasPage(), EMPTY_FORM (+24 more)
+### Community 0 - "getAuthHeaders"
+Cohesion: 0.18
+Nodes (19): BackButton(), page(), EditPost(), DisplayLabelsAdd(), NewPost(), IProjectCategory, ProjectCategoriesPage(), ILabel (+11 more)
 
 ### Community 1 - "dependencies"
-Cohesion: 0.06
-Nodes (36): lowlight, multer, next, dependencies, lowlight, multer, next, react (+28 more)
+Cohesion: 0.05
+Nodes (37): lowlight, multer, next, dependencies, lowlight, multer, next, react (+29 more)
 
 ### Community 2 - "devDependencies"
 Cohesion: 0.06
 Nodes (33): eslint, eslint-config-next, eslint-config-prettier, @eslint/eslintrc, eslint-plugin-sonarjs, devDependencies, eslint, eslint-config-next (+25 more)
 
-### Community 3 - "VidaItemForm.tsx"
-Cohesion: 0.12
-Nodes (24): ConfirmVidaDelete(), AMBITOS, EnlaceRow, MediaRow, Props, toDateInput(), VidaItemForm(), Props (+16 more)
+### Community 3 - "api.ts"
+Cohesion: 0.10
+Nodes (45): ConfirmVidaDelete(), Props, InfoText(), Props, AMBITOS, EnlaceRow, MediaRow, Props (+37 more)
 
 ### Community 4 - "compilerOptions"
 Cohesion: 0.07
@@ -90,17 +91,17 @@ Nodes (18): MediaPickerModal(), MediaPickerModalProps, Card(), CardProps, ImageC
 Cohesion: 0.11
 Nodes (19): CarouselComponent(), CarouselExtension, Commands, @tiptap/core, extensions, lowlight, RichTextEditorProps, RichTextEditor (+11 more)
 
-### Community 7 - "BackButton.tsx"
-Cohesion: 0.19
-Nodes (14): BackButton(), EditPost(), DisplayLabelsAdd(), NewPost(), IComment, ILabel, IPost, IUser (+6 more)
+### Community 7 - "Post.ts"
+Cohesion: 0.39
+Nodes (6): IComment, IPost, IUser, Role, ADMIN, USER
 
 ### Community 8 - "fetchPosts"
 Cohesion: 0.15
 Nodes (14): ConfirmProjectDelete(), Props, Project, ProjectList(), ProjectListProps, AnalyticsPage(), PostStat, DashboardHome() (+6 more)
 
 ### Community 9 - "comments/page.tsx"
-Cohesion: 0.24
-Nodes (9): Comment, CommentList(), CommentListProps, Comment, CommentsPage(), CommentManagement(), approveComment(), deleteComment() (+1 more)
+Cohesion: 0.23
+Nodes (8): Comment, CommentListProps, Comment, CommentsPage(), CommentManagement(), approveComment(), deleteComment(), fetchCommentsByPostId()
 
 ### Community 10 - "ConfirmArticleDelete.tsx"
 Cohesion: 0.25
@@ -127,7 +128,7 @@ Cohesion: 0.50
 Nodes (3): compat, __dirname, __filename
 
 ## Knowledge Gaps
-- **109 isolated node(s):** `Props`, `Props`, `IProjectCategory`, `FormState`, `Props` (+104 more)
+- **111 isolated node(s):** `singleQuote`, `semi`, `trailingComma`, `printWidth`, `tabWidth` (+106 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **2 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -135,16 +136,16 @@ Nodes (3): compat, __dirname, __filename
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `dependencies` connect `dependencies` to `devDependencies`?**
-  _High betweenness centrality (0.033) - this node is a cross-community bridge._
-- **Why does `ILabel` connect `BackButton.tsx` to `api.ts`?**
+  _High betweenness centrality (0.034) - this node is a cross-community bridge._
+- **Why does `ILabel` connect `getAuthHeaders` to `Post.ts`?**
   _High betweenness centrality (0.022) - this node is a cross-community bridge._
-- **What connects `Props`, `Props`, `IProjectCategory` to the rest of the system?**
-  _109 weakly-connected nodes found - possible documentation gaps or missing edges._
-- **Should `api.ts` be split into smaller, more focused modules?**
-  _Cohesion score 0.1475609756097561 - nodes in this community are weakly interconnected._
+- **What connects `singleQuote`, `semi`, `trailingComma` to the rest of the system?**
+  _111 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `dependencies` be split into smaller, more focused modules?**
-  _Cohesion score 0.05714285714285714 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.05405405405405406 - nodes in this community are weakly interconnected._
 - **Should `devDependencies` be split into smaller, more focused modules?**
   _Cohesion score 0.058823529411764705 - nodes in this community are weakly interconnected._
-- **Should `VidaItemForm.tsx` be split into smaller, more focused modules?**
-  _Cohesion score 0.12413793103448276 - nodes in this community are weakly interconnected._
+- **Should `api.ts` be split into smaller, more focused modules?**
+  _Cohesion score 0.09774436090225563 - nodes in this community are weakly interconnected._
+- **Should `compilerOptions` be split into smaller, more focused modules?**
+  _Cohesion score 0.07407407407407407 - nodes in this community are weakly interconnected._
