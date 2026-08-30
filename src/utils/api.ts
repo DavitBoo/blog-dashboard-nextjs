@@ -1,5 +1,11 @@
-import { getAuthHeaders } from "./authHeader";
-import { IVidaCategoria, IVidaItemDetalle, IVidaItemListado, IVidaLibro, IVidaTag } from "@/interfaces/Vida";
+import { getAuthHeaders } from './authHeader';
+import {
+  IVidaCategoria,
+  IVidaItemDetalle,
+  IVidaItemListado,
+  IVidaLibro,
+  IVidaTag,
+} from '@/interfaces/Vida';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -9,7 +15,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 const assertOk = async (response: Response, fallback: string) => {
   if (response.ok) return;
   if (response.status === 401) {
-    throw new Error("Tu sesión ha caducado. Cierra sesión y vuelve a iniciar sesión.");
+    throw new Error('Tu sesión ha caducado. Cierra sesión y vuelve a iniciar sesión.');
   }
   const body = await response.json().catch(() => null);
   throw new Error(body?.error || fallback);
@@ -17,8 +23,8 @@ const assertOk = async (response: Response, fallback: string) => {
 
 export const fetchPosts = async () => {
   const response = await fetch(`${API_URL}/posts/backend/`, {
-    method: "GET",
-    headers: getAuthHeaders("application/json"),
+    method: 'GET',
+    headers: getAuthHeaders('application/json'),
   });
   console.log(response);
   return response.json();
@@ -28,7 +34,7 @@ export const fetchPostById = async (id: number) => {
   console.log(id);
   const response = await fetch(`${API_URL}/posts/${id}`);
   if (!response.ok) {
-    throw new Error("Failed to fetch post");
+    throw new Error('Failed to fetch post');
   }
   return response.json();
 };
@@ -37,13 +43,13 @@ export const fetchPostById = async (id: number) => {
 export const togglePublishPost = async (id: number, publish: boolean) => {
   console.log(getAuthHeaders());
   const response = await fetch(`${API_URL}/posts/${id}`, {
-    method: "PATCH",
-    headers: getAuthHeaders("application/json"),
+    method: 'PATCH',
+    headers: getAuthHeaders('application/json'),
     body: JSON.stringify({ published: publish }),
   });
 
   if (!response.ok) {
-    throw new Error("Failed to update post");
+    throw new Error('Failed to update post');
   }
 };
 
@@ -57,14 +63,14 @@ export const createPost = async (postData: {
   cover?: File | null;
 }) => {
   const formData = new FormData();
-  formData.append("title", postData.title);
-  formData.append("content", postData.content);
-  formData.append("metaTitle", postData.metaTitle);
-  formData.append("metaDescription", postData.metaDescription);
-  formData.append("labels", JSON.stringify(postData.labels));
-  formData.append("isPublished", JSON.stringify(postData.isPublished));
+  formData.append('title', postData.title);
+  formData.append('content', postData.content);
+  formData.append('metaTitle', postData.metaTitle);
+  formData.append('metaDescription', postData.metaDescription);
+  formData.append('labels', JSON.stringify(postData.labels));
+  formData.append('isPublished', JSON.stringify(postData.isPublished));
   if (postData.cover) {
-    formData.append("cover", postData.cover);
+    formData.append('cover', postData.cover);
   }
 
   // Debug: muestra lo que se está enviando
@@ -74,7 +80,7 @@ export const createPost = async (postData: {
   // hasta aquí formData correcto
 
   const response = await fetch(`${API_URL}/posts/`, {
-    method: "POST",
+    method: 'POST',
     headers: {
       ...getAuthHeaders(), // NO incluir 'Content-Type' aquí (el navegador lo establecerá automáticamente)
     },
@@ -82,7 +88,7 @@ export const createPost = async (postData: {
   });
 
   if (!response.ok) {
-    throw new Error("Failed to create post");
+    throw new Error('Failed to create post');
   }
 
   return await response.json();
@@ -90,12 +96,12 @@ export const createPost = async (postData: {
 
 export const deletePost = async (id: number) => {
   const response = await fetch(`${API_URL}/posts/${id}`, {
-    method: "DELETE",
+    method: 'DELETE',
     headers: getAuthHeaders(),
   });
 
   if (!response.ok) {
-    throw new Error("Failed to delete post");
+    throw new Error('Failed to delete post');
   }
 };
 
@@ -109,21 +115,21 @@ export const editPost = async (
     isPublished: boolean;
     cover?: File | null;
   },
-  id: string
+  id: string,
 ) => {
   const formData = new FormData();
-  formData.append("title", postData.title);
-  formData.append("content", postData.content);
-  formData.append("metaTitle", postData.metaTitle);
-  formData.append("metaDescription", postData.metaDescription);
-  formData.append("labels", JSON.stringify(postData.labels));
-  formData.append("isPublished", JSON.stringify(postData.isPublished));
+  formData.append('title', postData.title);
+  formData.append('content', postData.content);
+  formData.append('metaTitle', postData.metaTitle);
+  formData.append('metaDescription', postData.metaDescription);
+  formData.append('labels', JSON.stringify(postData.labels));
+  formData.append('isPublished', JSON.stringify(postData.isPublished));
   if (postData.cover) {
-    formData.append("cover", postData.cover);
+    formData.append('cover', postData.cover);
   }
 
   const response = await fetch(`${API_URL}/posts/${id}`, {
-    method: "PATCH",
+    method: 'PATCH',
     headers: {
       ...getAuthHeaders(), // NO incluir 'Content-Type' aquí (el navegador lo establecerá automáticamente)
     },
@@ -131,7 +137,7 @@ export const editPost = async (
   });
 
   if (!response.ok) {
-    throw new Error("Failed to update post");
+    throw new Error('Failed to update post');
   }
 
   return await response.json();
@@ -144,65 +150,65 @@ export const fetchCommentsByPostId = async (postId: string) => {
 
 export const fetchAllComments = async () => {
   const response = await fetch(`${API_URL}/comments/`, {
-    method: "GET",
-    headers: getAuthHeaders("application/json"),
+    method: 'GET',
+    headers: getAuthHeaders('application/json'),
   });
-  if (!response.ok) throw new Error("Failed to fetch comments");
+  if (!response.ok) throw new Error('Failed to fetch comments');
   return response.json();
 };
 
 export const deleteComment = async (id: number) => {
   const response = await fetch(`${API_URL}/comments/${id}`, {
-    method: "DELETE",
-    headers: getAuthHeaders("application/json"),
+    method: 'DELETE',
+    headers: getAuthHeaders('application/json'),
   });
-  if (!response.ok) throw new Error("Failed to delete comment");
+  if (!response.ok) throw new Error('Failed to delete comment');
 };
 
 export const approveComment = async (id: number) => {
   const response = await fetch(`${API_URL}/comments/${id}/approve`, {
-    method: "PATCH",
-    headers: getAuthHeaders("application/json"),
+    method: 'PATCH',
+    headers: getAuthHeaders('application/json'),
   });
-  if (!response.ok) throw new Error("Failed to update comment");
+  if (!response.ok) throw new Error('Failed to update comment');
   return response.json();
 };
 
 export const createLabel = async (label: { name: string }) => {
   try {
     const response = await fetch(`${API_URL}/labels/`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        ...getAuthHeaders("application/json"),
-        "Content-Type": "application/json",
+        ...getAuthHeaders('application/json'),
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(label),
     });
 
-    console.log("Response status:", response.status);
-    console.log("Response headers:", response.headers);
+    console.log('Response status:', response.status);
+    console.log('Response headers:', response.headers);
     const data = await response.json();
-    console.log("Response body:", data);
+    console.log('Response body:', data);
 
     if (!response.ok) {
-      throw new Error(`Error ${response.status}: ${data.message || "Failed to create label"}`);
+      throw new Error(`Error ${response.status}: ${data.message || 'Failed to create label'}`);
     }
 
     return data;
   } catch (error) {
-    console.error("createLabel error:", error);
+    console.error('createLabel error:', error);
     throw error;
   }
 };
 
 export const fetchLabels = async () => {
   const response = await fetch(`${API_URL}/labels/`, {
-    method: "GET",
-    headers: getAuthHeaders("application/json"),
+    method: 'GET',
+    headers: getAuthHeaders('application/json'),
   });
 
   if (!response.ok) {
-    throw new Error("Failed to fetch labels");
+    throw new Error('Failed to fetch labels');
   }
 
   return response.json();
@@ -210,12 +216,12 @@ export const fetchLabels = async () => {
 
 export const deleteLabel = async (id: string) => {
   const response = await fetch(`${API_URL}/labels/${id}`, {
-    method: "DELETE",
-    headers: getAuthHeaders("application/json"),
+    method: 'DELETE',
+    headers: getAuthHeaders('application/json'),
   });
 
   if (!response.ok) {
-    throw new Error("Failed to delete label");
+    throw new Error('Failed to delete label');
   }
 
   return response;
@@ -223,16 +229,16 @@ export const deleteLabel = async (id: string) => {
 
 export const updateLabel = async (id: string, label: { name: string }) => {
   const response = await fetch(`${API_URL}/labels/${id}`, {
-    method: "PATCH",
+    method: 'PATCH',
     headers: {
       ...getAuthHeaders(),
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify(label),
   });
 
   if (!response.ok) {
-    throw new Error("Failed to update label");
+    throw new Error('Failed to update label');
   }
 
   return response.json(); // Add this to get the updated label data
@@ -242,8 +248,8 @@ export const updateLabel = async (id: string, label: { name: string }) => {
 export const listImages = async () => {
   try {
     const response = await fetch(`${API_URL}/media/`, {
-      method: "GET",
-      headers: getAuthHeaders("application/json"),
+      method: 'GET',
+      headers: getAuthHeaders('application/json'),
     });
 
     console.log(response);
@@ -252,20 +258,20 @@ export const listImages = async () => {
     }
 
     const data = await response.json();
-    console.log("Images fetched:", data);
+    console.log('Images fetched:', data);
     return data;
   } catch (error) {
-    console.error("Error fetching images:", error);
+    console.error('Error fetching images:', error);
     throw error;
   }
 };
 
 export const uploadImage = async (file: File): Promise<any> => {
   const formData = new FormData();
-  formData.append("image", file);
+  formData.append('image', file);
 
   const res = await fetch(`${API_URL}/media/upload/`, {
-    method: "POST",
+    method: 'POST',
     headers: {
       ...getAuthHeaders(), // NO incluir 'Content-Type' aquí (el navegador lo establecerá automáticamente)
     },
@@ -274,7 +280,7 @@ export const uploadImage = async (file: File): Promise<any> => {
 
   if (!res.ok) {
     const error = await res.json().catch(() => ({}));
-    throw new Error(error.error || "Error uploading image");
+    throw new Error(error.error || 'Error uploading image');
   }
 
   return res.json();
@@ -283,28 +289,27 @@ export const uploadImage = async (file: File): Promise<any> => {
 export const deleteImage = async (fileName: string): Promise<void> => {
   try {
     const response = await fetch(`${API_URL}/media/${fileName}`, {
-      method: "DELETE",
-      headers: getAuthHeaders("application/json"),
+      method: 'DELETE',
+      headers: getAuthHeaders('application/json'),
     });
 
-    console.log("Delete response status:", response.status);
+    console.log('Delete response status:', response.status);
 
     if (!response.ok) {
       const errorText = await response.text();
       console.error('❌ Error deleting image:', errorText);
-      
+
       let errorData;
       try {
         errorData = JSON.parse(errorText);
       } catch {
         errorData = { error: errorText };
       }
-      
+
       throw new Error(errorData.error || `Failed to delete image: ${response.status}`);
     }
 
     console.log('✅ Image deleted successfully:', fileName);
-    
   } catch (error) {
     console.error('💥 Delete image failed:', error);
     throw error;
@@ -314,32 +319,31 @@ export const deleteImage = async (fileName: string): Promise<void> => {
 export const deleteMultipleImages = async (fileNames: string[]): Promise<void> => {
   try {
     const response = await fetch(`${API_URL}/media/batch/delete`, {
-      method: "DELETE",
+      method: 'DELETE',
       headers: {
-        ...getAuthHeaders("application/json"),
-        "Content-Type": "application/json",
+        ...getAuthHeaders('application/json'),
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({ fileNames }),
     });
 
-    console.log("Batch delete response status:", response.status);
+    console.log('Batch delete response status:', response.status);
 
     if (!response.ok) {
       const errorText = await response.text();
       console.error('❌ Error deleting multiple images:', errorText);
-      
+
       let errorData;
       try {
         errorData = JSON.parse(errorText);
       } catch {
         errorData = { error: errorText };
       }
-      
+
       throw new Error(errorData.error || `Failed to delete images: ${response.status}`);
     }
 
     console.log('✅ Images deleted successfully:', fileNames);
-    
   } catch (error) {
     console.error('💥 Batch delete failed:', error);
     throw error;
@@ -350,15 +354,15 @@ export const deleteMultipleImages = async (fileNames: string[]): Promise<void> =
 export const createProjectCategory = async (category: { name: string }) => {
   try {
     const response = await fetch(`${API_URL}/project-categories/`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        ...getAuthHeaders("application/json"),
-        "Content-Type": "application/json",
+        ...getAuthHeaders('application/json'),
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(category),
     });
     const data = await response.json();
-    if (!response.ok) throw new Error(data.error || "Failed to create category");
+    if (!response.ok) throw new Error(data.error || 'Failed to create category');
     return data;
   } catch (error) {
     throw error;
@@ -367,47 +371,47 @@ export const createProjectCategory = async (category: { name: string }) => {
 
 export const fetchProjectCategories = async () => {
   const response = await fetch(`${API_URL}/project-categories/`, {
-    method: "GET",
-    headers: getAuthHeaders("application/json"),
+    method: 'GET',
+    headers: getAuthHeaders('application/json'),
   });
-  if (!response.ok) throw new Error("Failed to fetch project categories");
+  if (!response.ok) throw new Error('Failed to fetch project categories');
   return response.json();
 };
 
 export const updateProjectCategory = async (id: string, category: { name: string }) => {
   const response = await fetch(`${API_URL}/project-categories/${id}`, {
-    method: "PATCH",
+    method: 'PATCH',
     headers: {
       ...getAuthHeaders(),
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify(category),
   });
-  if (!response.ok) throw new Error("Failed to update category");
+  if (!response.ok) throw new Error('Failed to update category');
   return response.json();
 };
 
 export const deleteProjectCategory = async (id: string) => {
   const response = await fetch(`${API_URL}/project-categories/${id}`, {
-    method: "DELETE",
-    headers: getAuthHeaders("application/json"),
+    method: 'DELETE',
+    headers: getAuthHeaders('application/json'),
   });
-  if (!response.ok) throw new Error("Failed to delete category");
+  if (!response.ok) throw new Error('Failed to delete category');
   return response;
 };
 
 /* ---- Projects ---- */
 export const fetchProjects = async () => {
   const response = await fetch(`${API_URL}/projects/backend/`, {
-    method: "GET",
-    headers: getAuthHeaders("application/json"),
+    method: 'GET',
+    headers: getAuthHeaders('application/json'),
   });
   return response.json();
 };
 
 export const fetchProjectById = async (id: number) => {
   const response = await fetch(`${API_URL}/projects/${id}`);
-  if (!response.ok) throw new Error("Failed to fetch project");
+  if (!response.ok) throw new Error('Failed to fetch project');
   return response.json();
 };
 
@@ -419,144 +423,147 @@ export const createProject = async (projectData: {
   cover?: File | null;
 }) => {
   const formData = new FormData();
-  formData.append("title", projectData.title);
-  formData.append("content", projectData.content);
-  formData.append("isPublished", JSON.stringify(projectData.isPublished));
-  if (projectData.categoryId) formData.append("categoryId", projectData.categoryId);
-  if (projectData.cover) formData.append("cover", projectData.cover);
+  formData.append('title', projectData.title);
+  formData.append('content', projectData.content);
+  formData.append('isPublished', JSON.stringify(projectData.isPublished));
+  if (projectData.categoryId) formData.append('categoryId', projectData.categoryId);
+  if (projectData.cover) formData.append('cover', projectData.cover);
 
   const response = await fetch(`${API_URL}/projects/`, {
-    method: "POST",
+    method: 'POST',
     headers: getAuthHeaders(),
     body: formData,
   });
-  if (!response.ok) throw new Error("Failed to create project");
+  if (!response.ok) throw new Error('Failed to create project');
   return await response.json();
 };
 
-export const editProject = async (id: string, projectData: {
-  title: string;
-  content: string;
-  categoryId: string | null;
-  isPublished: boolean;
-  cover?: File | null;
-}) => {
+export const editProject = async (
+  id: string,
+  projectData: {
+    title: string;
+    content: string;
+    categoryId: string | null;
+    isPublished: boolean;
+    cover?: File | null;
+  },
+) => {
   const formData = new FormData();
-  formData.append("title", projectData.title);
-  formData.append("content", projectData.content);
-  formData.append("isPublished", JSON.stringify(projectData.isPublished));
-  if (projectData.categoryId !== null) formData.append("categoryId", projectData.categoryId);
-  if (projectData.cover) formData.append("cover", projectData.cover);
+  formData.append('title', projectData.title);
+  formData.append('content', projectData.content);
+  formData.append('isPublished', JSON.stringify(projectData.isPublished));
+  if (projectData.categoryId !== null) formData.append('categoryId', projectData.categoryId);
+  if (projectData.cover) formData.append('cover', projectData.cover);
 
   const response = await fetch(`${API_URL}/projects/${id}`, {
-    method: "PATCH",
+    method: 'PATCH',
     headers: getAuthHeaders(),
     body: formData,
   });
-  if (!response.ok) throw new Error("Failed to update project");
+  if (!response.ok) throw new Error('Failed to update project');
   return await response.json();
 };
 
 export const deleteProject = async (id: number) => {
   const response = await fetch(`${API_URL}/projects/${id}`, {
-    method: "DELETE",
+    method: 'DELETE',
     headers: getAuthHeaders(),
   });
-  if (!response.ok) throw new Error("Failed to delete project");
+  if (!response.ok) throw new Error('Failed to delete project');
 };
 
 /* ---- Vida: categorías (islas) ---- */
 export const fetchVidaCategorias = async (): Promise<IVidaCategoria[]> => {
   const response = await fetch(`${API_URL}/vida/categorias/backend`, {
-    method: "GET",
-    headers: getAuthHeaders("application/json"),
+    method: 'GET',
+    headers: getAuthHeaders('application/json'),
   });
-  await assertOk(response, "Failed to fetch categorias");
+  await assertOk(response, 'Failed to fetch categorias');
   return response.json();
 };
 
 export const createVidaCategoria = async (data: Partial<IVidaCategoria>) => {
   const response = await fetch(`${API_URL}/vida/categorias`, {
-    method: "POST",
-    headers: { ...getAuthHeaders(), "Content-Type": "application/json" },
+    method: 'POST',
+    headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
   });
-  await assertOk(response, "Failed to create categoria");
+  await assertOk(response, 'Failed to create categoria');
   return response.json();
 };
 
 export const updateVidaCategoria = async (id: number, data: Partial<IVidaCategoria>) => {
   const response = await fetch(`${API_URL}/vida/categorias/${id}`, {
-    method: "PATCH",
-    headers: { ...getAuthHeaders(), "Content-Type": "application/json" },
+    method: 'PATCH',
+    headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
   });
-  await assertOk(response, "Failed to update categoria");
+  await assertOk(response, 'Failed to update categoria');
   return response.json();
 };
 
 export const deleteVidaCategoria = async (id: number) => {
   const response = await fetch(`${API_URL}/vida/categorias/${id}`, {
-    method: "DELETE",
+    method: 'DELETE',
     headers: getAuthHeaders(),
   });
-  await assertOk(response, "Failed to delete categoria");
+  await assertOk(response, 'Failed to delete categoria');
 };
 
 /* ---- Vida: tags ---- */
 export const fetchVidaTags = async (): Promise<IVidaTag[]> => {
   const response = await fetch(`${API_URL}/vida/tags`, {
-    method: "GET",
-    headers: getAuthHeaders("application/json"),
+    method: 'GET',
+    headers: getAuthHeaders('application/json'),
   });
-  await assertOk(response, "Failed to fetch tags");
+  await assertOk(response, 'Failed to fetch tags');
   return response.json();
 };
 
 export const createVidaTag = async (nombre: string) => {
   const response = await fetch(`${API_URL}/vida/tags`, {
-    method: "POST",
-    headers: { ...getAuthHeaders(), "Content-Type": "application/json" },
+    method: 'POST',
+    headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
     body: JSON.stringify({ nombre }),
   });
-  await assertOk(response, "Failed to create tag");
+  await assertOk(response, 'Failed to create tag');
   return response.json();
 };
 
 export const updateVidaTag = async (id: number, nombre: string) => {
   const response = await fetch(`${API_URL}/vida/tags/${id}`, {
-    method: "PATCH",
-    headers: { ...getAuthHeaders(), "Content-Type": "application/json" },
+    method: 'PATCH',
+    headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
     body: JSON.stringify({ nombre }),
   });
-  await assertOk(response, "Failed to update tag");
+  await assertOk(response, 'Failed to update tag');
   return response.json();
 };
 
 export const deleteVidaTag = async (id: number) => {
   const response = await fetch(`${API_URL}/vida/tags/${id}`, {
-    method: "DELETE",
+    method: 'DELETE',
     headers: getAuthHeaders(),
   });
-  await assertOk(response, "Failed to delete tag");
+  await assertOk(response, 'Failed to delete tag');
 };
 
 /* ---- Vida: ítems ---- */
 export const fetchVidaItems = async (): Promise<IVidaItemListado[]> => {
   const response = await fetch(`${API_URL}/vida/items/backend`, {
-    method: "GET",
-    headers: getAuthHeaders("application/json"),
+    method: 'GET',
+    headers: getAuthHeaders('application/json'),
   });
-  await assertOk(response, "Failed to fetch items");
+  await assertOk(response, 'Failed to fetch items');
   return response.json();
 };
 
 export const fetchVidaItemById = async (id: number): Promise<IVidaItemDetalle> => {
   const response = await fetch(`${API_URL}/vida/items/${id}`, {
-    method: "GET",
-    headers: getAuthHeaders("application/json"),
+    method: 'GET',
+    headers: getAuthHeaders('application/json'),
   });
-  await assertOk(response, "Failed to fetch item");
+  await assertOk(response, 'Failed to fetch item');
   return response.json();
 };
 
@@ -588,94 +595,94 @@ export interface IVidaItemPayload {
 
 export const createVidaItem = async (data: IVidaItemPayload) => {
   const response = await fetch(`${API_URL}/vida/items`, {
-    method: "POST",
-    headers: { ...getAuthHeaders(), "Content-Type": "application/json" },
+    method: 'POST',
+    headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
   });
-  await assertOk(response, "Failed to create item");
+  await assertOk(response, 'Failed to create item');
   return response.json();
 };
 
 export const updateVidaItem = async (id: number, data: IVidaItemPayload) => {
   const response = await fetch(`${API_URL}/vida/items/${id}`, {
-    method: "PATCH",
-    headers: { ...getAuthHeaders(), "Content-Type": "application/json" },
+    method: 'PATCH',
+    headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
   });
-  await assertOk(response, "Failed to update item");
+  await assertOk(response, 'Failed to update item');
   return response.json();
 };
 
 export const deleteVidaItem = async (id: number) => {
   const response = await fetch(`${API_URL}/vida/items/${id}`, {
-    method: "DELETE",
+    method: 'DELETE',
     headers: getAuthHeaders(),
   });
-  await assertOk(response, "Failed to delete item");
+  await assertOk(response, 'Failed to delete item');
 };
 
 /* ---- Vida: libros / lecturas ---- */
 export const fetchVidaLibros = async (): Promise<IVidaLibro[]> => {
   const response = await fetch(`${API_URL}/vida/libros/backend`, {
-    method: "GET",
-    headers: getAuthHeaders("application/json"),
+    method: 'GET',
+    headers: getAuthHeaders('application/json'),
   });
-  await assertOk(response, "Failed to fetch libros");
+  await assertOk(response, 'Failed to fetch libros');
   return response.json();
 };
 
 export const fetchVidaLibroById = async (id: number): Promise<IVidaLibro> => {
   const response = await fetch(`${API_URL}/vida/libros/${id}`, {
-    method: "GET",
-    headers: getAuthHeaders("application/json"),
+    method: 'GET',
+    headers: getAuthHeaders('application/json'),
   });
-  await assertOk(response, "Failed to fetch libro");
+  await assertOk(response, 'Failed to fetch libro');
   return response.json();
 };
 
 export const createVidaLibro = async (data: Partial<IVidaLibro>) => {
   const response = await fetch(`${API_URL}/vida/libros`, {
-    method: "POST",
-    headers: { ...getAuthHeaders(), "Content-Type": "application/json" },
+    method: 'POST',
+    headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
   });
-  await assertOk(response, "Failed to create libro");
+  await assertOk(response, 'Failed to create libro');
   return response.json();
 };
 
 export const updateVidaLibro = async (id: number, data: Partial<IVidaLibro>) => {
   const response = await fetch(`${API_URL}/vida/libros/${id}`, {
-    method: "PATCH",
-    headers: { ...getAuthHeaders(), "Content-Type": "application/json" },
+    method: 'PATCH',
+    headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
   });
-  await assertOk(response, "Failed to update libro");
+  await assertOk(response, 'Failed to update libro');
   return response.json();
 };
 
 export const deleteVidaLibro = async (id: number) => {
   const response = await fetch(`${API_URL}/vida/libros/${id}`, {
-    method: "DELETE",
+    method: 'DELETE',
     headers: getAuthHeaders(),
   });
-  await assertOk(response, "Failed to delete libro");
+  await assertOk(response, 'Failed to delete libro');
 };
 
 export const fetchVidaLecturasResumen = async (): Promise<{ cifra: string }> => {
   const response = await fetch(`${API_URL}/vida/libros/resumen`, {
-    method: "GET",
-    headers: getAuthHeaders("application/json"),
+    method: 'GET',
+    headers: getAuthHeaders('application/json'),
   });
-  await assertOk(response, "Failed to fetch resumen");
+  await assertOk(response, 'Failed to fetch resumen');
   return response.json();
 };
 
 export const updateVidaLecturasResumen = async (cifra: string) => {
   const response = await fetch(`${API_URL}/vida/libros/resumen`, {
-    method: "PATCH",
-    headers: { ...getAuthHeaders(), "Content-Type": "application/json" },
+    method: 'PATCH',
+    headers: { ...getAuthHeaders(), 'Content-Type': 'application/json' },
     body: JSON.stringify({ cifra }),
   });
-  await assertOk(response, "Failed to update resumen");
+  await assertOk(response, 'Failed to update resumen');
   return response.json();
 };

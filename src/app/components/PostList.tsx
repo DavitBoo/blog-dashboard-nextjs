@@ -1,12 +1,10 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
-import ConfirmArticleDelete from "./ConfirmArticleDelete";
+import ConfirmArticleDelete from './ConfirmArticleDelete';
 import { FaTrashAlt, FaEdit, FaEye } from 'react-icons/fa';
-import Link from "next/link";
-
-
+import Link from 'next/link';
 
 type Post = {
   id: number;
@@ -36,48 +34,49 @@ const PostList: React.FC<PostListProps> = ({ posts, onTogglePublish }) => {
   return (
     <>
       {showDeleteModal && selectedPostId && (
-        <ConfirmArticleDelete isOpen={showDeleteModal} onClose={handleCloseModal} postId={selectedPostId} />
+        <ConfirmArticleDelete
+          isOpen={showDeleteModal}
+          onClose={handleCloseModal}
+          postId={selectedPostId}
+        />
       )}
-      
+
       <div className="posts-grid">
         {posts.map((post) => (
           <div key={post.id} className="post-card">
             <div className="post-card-header">
               <h3 className="post-title">{post.title}</h3>
               <span className={`post-status ${post.published ? 'published' : 'draft'}`}>
-                {post.published ? "Published" : "Draft"}
+                {post.published ? 'Published' : 'Draft'}
               </span>
             </div>
-            
+
             <div className="post-card-meta">
               {/* <span className="post-date">Created: {new Date(post.createdAt).toLocaleDateString()}</span>
               {post.excerpt && <p className="post-excerpt">{post.excerpt}</p>} */}
             </div>
-            
+
             <div className="post-card-actions">
-              <button 
+              <button
                 className={`btn btn-sm ${post.published ? 'btn-secondary' : 'btn-primary'}`}
                 onClick={() => onTogglePublish(post.id, post.published)}
               >
                 {post.published ? <FaEye /> : <FaEye />}
-                {post.published ? "Unpublish" : "Publish"}
+                {post.published ? 'Unpublish' : 'Publish'}
               </button>
-              
+
               <Link href={`./posts/edit/${post.id}`} className="btn btn-sm btn-secondary">
                 <FaEdit /> Edit
               </Link>
-              
-              <button 
-                className="btn btn-sm btn-danger" 
-                onClick={() => handleDelete(post.id)}
-              >
+
+              <button className="btn btn-sm btn-danger" onClick={() => handleDelete(post.id)}>
                 <FaTrashAlt /> Delete
               </button>
             </div>
           </div>
         ))}
       </div>
-      
+
       {posts.length === 0 && (
         <div className="empty-state">
           <span className="empty-icon">📝</span>

@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import InfoText from "./InfoText";
+import React, { useState } from 'react';
+import InfoText from './InfoText';
 
 interface Props {
   isOpen: boolean;
@@ -22,7 +22,7 @@ const ConfirmVidaDelete: React.FC<Props> = ({ isOpen, onClose, onConfirm, succes
       setShowInfoText(true);
       setTimeout(() => onClose(), 1500);
     } catch (error) {
-      console.error("Error deleting:", error);
+      console.error('Error deleting:', error);
     }
   };
 

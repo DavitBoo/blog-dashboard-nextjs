@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { fetchPosts } from "@/utils/api";
-import Link from "next/link";
+import { useEffect, useState } from 'react';
+import { fetchPosts } from '@/utils/api';
+import Link from 'next/link';
 
 interface PostStat {
   id: number;
@@ -24,7 +24,7 @@ export default function AnalyticsPage() {
           .map((p: any) => ({
             id: p.id,
             title: p.title,
-            slug: p.slug ?? "",
+            slug: p.slug ?? '',
             views: p.views ?? 0,
             published: p.published,
             createdAt: p.createdAt,
@@ -48,26 +48,45 @@ export default function AnalyticsPage() {
       </div>
 
       {/* Summary cards */}
-      <div className="dashboard-cards" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))", marginBottom: "2rem" }}>
+      <div
+        className="dashboard-cards"
+        style={{
+          gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))',
+          marginBottom: '2rem',
+        }}
+      >
         <div className="dashboard-card">
-          <div className="card-header"><span className="card-icon">👁️</span><h3 className="card-title">Vistas totales</h3></div>
+          <div className="card-header">
+            <span className="card-icon">👁️</span>
+            <h3 className="card-title">Vistas totales</h3>
+          </div>
           <div className="card-content">
             <div className="stat-number">{totalViews.toLocaleString()}</div>
           </div>
         </div>
         <div className="dashboard-card">
-          <div className="card-header"><span className="card-icon">📝</span><h3 className="card-title">Posts publicados</h3></div>
+          <div className="card-header">
+            <span className="card-icon">📝</span>
+            <h3 className="card-title">Posts publicados</h3>
+          </div>
           <div className="card-content">
-            <div className="stat-number">{publishedCount} / {posts.length}</div>
+            <div className="stat-number">
+              {publishedCount} / {posts.length}
+            </div>
           </div>
         </div>
         <div className="dashboard-card">
-          <div className="card-header"><span className="card-icon">🏆</span><h3 className="card-title">Más visto</h3></div>
+          <div className="card-header">
+            <span className="card-icon">🏆</span>
+            <h3 className="card-title">Más visto</h3>
+          </div>
           <div className="card-content">
             {topPosts[0] ? (
               <>
                 <div className="stat-number">{topPosts[0].views.toLocaleString()} vistas</div>
-                <div className="stat-label" style={{ marginTop: "0.25rem", fontSize: "0.8rem" }}>{topPosts[0].title}</div>
+                <div className="stat-label" style={{ marginTop: '0.25rem', fontSize: '0.8rem' }}>
+                  {topPosts[0].title}
+                </div>
               </>
             ) : (
               <div className="stat-label">—</div>
@@ -93,11 +112,9 @@ export default function AnalyticsPage() {
                 <div key={post.id} className="chart-row">
                   <div className="chart-label" title={post.title}>
                     <Link href={`/dashboard/posts/edit/${post.id}`} className="chart-title-link">
-                      {post.title.length > 42 ? post.title.slice(0, 42) + "…" : post.title}
+                      {post.title.length > 42 ? post.title.slice(0, 42) + '…' : post.title}
                     </Link>
-                    {!post.published && (
-                      <span className="draft-badge">borrador</span>
-                    )}
+                    {!post.published && <span className="draft-badge">borrador</span>}
                   </div>
                   <div className="chart-bar-wrap">
                     <div

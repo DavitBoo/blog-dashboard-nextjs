@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import { fetchProjects } from "../../../utils/api";
-import ProjectList from "../../components/ProjectList";
-import Link from "next/link";
+import { useState, useEffect } from 'react';
+import { fetchProjects } from '../../../utils/api';
+import ProjectList from '../../components/ProjectList';
+import Link from 'next/link';
 
 const ProjectManagement = () => {
   const [projects, setProjects] = useState([]);
@@ -33,7 +33,7 @@ const ProjectManagement = () => {
           </Link>
         </div>
       </div>
-      
+
       <div className="dashboard-card">
         <ProjectList projects={projects} />
       </div>

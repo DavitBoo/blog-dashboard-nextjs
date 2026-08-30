@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useState, useCallback, useRef } from "react";
-import { uploadImage } from "@/utils/api";
-import { Card } from "./Card";
-import { FiUpload, FiLoader, FiCheckCircle } from "react-icons/fi";
-import { Progress } from "./Progress";
+import { useState, useCallback, useRef } from 'react';
+import { uploadImage } from '@/utils/api';
+import { Card } from './Card';
+import { FiUpload, FiLoader, FiCheckCircle } from 'react-icons/fi';
+import { Progress } from './Progress';
 
 interface ImageUploadProps {
   onSuccess: () => void;
@@ -22,11 +22,11 @@ export function ImageUpload({ onSuccess }: ImageUploadProps) {
       if (!files || files.length === 0) return;
 
       const file = files[0];
-      const validImageTypes = ["image/png", "image/jpeg", "image/jpg", "image/gif", "image/webp"];
+      const validImageTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/webp'];
 
       // Validate file type
       if (!validImageTypes.includes(file.type)) {
-        console.error("Invalid file type");
+        console.error('Invalid file type');
         return;
       }
 
@@ -50,12 +50,12 @@ export function ImageUpload({ onSuccess }: ImageUploadProps) {
           setIsUploading(false);
         }, 500);
       } catch (error) {
-        console.error("Upload failed:", error);
+        console.error('Upload failed:', error);
         setIsUploading(false);
         setUploadProgress(0);
       }
     },
-    [onSuccess]
+    [onSuccess],
   );
 
   // Drag event handlers
@@ -67,7 +67,7 @@ export function ImageUpload({ onSuccess }: ImageUploadProps) {
         setIsDragActive(true);
       }
     },
-    [isUploading]
+    [isUploading],
   );
 
   const onDragEnter = useCallback(
@@ -78,7 +78,7 @@ export function ImageUpload({ onSuccess }: ImageUploadProps) {
         setIsDragActive(true);
       }
     },
-    [isUploading]
+    [isUploading],
   );
 
   const onDragLeave = useCallback(
@@ -89,7 +89,7 @@ export function ImageUpload({ onSuccess }: ImageUploadProps) {
         setIsDragActive(false);
       }
     },
-    [isUploading]
+    [isUploading],
   );
 
   const onDrop = useCallback(
@@ -102,7 +102,7 @@ export function ImageUpload({ onSuccess }: ImageUploadProps) {
         handleFiles(files);
       }
     },
-    [handleFiles, isUploading]
+    [handleFiles, isUploading],
   );
 
   // File input change handler
@@ -111,7 +111,7 @@ export function ImageUpload({ onSuccess }: ImageUploadProps) {
       const files = e.target.files;
       handleFiles(files);
     },
-    [handleFiles]
+    [handleFiles],
   );
 
   // Click to open file picker
@@ -129,7 +129,7 @@ export function ImageUpload({ onSuccess }: ImageUploadProps) {
       onDrop={onDrop}
       onClick={openFilePicker}
       className={`p-8 border-2 border-dashed cursor-pointer transition-all  ${
-        isUploading ? "pointer-events-none opacity-60" : ""
+        isUploading ? 'pointer-events-none opacity-60' : ''
       }`}
     >
       <input
@@ -158,10 +158,13 @@ export function ImageUpload({ onSuccess }: ImageUploadProps) {
           <>
             <div className="flex align-items-center justify-content-center w-16 h-16">
               <FiUpload className="w-8 h-8" />
-            </div>  
+            </div>
             <div>
-              <p>{isDragActive ? "Suelta la imagen aquí" : "Suelta aquí tu imagen o haz clic"}</p>
-              <p>Sube la imagen que quieras, pero no te pases, que tengo Supabase versión gratuita... you know.</p>
+              <p>{isDragActive ? 'Suelta la imagen aquí' : 'Suelta aquí tu imagen o haz clic'}</p>
+              <p>
+                Sube la imagen que quieras, pero no te pases, que tengo Supabase versión gratuita...
+                you know.
+              </p>
             </div>
             <button>Seleccionar archivo</button>
           </>

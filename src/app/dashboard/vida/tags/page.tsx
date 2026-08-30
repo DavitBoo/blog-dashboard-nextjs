@@ -1,20 +1,20 @@
-"use client";
+'use client';
 
-import BackButton from "@/app/components/BackButton";
-import InfoText from "@/app/components/InfoText";
-import React, { useEffect, useState } from "react";
-import { IVidaTag } from "@/interfaces/Vida";
-import { createVidaTag, deleteVidaTag, fetchVidaTags, updateVidaTag } from "@/utils/api";
-import { FaEdit, FaTimes, FaCheck, FaTimesCircle, FaTag, FaPlus } from "react-icons/fa";
+import BackButton from '@/app/components/BackButton';
+import InfoText from '@/app/components/InfoText';
+import React, { useEffect, useState } from 'react';
+import { IVidaTag } from '@/interfaces/Vida';
+import { createVidaTag, deleteVidaTag, fetchVidaTags, updateVidaTag } from '@/utils/api';
+import { FaEdit, FaTimes, FaCheck, FaTimesCircle, FaTag, FaPlus } from 'react-icons/fa';
 
 const VidaTagsPage = () => {
   const [showInfoText, setShowInfoText] = useState(false);
   const [infoTextMessage, setInfoTextMessage] = useState<string | null>(null);
   const [tagList, setTagList] = useState<IVidaTag[]>([]);
-  const [newTag, setNewTag] = useState("");
+  const [newTag, setNewTag] = useState('');
 
   const [editingId, setEditingId] = useState<number | null>(null);
-  const [editingName, setEditingName] = useState("");
+  const [editingName, setEditingName] = useState('');
 
   const load = async () => {
     const data = await fetchVidaTags();
@@ -36,12 +36,12 @@ const VidaTagsPage = () => {
     if (!newTag.trim()) return;
     try {
       await createVidaTag(newTag);
-      setNewTag("");
+      setNewTag('');
       load();
-      notify("Tag creado");
+      notify('Tag creado');
     } catch (error) {
       console.error(error);
-      notify("Error al crear el tag");
+      notify('Error al crear el tag');
     }
   };
 
@@ -51,22 +51,22 @@ const VidaTagsPage = () => {
       await updateVidaTag(editingId, editingName);
       setEditingId(null);
       load();
-      notify("Tag actualizado");
+      notify('Tag actualizado');
     } catch (error) {
       console.error(error);
-      notify("Error al actualizar el tag");
+      notify('Error al actualizar el tag');
     }
   };
 
   const handleDelete = async (id: number) => {
-    if (!window.confirm("¿Borrar este tag?")) return;
+    if (!window.confirm('¿Borrar este tag?')) return;
     try {
       await deleteVidaTag(id);
       load();
-      notify("Tag eliminado");
+      notify('Tag eliminado');
     } catch (error) {
       console.error(error);
-      notify("Error al eliminar el tag");
+      notify('Error al eliminar el tag');
     }
   };
 
@@ -120,10 +120,18 @@ const VidaTagsPage = () => {
                   <div className="label-actions">
                     {editingId === tag.id ? (
                       <>
-                        <button className="btn-icon btn-success" onClick={handleEditSave} title="Guardar">
+                        <button
+                          className="btn-icon btn-success"
+                          onClick={handleEditSave}
+                          title="Guardar"
+                        >
                           <FaCheck />
                         </button>
-                        <button className="btn-icon btn-secondary" onClick={() => setEditingId(null)} title="Cancelar">
+                        <button
+                          className="btn-icon btn-secondary"
+                          onClick={() => setEditingId(null)}
+                          title="Cancelar"
+                        >
                           <FaTimesCircle />
                         </button>
                       </>
@@ -139,7 +147,11 @@ const VidaTagsPage = () => {
                         >
                           <FaEdit />
                         </button>
-                        <button className="btn-icon btn-danger" onClick={() => handleDelete(tag.id)} title="Eliminar">
+                        <button
+                          className="btn-icon btn-danger"
+                          onClick={() => handleDelete(tag.id)}
+                          title="Eliminar"
+                        >
                           <FaTimes />
                         </button>
                       </>

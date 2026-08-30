@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import BackButton from "@/app/components/BackButton";
-import InfoText from "@/app/components/InfoText";
-import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import BackButton from '@/app/components/BackButton';
+import InfoText from '@/app/components/InfoText';
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
 
-import { ILabel } from "../../../interfaces/Label";
-import { createLabel, deleteLabel, fetchLabels, updateLabel } from "@/utils/api";
-import { FaEdit, FaTimes, FaCheck, FaTimesCircle, FaTag, FaPlus } from "react-icons/fa";
+import { ILabel } from '../../../interfaces/Label';
+import { createLabel, deleteLabel, fetchLabels, updateLabel } from '@/utils/api';
+import { FaEdit, FaTimes, FaCheck, FaTimesCircle, FaTag, FaPlus } from 'react-icons/fa';
 
 const page = () => {
   const router = useRouter();
@@ -15,10 +15,10 @@ const page = () => {
   const [showInfoText, setShowInfoText] = useState<boolean>(false);
   const [infoTextMessage, setInfoTextMessage] = useState<string | null>(null);
   const [labelList, setLabelList] = useState<ILabel[]>();
-  const [newLabel, setNewLabel] = useState<string>("");
+  const [newLabel, setNewLabel] = useState<string>('');
 
   const [editingLabelId, setEditingLabelId] = useState<string | null>(null);
-  const [editingLabelName, setEditingLabelName] = useState<string>("");
+  const [editingLabelName, setEditingLabelName] = useState<string>('');
 
   const fetchLabelList = async () => {
     const data = await fetchLabels();
@@ -30,7 +30,7 @@ const page = () => {
   }, []);
 
   const successfulSubmit = () => {
-    setInfoTextMessage("Etiquetas actualizadas correctamente");
+    setInfoTextMessage('Etiquetas actualizadas correctamente');
     setShowInfoText(true);
     setTimeout(() => {
       setShowInfoText(false);
@@ -43,12 +43,12 @@ const page = () => {
 
     try {
       const newLabelData = await createLabel({ name: newLabel });
-      setNewLabel("");
+      setNewLabel('');
       setLabelList((prev) => [...(prev ?? []), newLabelData]);
       successfulSubmit();
     } catch (error) {
-      console.error("Error creating label:", error);
-      setInfoTextMessage("Error al crear la etiqueta");
+      console.error('Error creating label:', error);
+      setInfoTextMessage('Error al crear la etiqueta');
       setShowInfoText(true);
       setTimeout(() => setShowInfoText(false), 3000);
     }
@@ -68,14 +68,18 @@ const page = () => {
 
     try {
       await updateLabel(editingLabelId, { name: editingLabelName });
-      setLabelList((prev) => prev?.map(label => label.id === editingLabelId ? { ...label, name: editingLabelName } : label));
+      setLabelList((prev) =>
+        prev?.map((label) =>
+          label.id === editingLabelId ? { ...label, name: editingLabelName } : label,
+        ),
+      );
       setEditingLabelId(null);
-      setInfoTextMessage("Etiqueta actualizada");
+      setInfoTextMessage('Etiqueta actualizada');
       setShowInfoText(true);
       setTimeout(() => setShowInfoText(false), 3000);
     } catch (error) {
-      console.error("Error updating label:", error);
-      setInfoTextMessage("Error al actualizar la etiqueta");
+      console.error('Error updating label:', error);
+      setInfoTextMessage('Error al actualizar la etiqueta');
       setShowInfoText(true);
       setTimeout(() => setShowInfoText(false), 3000);
     }
@@ -86,18 +90,18 @@ const page = () => {
   };
 
   const handleTagDelete = async (id: string) => {
-    if (window.confirm("¿Estás seguro de que quieres eliminar esta etiqueta?")) {
+    if (window.confirm('¿Estás seguro de que quieres eliminar esta etiqueta?')) {
       try {
         const res = await deleteLabel(id);
         if (res.ok) {
           fetchLabelList();
-          setInfoTextMessage("Etiqueta eliminada");
+          setInfoTextMessage('Etiqueta eliminada');
           setShowInfoText(true);
           setTimeout(() => setShowInfoText(false), 3000);
         }
       } catch (error) {
-        console.error("Error deleting label:", error);
-        setInfoTextMessage("Error al eliminar la etiqueta");
+        console.error('Error deleting label:', error);
+        setInfoTextMessage('Error al eliminar la etiqueta');
         setShowInfoText(true);
         setTimeout(() => setShowInfoText(false), 3000);
       }
@@ -107,7 +111,7 @@ const page = () => {
   return (
     <main className="manage-labels-page">
       <BackButton />
-      
+
       {/* Page Header */}
       <div className="page-header">
         <div className="page-header-content">
@@ -153,19 +157,19 @@ const page = () => {
                       <span className="label-name">{label.name}</span>
                     </div>
                   )}
-                  
+
                   <div className="label-actions">
                     {editingLabelId === label.id ? (
                       <>
-                        <button 
-                          className="btn-icon btn-success" 
+                        <button
+                          className="btn-icon btn-success"
                           onClick={handleEditSave}
                           title="Guardar"
                         >
                           <FaCheck />
                         </button>
-                        <button 
-                          className="btn-icon btn-secondary" 
+                        <button
+                          className="btn-icon btn-secondary"
                           onClick={handleEditCancel}
                           title="Cancelar"
                         >
@@ -174,15 +178,15 @@ const page = () => {
                       </>
                     ) : (
                       <>
-                        <button 
-                          className="btn-icon btn-edit" 
+                        <button
+                          className="btn-icon btn-edit"
                           onClick={() => handleEditClick(label.id, label.name)}
                           title="Editar"
                         >
                           <FaEdit />
                         </button>
-                        <button 
-                          className="btn-icon btn-danger" 
+                        <button
+                          className="btn-icon btn-danger"
                           onClick={() => handleTagDelete(label.id)}
                           title="Eliminar"
                         >
@@ -221,7 +225,7 @@ const page = () => {
                 onChange={(e) => setNewLabel(e.target.value)}
               />
             </div>
-            
+
             <button type="submit" className="btn btn-primary btn-create">
               <FaPlus />
               Crear Etiqueta

@@ -5,7 +5,6 @@ import { useParams } from 'next/navigation';
 import { fetchCommentsByPostId, deleteComment } from '../../../../utils/api';
 import CommentList from '../../../components/CommentList';
 
-
 const CommentManagement = () => {
   const { postId } = useParams() as { postId: string };
   const [comments, setComments] = useState([]);

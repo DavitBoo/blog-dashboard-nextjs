@@ -1,21 +1,21 @@
-"use client";
+'use client';
 
-import { useEffect, useState, useRef } from "react";
-import dynamic from "next/dynamic";
-import { deleteImage, listImages, deleteMultipleImages } from "@/utils/api";
-import { Image } from "@/interfaces/Image";
-import { Card } from "./Card";
-import { ImageCard } from "./ImageCard";
-import { FaSpinner, FaImage, FaTrash } from "react-icons/fa";
-import styles from "./MediaGallery.module.css";
+import { useEffect, useState, useRef } from 'react';
+import dynamic from 'next/dynamic';
+import { deleteImage, listImages, deleteMultipleImages } from '@/utils/api';
+import { Image } from '@/interfaces/Image';
+import { Card } from './Card';
+import { ImageCard } from './ImageCard';
+import { FaSpinner, FaImage, FaTrash } from 'react-icons/fa';
+import styles from './MediaGallery.module.css';
 
 interface ImageUploadProps {
   onSuccess: () => void;
 }
 
 const ImageUpload = dynamic<ImageUploadProps>(
-  () => import("./ImageUpload").then((mod) => mod.ImageUpload),
-  { ssr: false }
+  () => import('./ImageUpload').then((mod) => mod.ImageUpload),
+  { ssr: false },
 );
 
 export function MediaGallery() {
@@ -25,14 +25,13 @@ export function MediaGallery() {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const dialogRef = useRef<HTMLDialogElement>(null);
 
-
   const loadImages = async () => {
     try {
       setIsLoading(true);
       const data = await listImages();
-      setImages(data.images); 
+      setImages(data.images);
     } catch (error) {
-      console.log("Error: No se pudieron cargar las imágenes");
+      console.log('Error: No se pudieron cargar las imágenes');
     } finally {
       setIsLoading(false);
     }
@@ -44,16 +43,16 @@ export function MediaGallery() {
 
   const handleUploadSuccess = () => {
     loadImages();
-    console.log("Éxito: Imagen subida correctamente");
+    console.log('Éxito: Imagen subida correctamente');
   };
 
   const handleDelete = async (fileName: string) => {
     try {
       await deleteImage(fileName);
-      console.log("Éxito: Imagen eliminada correctamente");
+      console.log('Éxito: Imagen eliminada correctamente');
       loadImages();
     } catch (error) {
-      console.log("Error: No se pudo eliminar la imagen");
+      console.log('Error: No se pudo eliminar la imagen');
     }
   };
 
@@ -66,7 +65,7 @@ export function MediaGallery() {
       setDeleteDialogOpen(false);
       loadImages();
     } catch (error) {
-      console.log("Error: No se pudieron eliminar las imágenes");
+      console.log('Error: No se pudieron eliminar las imágenes');
     }
   };
 
@@ -103,20 +102,17 @@ export function MediaGallery() {
         <div className={styles.headerText}>
           <h2 className={styles.title}>Galería de Medios</h2>
           <p className={styles.subtitle}>
-            {images.length} {images.length === 1 ? "imagen" : "imágenes"} en total
+            {images.length} {images.length === 1 ? 'imagen' : 'imágenes'} en total
           </p>
         </div>
         <div className={styles.buttonsContainer}>
           {images.length > 0 && (
             <>
               <button className={styles.button} onClick={selectAll}>
-                {selectedImages.size === images.length ? "Deseleccionar todo" : "Seleccionar todo"}
+                {selectedImages.size === images.length ? 'Deseleccionar todo' : 'Seleccionar todo'}
               </button>
               {selectedImages.size > 0 && (
-                <button 
-                  className={styles.deleteButton} 
-                  onClick={() => setDeleteDialogOpen(true)}
-                >
+                <button className={styles.deleteButton} onClick={() => setDeleteDialogOpen(true)}>
                   <FaTrash style={{ width: '16px', height: '16px' }} />
                   Eliminar ({selectedImages.size})
                 </button>
@@ -140,9 +136,7 @@ export function MediaGallery() {
             </div>
             <div className={styles.emptyStateText}>
               <h3 className={styles.emptyStateTitle}>No hay imágenes</h3>
-              <p className={styles.emptyStateDescription}>
-                Sube tu primera imagen para comenzar
-              </p>
+              <p className={styles.emptyStateDescription}>Sube tu primera imagen para comenzar</p>
             </div>
           </div>
         </Card>
@@ -164,20 +158,14 @@ export function MediaGallery() {
         <div>
           <h3 className={styles.dialogTitle}>Confirmar eliminación</h3>
           <p className={styles.dialogDescription}>
-            ¿Estás seguro de que quieres eliminar {selectedImages.size} imágenes? 
-            Esta acción no se puede deshacer.
+            ¿Estás seguro de que quieres eliminar {selectedImages.size} imágenes? Esta acción no se
+            puede deshacer.
           </p>
           <div className={styles.dialogFooter}>
-            <button 
-              className={styles.button} 
-              onClick={() => setDeleteDialogOpen(false)}
-            >
+            <button className={styles.button} onClick={() => setDeleteDialogOpen(false)}>
               Cancelar
             </button>
-            <button 
-              className={styles.deleteButton} 
-              onClick={handleBatchDelete}
-            >
+            <button className={styles.deleteButton} onClick={handleBatchDelete}>
               Eliminar
             </button>
           </div>

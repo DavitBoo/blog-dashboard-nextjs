@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import Link from "next/link";
-import { FaTrashAlt, FaEdit } from "react-icons/fa";
-import { IVidaItemListado } from "@/interfaces/Vida";
-import { deleteVidaItem } from "@/utils/api";
-import ConfirmVidaDelete from "./ConfirmVidaDelete";
+import React, { useState } from 'react';
+import Link from 'next/link';
+import { FaTrashAlt, FaEdit } from 'react-icons/fa';
+import { IVidaItemListado } from '@/interfaces/Vida';
+import { deleteVidaItem } from '@/utils/api';
+import ConfirmVidaDelete from './ConfirmVidaDelete';
 
 interface Props {
   items: IVidaItemListado[];
@@ -34,16 +34,18 @@ const VidaItemList: React.FC<Props> = ({ items, onChanged }) => {
           <div key={item.id} className="post-card">
             <div className="post-card-header">
               <h3 className="post-title">{item.titulo}</h3>
-              <span className={`post-status ${item.publicado ? "published" : "draft"}`}>
-                {item.publicado ? "Publicado" : "Borrador"}
+              <span className={`post-status ${item.publicado ? 'published' : 'draft'}`}>
+                {item.publicado ? 'Publicado' : 'Borrador'}
               </span>
             </div>
-            <p style={{ fontSize: 12, opacity: 0.75, margin: "4px 0" }}>
+            <p style={{ fontSize: 12, opacity: 0.75, margin: '4px 0' }}>
               {item.categoria?.nombre}
-              {item.ambito ? ` · ${item.ambito}` : ""}
-              {item.destacado ? " · ★ destacado" : ""}
+              {item.ambito ? ` · ${item.ambito}` : ''}
+              {item.destacado ? ' · ★ destacado' : ''}
             </p>
-            {item.tags.length > 0 && <p style={{ fontSize: 11, opacity: 0.6 }}>{item.tags.join(", ")}</p>}
+            {item.tags.length > 0 && (
+              <p style={{ fontSize: 11, opacity: 0.6 }}>{item.tags.join(', ')}</p>
+            )}
 
             <div className="post-card-actions">
               <Link href={`./items/edit/${item.id}`} className="btn btn-sm btn-secondary">

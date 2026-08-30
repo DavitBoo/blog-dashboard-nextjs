@@ -1,24 +1,24 @@
-"use client";
+'use client';
 
-import { Color } from "@tiptap/extension-color";
-import ListItem from "@tiptap/extension-list-item";
-import TextStyle from "@tiptap/extension-text-style";
-import { EditorProvider, useCurrentEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
-import { common, createLowlight } from "lowlight";
-import { Table } from "@tiptap/extension-table";
-import { TableCell } from "@tiptap/extension-table-cell";
-import { TableHeader } from "@tiptap/extension-table-header";
-import { TableRow } from "@tiptap/extension-table-row";
+import { Color } from '@tiptap/extension-color';
+import ListItem from '@tiptap/extension-list-item';
+import TextStyle from '@tiptap/extension-text-style';
+import { EditorProvider, useCurrentEditor } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
+import { common, createLowlight } from 'lowlight';
+import { Table } from '@tiptap/extension-table';
+import { TableCell } from '@tiptap/extension-table-cell';
+import { TableHeader } from '@tiptap/extension-table-header';
+import { TableRow } from '@tiptap/extension-table-row';
 import Image from '@tiptap/extension-image';
 import CarouselExtension from './CarouselExtension';
 import MediaPickerModal from './MediaPickerModal';
-import { useState } from "react";
+import { useState } from 'react';
 
 const lowlight = createLowlight(common);
 
-import React from "react";
+import React from 'react';
 
 const MenuBar = () => {
   const { editor } = useCurrentEditor();
@@ -33,11 +33,11 @@ const MenuBar = () => {
     setIsMediaPickerOpen(false);
   };
 
-   const addCarousel = () => {
+  const addCarousel = () => {
     const urls = prompt('Enter image URLs separated by commas:');
     if (urls) {
       editor.commands.insertCarousel({
-        images: urls.split(',').map(url => url.trim()),
+        images: urls.split(',').map((url) => url.trim()),
       });
     }
   };
@@ -46,67 +46,67 @@ const MenuBar = () => {
     <div className="toolbar">
       <button
         onClick={() => editor.chain().focus().toggleBold().run()}
-        className={editor.isActive("bold") ? "active" : ""}
+        className={editor.isActive('bold') ? 'active' : ''}
       >
         Bold
       </button>
       <button
         onClick={() => editor.chain().focus().toggleItalic().run()}
-        className={editor.isActive("italic") ? "active" : ""}
+        className={editor.isActive('italic') ? 'active' : ''}
       >
         Italic
       </button>
       <button
         onClick={() => editor.chain().focus().toggleStrike().run()}
-        className={editor.isActive("strike") ? "is-active" : ""}
+        className={editor.isActive('strike') ? 'is-active' : ''}
       >
         Strike
       </button>
       <button
         onClick={() => editor.chain().focus().toggleCode().run()}
-        className={editor.isActive("code") ? "is-active" : ""}
+        className={editor.isActive('code') ? 'is-active' : ''}
       >
         Code
       </button>
       <button
         onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-        className={editor.isActive("codeBlock") ? "active" : ""}
+        className={editor.isActive('codeBlock') ? 'active' : ''}
       >
         Code Block
       </button>
       <button
         onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-        className={editor.isActive("heading", { level: 2 }) ? "active" : ""}
+        className={editor.isActive('heading', { level: 2 }) ? 'active' : ''}
       >
         H2
       </button>
       <button
         onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-        className={editor.isActive("heading", { level: 3 }) ? "is-active" : ""}
+        className={editor.isActive('heading', { level: 3 }) ? 'is-active' : ''}
       >
         H3
       </button>
       <button
         onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
-        className={editor.isActive("heading", { level: 4 }) ? "is-active" : ""}
+        className={editor.isActive('heading', { level: 4 }) ? 'is-active' : ''}
       >
         H4
       </button>
       <button
         onClick={() => editor.chain().focus().toggleHeading({ level: 5 }).run()}
-        className={editor.isActive("heading", { level: 5 }) ? "is-active" : ""}
+        className={editor.isActive('heading', { level: 5 }) ? 'is-active' : ''}
       >
         H5
       </button>
       <button
         onClick={() => editor.chain().focus().toggleHeading({ level: 6 }).run()}
-        className={editor.isActive("heading", { level: 6 }) ? "is-active" : ""}
+        className={editor.isActive('heading', { level: 6 }) ? 'is-active' : ''}
       >
         H6
       </button>
       <button
         onClick={() => editor.chain().focus().toggleBulletList().run()}
-        className={editor.isActive("bulletList") ? "active" : ""}
+        className={editor.isActive('bulletList') ? 'active' : ''}
       >
         Bullet list
       </button>
@@ -114,48 +114,83 @@ const MenuBar = () => {
       <button onClick={() => editor.chain().focus().clearNodes().run()}>Clear nodes</button>
       <button
         onClick={() => editor.chain().focus().toggleBulletList().run()}
-        className={editor.isActive("bulletList") ? "active" : ""}
+        className={editor.isActive('bulletList') ? 'active' : ''}
       >
         Bullet List
       </button>
       <button
         onClick={() => editor.chain().focus().toggleOrderedList().run()}
-        className={editor.isActive("orderedList") ? "active" : ""}
+        className={editor.isActive('orderedList') ? 'active' : ''}
       >
         Ordered List
       </button>
-      <button onClick={() => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()}>
+      <button
+        onClick={() =>
+          editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()
+        }
+      >
         Insert Table
       </button>
-      <button onClick={() => editor.chain().focus().addColumnAfter().run()} disabled={!editor.can().addColumnAfter()}>
+      <button
+        onClick={() => editor.chain().focus().addColumnAfter().run()}
+        disabled={!editor.can().addColumnAfter()}
+      >
         Add Column
       </button>
-      <button onClick={() => editor.chain().focus().addRowAfter().run()} disabled={!editor.can().addRowAfter()}>
+      <button
+        onClick={() => editor.chain().focus().addRowAfter().run()}
+        disabled={!editor.can().addRowAfter()}
+      >
         Add Row
       </button>
-      <button onClick={() => editor.chain().focus().deleteColumn().run()} disabled={!editor.can().deleteColumn()}>
+      <button
+        onClick={() => editor.chain().focus().deleteColumn().run()}
+        disabled={!editor.can().deleteColumn()}
+      >
         Delete Column
       </button>
-      <button onClick={() => editor.chain().focus().deleteRow().run()} disabled={!editor.can().deleteRow()}>
+      <button
+        onClick={() => editor.chain().focus().deleteRow().run()}
+        disabled={!editor.can().deleteRow()}
+      >
         Delete Row
       </button>
-      <button onClick={() => editor.chain().focus().deleteTable().run()} disabled={!editor.can().deleteTable()}>
+      <button
+        onClick={() => editor.chain().focus().deleteTable().run()}
+        disabled={!editor.can().deleteTable()}
+      >
         Delete Table
       </button>
 
-      <div style={{ display: 'inline-flex', gap: '5px', marginLeft: '10px', borderLeft: '1px solid #ccc', paddingLeft: '10px' }}>
-        <button className="bg-primary text-white" onClick={() => setIsMediaPickerOpen(true)} title="Insertar Imagen de Mediateca">
+      <div
+        style={{
+          display: 'inline-flex',
+          gap: '5px',
+          marginLeft: '10px',
+          borderLeft: '1px solid #ccc',
+          paddingLeft: '10px',
+        }}
+      >
+        <button
+          className="bg-primary text-white"
+          onClick={() => setIsMediaPickerOpen(true)}
+          title="Insertar Imagen de Mediateca"
+        >
           Add Image
         </button>
-        <button className="bg-secondary text-white" onClick={addCarousel} title="Insertar Carrusel de Imágenes">
+        <button
+          className="bg-secondary text-white"
+          onClick={addCarousel}
+          title="Insertar Carrusel de Imágenes"
+        >
           Add Carousel
         </button>
       </div>
 
-      <MediaPickerModal 
-        isOpen={isMediaPickerOpen} 
-        onClose={() => setIsMediaPickerOpen(false)} 
-        onSelectImage={handleImageSelect} 
+      <MediaPickerModal
+        isOpen={isMediaPickerOpen}
+        onClose={() => setIsMediaPickerOpen(false)}
+        onSelectImage={handleImageSelect}
       />
     </div>
   );
@@ -170,8 +205,8 @@ const extensions = [
   Table.configure({
     resizable: true,
     HTMLAttributes: {
-    class: 'rich-text-table',
-  },
+      class: 'rich-text-table',
+    },
   }),
   TableRow,
   TableHeader,

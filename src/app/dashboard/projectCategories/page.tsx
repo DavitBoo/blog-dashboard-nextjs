@@ -1,12 +1,17 @@
-"use client";
+'use client';
 
-import BackButton from "@/app/components/BackButton";
-import InfoText from "@/app/components/InfoText";
-import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import BackButton from '@/app/components/BackButton';
+import InfoText from '@/app/components/InfoText';
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
 
-import { createProjectCategory, deleteProjectCategory, fetchProjectCategories, updateProjectCategory } from "@/utils/api";
-import { FaEdit, FaTimes, FaCheck, FaTimesCircle, FaFolder, FaPlus } from "react-icons/fa";
+import {
+  createProjectCategory,
+  deleteProjectCategory,
+  fetchProjectCategories,
+  updateProjectCategory,
+} from '@/utils/api';
+import { FaEdit, FaTimes, FaCheck, FaTimesCircle, FaFolder, FaPlus } from 'react-icons/fa';
 
 interface IProjectCategory {
   id: string;
@@ -20,10 +25,10 @@ const ProjectCategoriesPage = () => {
   const [showInfoText, setShowInfoText] = useState<boolean>(false);
   const [infoTextMessage, setInfoTextMessage] = useState<string | null>(null);
   const [categoryList, setCategoryList] = useState<IProjectCategory[]>();
-  const [newCategory, setNewCategory] = useState<string>("");
+  const [newCategory, setNewCategory] = useState<string>('');
 
   const [editingCategoryId, setEditingCategoryId] = useState<string | null>(null);
-  const [editingCategoryName, setEditingCategoryName] = useState<string>("");
+  const [editingCategoryName, setEditingCategoryName] = useState<string>('');
 
   const fetchCategoryList = async () => {
     try {
@@ -39,7 +44,7 @@ const ProjectCategoriesPage = () => {
   }, []);
 
   const successfulSubmit = () => {
-    setInfoTextMessage("Categorías actualizadas correctamente");
+    setInfoTextMessage('Categorías actualizadas correctamente');
     setShowInfoText(true);
     setTimeout(() => {
       setShowInfoText(false);
@@ -52,12 +57,12 @@ const ProjectCategoriesPage = () => {
 
     try {
       const newCatData = await createProjectCategory({ name: newCategory });
-      setNewCategory("");
+      setNewCategory('');
       setCategoryList((prev) => [...(prev ?? []), newCatData]);
       successfulSubmit();
     } catch (error) {
-      console.error("Error creating category:", error);
-      setInfoTextMessage("Error al crear la categoría");
+      console.error('Error creating category:', error);
+      setInfoTextMessage('Error al crear la categoría');
       setShowInfoText(true);
       setTimeout(() => setShowInfoText(false), 3000);
     }
@@ -77,14 +82,18 @@ const ProjectCategoriesPage = () => {
 
     try {
       await updateProjectCategory(editingCategoryId, { name: editingCategoryName });
-      setCategoryList((prev) => prev?.map(cat => cat.id === editingCategoryId ? { ...cat, name: editingCategoryName } : cat));
+      setCategoryList((prev) =>
+        prev?.map((cat) =>
+          cat.id === editingCategoryId ? { ...cat, name: editingCategoryName } : cat,
+        ),
+      );
       setEditingCategoryId(null);
-      setInfoTextMessage("Categoría actualizada");
+      setInfoTextMessage('Categoría actualizada');
       setShowInfoText(true);
       setTimeout(() => setShowInfoText(false), 3000);
     } catch (error) {
-      console.error("Error updating category:", error);
-      setInfoTextMessage("Error al actualizar la categoría");
+      console.error('Error updating category:', error);
+      setInfoTextMessage('Error al actualizar la categoría');
       setShowInfoText(true);
       setTimeout(() => setShowInfoText(false), 3000);
     }
@@ -95,18 +104,18 @@ const ProjectCategoriesPage = () => {
   };
 
   const handleCategoryDelete = async (id: string) => {
-    if (window.confirm("¿Estás seguro de que quieres eliminar esta categoría?")) {
+    if (window.confirm('¿Estás seguro de que quieres eliminar esta categoría?')) {
       try {
         const res = await deleteProjectCategory(id);
         if (res.ok) {
           fetchCategoryList();
-          setInfoTextMessage("Categoría eliminada");
+          setInfoTextMessage('Categoría eliminada');
           setShowInfoText(true);
           setTimeout(() => setShowInfoText(false), 3000);
         }
       } catch (error) {
-        console.error("Error deleting category:", error);
-        setInfoTextMessage("Error al eliminar la categoría");
+        console.error('Error deleting category:', error);
+        setInfoTextMessage('Error al eliminar la categoría');
         setShowInfoText(true);
         setTimeout(() => setShowInfoText(false), 3000);
       }
@@ -116,7 +125,7 @@ const ProjectCategoriesPage = () => {
   return (
     <main className="manage-labels-page">
       <BackButton />
-      
+
       {/* Page Header */}
       <div className="page-header">
         <div className="page-header-content">
@@ -125,7 +134,9 @@ const ProjectCategoriesPage = () => {
           </div>
           <div>
             <h1 className="page-title">Gestión de Categorías de Proyecto</h1>
-            <p className="page-subtitle">Organiza los tipos de proyectos que realizas (Ejs. Guitarras, Restauraciones)</p>
+            <p className="page-subtitle">
+              Organiza los tipos de proyectos que realizas (Ejs. Guitarras, Restauraciones)
+            </p>
           </div>
         </div>
       </div>
@@ -162,19 +173,19 @@ const ProjectCategoriesPage = () => {
                       <span className="label-name">{cat.name}</span>
                     </div>
                   )}
-                  
+
                   <div className="label-actions">
                     {editingCategoryId === cat.id ? (
                       <>
-                        <button 
-                          className="btn-icon btn-success" 
+                        <button
+                          className="btn-icon btn-success"
                           onClick={handleEditSave}
                           title="Guardar"
                         >
                           <FaCheck />
                         </button>
-                        <button 
-                          className="btn-icon btn-secondary" 
+                        <button
+                          className="btn-icon btn-secondary"
                           onClick={handleEditCancel}
                           title="Cancelar"
                         >
@@ -183,15 +194,15 @@ const ProjectCategoriesPage = () => {
                       </>
                     ) : (
                       <>
-                        <button 
-                          className="btn-icon btn-edit" 
+                        <button
+                          className="btn-icon btn-edit"
                           onClick={() => handleEditClick(cat.id, cat.name)}
                           title="Editar"
                         >
                           <FaEdit />
                         </button>
-                        <button 
-                          className="btn-icon btn-danger" 
+                        <button
+                          className="btn-icon btn-danger"
                           onClick={() => handleCategoryDelete(cat.id)}
                           title="Eliminar"
                         >
@@ -230,7 +241,7 @@ const ProjectCategoriesPage = () => {
                 onChange={(e) => setNewCategory(e.target.value)}
               />
             </div>
-            
+
             <button type="submit" className="btn btn-primary btn-create">
               <FaPlus />
               Crear Categoría

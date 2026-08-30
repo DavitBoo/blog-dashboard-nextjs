@@ -4,12 +4,12 @@
   overflow: hidden;
   position: relative;
   background-color: #e6f7fa;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.2s ease;
 }
 
 .card:hover {
-  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .imageContainer {
@@ -44,8 +44,8 @@
 .imageName {
   font-size: 14px;
   overflow: hidden;
-  textOverflow: ellipsis;
-  whiteSpace: nowrap;
+  textoverflow: ellipsis;
+  whitespace: nowrap;
   flex: 1;
 }
 

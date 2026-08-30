@@ -2,7 +2,7 @@ import IPost from './Post';
 
 enum Role {
   USER = 'USER',
-  ADMIN = 'ADMIN'
+  ADMIN = 'ADMIN',
 }
 
 interface IUser {

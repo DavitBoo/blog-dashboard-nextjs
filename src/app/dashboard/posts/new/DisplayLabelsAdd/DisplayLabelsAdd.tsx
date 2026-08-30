@@ -1,5 +1,5 @@
-import React, { ChangeEvent } from "react";
-import { ILabel } from "../../../../../interfaces/Label";
+import React, { ChangeEvent } from 'react';
+import { ILabel } from '../../../../../interfaces/Label';
 
 const DisplayLabelsAdd = ({
   labelList,

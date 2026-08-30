@@ -1,18 +1,23 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import Link from "next/link";
-import { FaEdit, FaTrashAlt } from "react-icons/fa";
-import BackButton from "@/app/components/BackButton";
-import InfoText from "@/app/components/InfoText";
-import ConfirmVidaDelete from "@/app/components/ConfirmVidaDelete";
-import { fetchVidaLibros, deleteVidaLibro, fetchVidaLecturasResumen, updateVidaLecturasResumen } from "@/utils/api";
-import { IVidaLibro } from "@/interfaces/Vida";
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { FaEdit, FaTrashAlt } from 'react-icons/fa';
+import BackButton from '@/app/components/BackButton';
+import InfoText from '@/app/components/InfoText';
+import ConfirmVidaDelete from '@/app/components/ConfirmVidaDelete';
+import {
+  fetchVidaLibros,
+  deleteVidaLibro,
+  fetchVidaLecturasResumen,
+  updateVidaLecturasResumen,
+} from '@/utils/api';
+import { IVidaLibro } from '@/interfaces/Vida';
 
 const LibrosPage = () => {
   const [libros, setLibros] = useState<IVidaLibro[]>([]);
   const [toDelete, setToDelete] = useState<number | null>(null);
-  const [cifra, setCifra] = useState("");
+  const [cifra, setCifra] = useState('');
   const [savingCifra, setSavingCifra] = useState(false);
   const [infoMessage, setInfoMessage] = useState<string | null>(null);
   const [showInfo, setShowInfo] = useState(false);
@@ -24,7 +29,9 @@ const LibrosPage = () => {
 
   useEffect(() => {
     load();
-    fetchVidaLecturasResumen().then((r) => setCifra(r.cifra || "")).catch(console.error);
+    fetchVidaLecturasResumen()
+      .then((r) => setCifra(r.cifra || ''))
+      .catch(console.error);
   }, []);
 
   const notify = (msg: string) => {
@@ -37,10 +44,10 @@ const LibrosPage = () => {
     setSavingCifra(true);
     try {
       await updateVidaLecturasResumen(cifra);
-      notify("Cifra actualizada");
+      notify('Cifra actualizada');
     } catch (e) {
       console.error(e);
-      notify("Error al guardar la cifra");
+      notify('Error al guardar la cifra');
     } finally {
       setSavingCifra(false);
     }
@@ -50,10 +57,12 @@ const LibrosPage = () => {
     <>
       <BackButton />
       <div className="page-header">
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
             <h1 className="page-title">Lecturas</h1>
-            <p className="page-subtitle">Libros que alimentan el panel de la isla portal y el catálogo /libros</p>
+            <p className="page-subtitle">
+              Libros que alimentan el panel de la isla portal y el catálogo /libros
+            </p>
           </div>
           <Link href="/dashboard/vida/libros/new" className="btn btn-primary">
             ➕ Nuevo libro
@@ -77,8 +86,11 @@ const LibrosPage = () => {
 
       <div className="dashboard-card" style={{ marginBottom: 16 }}>
         <h2>Cifra con gracia</h2>
-        <p className="page-subtitle">Texto libre que se muestra en el panel de la isla, p. ej. &quot;384.000 páginas ≈ 19 metros de estantería&quot;.</p>
-        <div style={{ display: "flex", gap: 8 }}>
+        <p className="page-subtitle">
+          Texto libre que se muestra en el panel de la isla, p. ej. &quot;384.000 páginas ≈ 19
+          metros de estantería&quot;.
+        </p>
+        <div style={{ display: 'flex', gap: 8 }}>
           <input value={cifra} onChange={(e) => setCifra(e.target.value)} style={{ flex: 1 }} />
           <button className="btn btn-primary" onClick={saveCifra} disabled={savingCifra}>
             Guardar
@@ -87,7 +99,7 @@ const LibrosPage = () => {
       </div>
 
       <div className="dashboard-card">
-        <table className="dashboard-table" style={{ width: "100%" }}>
+        <table className="dashboard-table" style={{ width: '100%' }}>
           <thead>
             <tr>
               <th>Título</th>
@@ -102,13 +114,22 @@ const LibrosPage = () => {
             {libros.map((libro) => (
               <tr key={libro.id}>
                 <td>
-                  <span style={{ display: "inline-block", width: 12, height: 12, borderRadius: 2, background: libro.color || "#8a6a3d", marginRight: 8 }} />
+                  <span
+                    style={{
+                      display: 'inline-block',
+                      width: 12,
+                      height: 12,
+                      borderRadius: 2,
+                      background: libro.color || '#8a6a3d',
+                      marginRight: 8,
+                    }}
+                  />
                   {libro.titulo}
                 </td>
                 <td>{libro.autor}</td>
                 <td>{libro.anioLectura}</td>
-                <td>{libro.genero || "—"}</td>
-                <td>{libro.destacado ? "★" : ""}</td>
+                <td>{libro.genero || '—'}</td>
+                <td>{libro.destacado ? '★' : ''}</td>
                 <td>
                   <Link href={`./libros/edit/${libro.id}`} className="btn-icon btn-edit">
                     <FaEdit />

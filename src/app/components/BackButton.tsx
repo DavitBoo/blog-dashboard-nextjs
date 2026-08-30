@@ -3,15 +3,15 @@ import { useRouter } from 'next/navigation';
 import { FaArrowLeft } from 'react-icons/fa';
 
 export default function BackButton() {
-    const router = useRouter();
-    
-    const goToPreviousPage = () => {
-        router.back();
-    };
+  const router = useRouter();
 
-    return (
-        <button className="back-btn mb-4" onClick={goToPreviousPage}>
-            <FaArrowLeft /> volver
-        </button>
-    );
+  const goToPreviousPage = () => {
+    router.back();
+  };
+
+  return (
+    <button className="back-btn mb-4" onClick={goToPreviousPage}>
+      <FaArrowLeft /> volver
+    </button>
+  );
 }

@@ -1,38 +1,38 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
+    setError('');
 
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/login`, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email, password }),
       });
 
       if (!response.ok) {
-        throw new Error("Invalid credentials");
+        throw new Error('Invalid credentials');
       }
 
       const { token } = await response.json();
       document.cookie = `token=${token}; path=/;`;
 
       // Redirect to dashboard after login
-      router.push("/dashboard");
+      router.push('/dashboard');
     } catch (err: any) {
-      setError(err.message || "Login failed");
+      setError(err.message || 'Login failed');
     }
   };
 
@@ -64,7 +64,7 @@ const Login = () => {
             <label htmlFor="password">Password</label>
           </div>
           <button className="btn-login" type="submit">
-            {" "}
+            {' '}
             <span className="btn-login-text">Login</span>
           </button>
         </form>

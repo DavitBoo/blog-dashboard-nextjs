@@ -9,12 +9,15 @@ export default function Home() {
     // Check if user is logged in by looking for token in cookies
     let isLoggedIn = false;
     try {
-      const cookies = document.cookie.split(";").reduce((acc, cookie) => {
-      const [key, value] = cookie.trim().split("=");
-      acc[key] = value;
-      return acc;
-      }, {} as Record<string, string>);
-      isLoggedIn = !!cookies["token"];
+      const cookies = document.cookie.split(';').reduce(
+        (acc, cookie) => {
+          const [key, value] = cookie.trim().split('=');
+          acc[key] = value;
+          return acc;
+        },
+        {} as Record<string, string>,
+      );
+      isLoggedIn = !!cookies['token'];
     } catch (error) {
       isLoggedIn = false;
     }

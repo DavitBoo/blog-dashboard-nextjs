@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import { useRouter } from "next/navigation";
-import BackButton from "@/app/components/BackButton";
-import VidaItemForm from "@/app/components/VidaItemForm";
-import { createVidaItem, IVidaItemPayload } from "@/utils/api";
+import { useRouter } from 'next/navigation';
+import BackButton from '@/app/components/BackButton';
+import VidaItemForm from '@/app/components/VidaItemForm';
+import { createVidaItem, IVidaItemPayload } from '@/utils/api';
 
 const NewVidaItemPage = () => {
   const router = useRouter();
 
   const handleSubmit = async (payload: IVidaItemPayload) => {
     await createVidaItem(payload);
-    router.push("/dashboard/vida/items");
+    router.push('/dashboard/vida/items');
   };
 
   return (

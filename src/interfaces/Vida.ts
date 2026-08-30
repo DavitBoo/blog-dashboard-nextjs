@@ -7,7 +7,7 @@ export interface IVidaCategoria {
   posX: number;
   posY: number;
   radio: number;
-  tipoContenido: "items" | "portal";
+  tipoContenido: 'items' | 'portal';
   urlDestino: string | null;
   endpointPreview: string | null;
   publicada: boolean;
@@ -58,7 +58,7 @@ export interface IVidaItemDetalle {
   descripcion: string | null;
   fechaInicio: string;
   fechaFin: string | null;
-  precisionFecha: "anio" | "mes" | "dia";
+  precisionFecha: 'anio' | 'mes' | 'dia';
   enCurso: boolean;
   destacado: boolean;
   peso: number;

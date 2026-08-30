@@ -1,11 +1,11 @@
 @font-face {
-  font-family: "Raleway";
-  src: url("../assets/fonts/Raleway-VariableFont_wght.ttf") format("truetype");
+  font-family: 'Raleway';
+  src: url('../assets/fonts/Raleway-VariableFont_wght.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: "Monsterrat";
-  src: url("../assets/fonts/Montserrat-VariableFont_wght.ttf");
+  font-family: 'Monsterrat';
+  src: url('../assets/fonts/Montserrat-VariableFont_wght.ttf');
 }
 
 :root {
@@ -126,7 +126,7 @@ textarea:focus {
   outline: none;
 }
 
-label:not(~ [type="checkbox"]) {
+label:not(~ [type='checkbox']) {
   pointer-events: none;
   font-size: 1em;
   position: absolute;
@@ -387,7 +387,7 @@ ul {
 .ProseMirror h6 {
   color: var(--color-font-primary);
   margin: 1rem 0 0.5rem 0;
-  font-family: "Montserrat", sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .ProseMirror h1 {
@@ -632,31 +632,31 @@ ul {
   color: var(--color-font-primary);
 }
 
-.login-container input[type="email"],
-.login-container input[type="password"] {
+.login-container input[type='email'],
+.login-container input[type='password'] {
   border: solid 1px var(--color-primary);
   margin-bottom: 0.25rem;
 }
 
-.login-container input[type="email"]:hover,
-.login-container input[type="password"]:hover {
+.login-container input[type='email']:hover,
+.login-container input[type='password']:hover {
   outline: solid 1px #d2008f;
 }
 
-.login-container input[type="email"]+label,
-.login-container input[type="password"]+label {
+.login-container input[type='email'] + label,
+.login-container input[type='password'] + label {
   top: 0.4em;
 }
 
-.login-container input[type="email"]:focus,
-.login-container input[type="password"]:focus {
+.login-container input[type='email']:focus,
+.login-container input[type='password']:focus {
   outline: solid 2px #d2008f;
 }
 
-.login-container input[type="email"]:focus+label,
-.login-container input[type="password"]:focus+label,
-.login-container input[type="email"]:not(:focus):valid~label,
-.login-container input[type="password"]:not(:focus):valid~label {
+.login-container input[type='email']:focus + label,
+.login-container input[type='password']:focus + label,
+.login-container input[type='email']:not(:focus):valid ~ label,
+.login-container input[type='password']:not(:focus):valid ~ label {
   top: -1.4em;
 }
 
@@ -676,7 +676,7 @@ ul {
 }
 
 .btn-login::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
@@ -760,11 +760,11 @@ ul {
   max-width: 100%;
 }
 
-.checkbox-container input[type="checkbox"] {
+.checkbox-container input[type='checkbox'] {
   display: none;
 }
 
-.checkbox-container input[type="checkbox"]+label {
+.checkbox-container input[type='checkbox'] + label {
   color: var(--color-font-secondary);
   display: inline-block;
   padding: 4px 10px;
@@ -774,7 +774,7 @@ ul {
   border-radius: 4px;
 }
 
-.checkbox-container input[type="checkbox"]:checked+label {
+.checkbox-container input[type='checkbox']:checked + label {
   background-color: var(--cta);
   color: var(--color-font-primary);
 }

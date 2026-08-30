@@ -1,5 +1,3 @@
-
-
 interface ProgressProps extends React.HTMLAttributes<HTMLDivElement> {
   value: number;
   max?: number;
@@ -10,7 +8,7 @@ export function Progress({ value, max = 100, className, ...props }: ProgressProp
 
   return (
     <div
-      className={`progress-container ${className || ""}`}
+      className={`progress-container ${className || ''}`}
       role="progressbar"
       aria-valuenow={value}
       aria-valuemin={0}

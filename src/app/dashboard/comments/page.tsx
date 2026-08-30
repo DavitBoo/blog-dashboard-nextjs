@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { fetchAllComments, deleteComment, approveComment } from "@/utils/api";
-import Link from "next/link";
+import { useEffect, useState } from 'react';
+import { fetchAllComments, deleteComment, approveComment } from '@/utils/api';
+import Link from 'next/link';
 
 interface Comment {
   id: number;
@@ -16,7 +16,7 @@ interface Comment {
 export default function CommentsPage() {
   const [comments, setComments] = useState<Comment[]>([]);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState<"all" | "approved" | "hidden">("all");
+  const [filter, setFilter] = useState<'all' | 'approved' | 'hidden'>('all');
 
   useEffect(() => {
     fetchAllComments()
@@ -25,7 +25,7 @@ export default function CommentsPage() {
   }, []);
 
   const handleDelete = async (id: number) => {
-    if (!confirm("¿Eliminar este comentario?")) return;
+    if (!confirm('¿Eliminar este comentario?')) return;
     await deleteComment(id);
     setComments((prev) => prev.filter((c) => c.id !== id));
   };
@@ -33,13 +33,13 @@ export default function CommentsPage() {
   const handleToggleApprove = async (id: number) => {
     const updated = await approveComment(id);
     setComments((prev) =>
-      prev.map((c) => (c.id === id ? { ...c, approved: updated.approved } : c))
+      prev.map((c) => (c.id === id ? { ...c, approved: updated.approved } : c)),
     );
   };
 
   const filtered = comments.filter((c) => {
-    if (filter === "approved") return c.approved;
-    if (filter === "hidden") return !c.approved;
+    if (filter === 'approved') return c.approved;
+    if (filter === 'hidden') return !c.approved;
     return true;
   });
 
@@ -56,14 +56,14 @@ export default function CommentsPage() {
       </div>
 
       {/* Filter tabs */}
-      <div style={{ display: "flex", gap: "0.5rem", marginBottom: "1.5rem" }}>
-        {(["all", "approved", "hidden"] as const).map((f) => (
+      <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.5rem' }}>
+        {(['all', 'approved', 'hidden'] as const).map((f) => (
           <button
             key={f}
             onClick={() => setFilter(f)}
-            className={`btn ${filter === f ? "btn-primary" : "btn-secondary"}`}
+            className={`btn ${filter === f ? 'btn-primary' : 'btn-secondary'}`}
           >
-            {f === "all" ? "Todos" : f === "approved" ? "Visibles" : "Ocultos"}
+            {f === 'all' ? 'Todos' : f === 'approved' ? 'Visibles' : 'Ocultos'}
           </button>
         ))}
       </div>
@@ -77,15 +77,15 @@ export default function CommentsPage() {
           {filtered.map((comment) => (
             <div
               key={comment.id}
-              className={`comment-moderation-item${comment.approved ? "" : " comment-hidden"}`}
+              className={`comment-moderation-item${comment.approved ? '' : ' comment-hidden'}`}
             >
               <div className="comment-meta">
                 <span className="comment-email">{comment.email}</span>
                 <span className="comment-date">
-                  {new Date(comment.createdAt).toLocaleDateString("es-ES", {
-                    day: "2-digit",
-                    month: "short",
-                    year: "numeric",
+                  {new Date(comment.createdAt).toLocaleDateString('es-ES', {
+                    day: '2-digit',
+                    month: 'short',
+                    year: 'numeric',
                   })}
                 </span>
                 <Link
@@ -93,8 +93,9 @@ export default function CommentsPage() {
                   className="comment-post-link"
                   title={comment.post.title}
                 >
-                  📝 {comment.post.title.length > 40
-                    ? comment.post.title.slice(0, 40) + "…"
+                  📝{' '}
+                  {comment.post.title.length > 40
+                    ? comment.post.title.slice(0, 40) + '…'
                     : comment.post.title}
                 </Link>
               </div>
@@ -104,14 +105,11 @@ export default function CommentsPage() {
               <div className="comment-actions">
                 <button
                   onClick={() => handleToggleApprove(comment.id)}
-                  className={`btn ${comment.approved ? "btn-secondary" : "btn-primary"}`}
+                  className={`btn ${comment.approved ? 'btn-secondary' : 'btn-primary'}`}
                 >
-                  {comment.approved ? "Ocultar" : "Aprobar"}
+                  {comment.approved ? 'Ocultar' : 'Aprobar'}
                 </button>
-                <button
-                  onClick={() => handleDelete(comment.id)}
-                  className="btn btn-danger"
-                >
+                <button onClick={() => handleDelete(comment.id)} className="btn btn-danger">
                   Eliminar
                 </button>
               </div>

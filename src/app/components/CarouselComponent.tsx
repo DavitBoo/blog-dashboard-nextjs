@@ -7,47 +7,46 @@ const CarouselComponent: React.FC<NodeViewProps> = ({ node, deleteNode }) => {
   const images = node.content.content.map((child: any) => child.attrs.src);
 
   const nextSlide = () => {
-    setCurrentIndex((prevIndex) => 
-      prevIndex === images.length - 1 ? 0 : prevIndex + 1
-    );
+    setCurrentIndex((prevIndex) => (prevIndex === images.length - 1 ? 0 : prevIndex + 1));
   };
 
   const prevSlide = () => {
-    setCurrentIndex((prevIndex) => 
-      prevIndex === 0 ? images.length - 1 : prevIndex - 1
-    );
+    setCurrentIndex((prevIndex) => (prevIndex === 0 ? images.length - 1 : prevIndex - 1));
   };
 
   return (
     <NodeViewWrapper className="carousel-container">
       <div className="carousel" style={{ position: 'relative' }}>
-        <button 
-          className="carousel-button prev" 
+        <button
+          className="carousel-button prev"
           onClick={prevSlide}
           style={{ position: 'absolute', left: 0, top: '50%', zIndex: 10 }}
         >
           &lt;
         </button>
-        
-        <img 
-          src={images[currentIndex]} 
+
+        <img
+          src={images[currentIndex]}
           alt={`Slide ${currentIndex}`}
           style={{ width: '100%', display: 'block' }}
         />
-        
-        <button 
-          className="carousel-button next" 
+
+        <button
+          className="carousel-button next"
           onClick={nextSlide}
           style={{ position: 'absolute', right: 0, top: '50%', zIndex: 10 }}
         >
           &gt;
         </button>
-        
-        <div className="carousel-indicators" style={{
-          display: 'flex',
-          justifyContent: 'center',
-          marginTop: '10px'
-        }}>
+
+        <div
+          className="carousel-indicators"
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            marginTop: '10px',
+          }}
+        >
           {images.map((_: any, index: number) => (
             <button
               key={index}
@@ -59,14 +58,14 @@ const CarouselComponent: React.FC<NodeViewProps> = ({ node, deleteNode }) => {
                 borderRadius: '50%',
                 border: 'none',
                 backgroundColor: currentIndex === index ? '#000' : '#ccc',
-                cursor: 'pointer'
+                cursor: 'pointer',
               }}
             />
           ))}
         </div>
       </div>
-      
-      <button 
+
+      <button
         onClick={deleteNode}
         style={{
           position: 'absolute',
@@ -79,7 +78,7 @@ const CarouselComponent: React.FC<NodeViewProps> = ({ node, deleteNode }) => {
           width: '20px',
           height: '20px',
           cursor: 'pointer',
-          zIndex: 20
+          zIndex: 20,
         }}
       >
         ×

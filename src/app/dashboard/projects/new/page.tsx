@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from "react";
-import { ChangeEvent } from "react";
-import { createProject, fetchProjectCategories } from "../../../../utils/api";
-import dynamic from "next/dynamic";
-const RichTextEditor = dynamic(() => import("../../../components/RichTextEditor"), {
+import React, { useEffect, useState } from 'react';
+import { ChangeEvent } from 'react';
+import { createProject, fetchProjectCategories } from '../../../../utils/api';
+import dynamic from 'next/dynamic';
+const RichTextEditor = dynamic(() => import('../../../components/RichTextEditor'), {
   ssr: false,
   loading: () => <p>Loading editor...</p>,
 });
-import BackButton from "../../../components/BackButton";
+import BackButton from '../../../components/BackButton';
 
 interface IProjectCategory {
   id: string;
@@ -16,11 +16,11 @@ interface IProjectCategory {
 }
 
 const NewProject = () => {
-  const [title, setTitle] = useState("");
+  const [title, setTitle] = useState('');
   const [cover, setCover] = useState<File | null>(null);
-  const [content, setContent] = useState("");
-  const [categoryId, setCategoryId] = useState<string>("");
-  const [error, setError] = useState("");
+  const [content, setContent] = useState('');
+  const [categoryId, setCategoryId] = useState<string>('');
+  const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const [categoryList, setCategoryList] = useState<IProjectCategory[]>([]);
   const [isPublished, setIsPublished] = useState(false);
@@ -40,7 +40,7 @@ const NewProject = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!title || !content) {
-      setError("Title and content are required.");
+      setError('Title and content are required.');
       return;
     }
 
@@ -52,16 +52,16 @@ const NewProject = () => {
         isPublished,
         cover,
       });
-      setTitle("");
-      setContent("");
-      setCategoryId("");
+      setTitle('');
+      setContent('');
+      setCategoryId('');
       setIsPublished(false);
       setCover(null);
-      setError("");
+      setError('');
       setSuccess(true);
     } catch (err) {
       console.error(err);
-      setError("Failed to create project. Please try again.");
+      setError('Failed to create project. Please try again.');
     }
   };
 
@@ -78,13 +78,15 @@ const NewProject = () => {
         <header className="add-article-header">
           <h1 className="add-article-heading">Añadir Proyecto</h1>
         </header>
-        
+
         <div className="form-field">
           <h2>Categoría</h2>
           <select value={categoryId} onChange={(e) => setCategoryId(e.target.value)}>
             <option value="">-- Selecciona una categoría (Opcional) --</option>
-            {categoryList.map(c => (
-              <option key={c.id} value={c.id}>{c.name}</option>
+            {categoryList.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.name}
+              </option>
             ))}
           </select>
         </div>
@@ -109,7 +111,7 @@ const NewProject = () => {
           <h2>Contenido</h2>
           <RichTextEditor value={content} onChange={setContent} />
         </div>
-        
+
         <div className="create-article-publish-options">
           <div className="checkbox-container">
             <input

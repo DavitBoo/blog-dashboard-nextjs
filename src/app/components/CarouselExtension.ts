@@ -31,15 +31,17 @@ const CarouselExtension = Node.create<NodeConfig>({
 
   addCommands() {
     return {
-      insertCarousel: (options: { images: string[] }) => ({ commands }: CommandProps) => {
-        return commands.insertContent({
-          type: this.name,
-          content: options.images.map((url) => ({
-            type: 'image',
-            attrs: { src: url },
-          })),
-        });
-      },
+      insertCarousel:
+        (options: { images: string[] }) =>
+        ({ commands }: CommandProps) => {
+          return commands.insertContent({
+            type: this.name,
+            content: options.images.map((url) => ({
+              type: 'image',
+              attrs: { src: url },
+            })),
+          });
+        },
     };
   },
 });

@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import Link from "next/link";
-import { fetchVidaItems } from "@/utils/api";
-import { IVidaItemListado } from "@/interfaces/Vida";
-import VidaItemList from "@/app/components/VidaItemList";
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { fetchVidaItems } from '@/utils/api';
+import { IVidaItemListado } from '@/interfaces/Vida';
+import VidaItemList from '@/app/components/VidaItemList';
 
 const VidaItemsPage = () => {
   const [items, setItems] = useState<IVidaItemListado[]>([]);
-  const [filtro, setFiltro] = useState<string>("");
+  const [filtro, setFiltro] = useState<string>('');
 
   const load = async () => {
     try {
@@ -29,10 +29,12 @@ const VidaItemsPage = () => {
   return (
     <>
       <div className="page-header">
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
             <h1 className="page-title">Ítems de Vida</h1>
-            <p className="page-subtitle">Todo lo que aparece dentro de las islas del archipiélago</p>
+            <p className="page-subtitle">
+              Todo lo que aparece dentro de las islas del archipiélago
+            </p>
           </div>
           <Link href="/dashboard/vida/items/new" className="btn btn-primary">
             ➕ Nuevo ítem

@@ -1,11 +1,10 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
-import ConfirmProjectDelete from "./ConfirmProjectDelete";
+import ConfirmProjectDelete from './ConfirmProjectDelete';
 import { FaTrashAlt, FaEdit, FaEye } from 'react-icons/fa';
-import Link from "next/link";
-
+import Link from 'next/link';
 
 type Project = {
   id: number;
@@ -35,35 +34,36 @@ const ProjectList: React.FC<ProjectListProps> = ({ projects, onTogglePublish }) 
   return (
     <>
       {showDeleteModal && selectedProjectId && (
-        <ConfirmProjectDelete isOpen={showDeleteModal} onClose={handleCloseModal} projectId={selectedProjectId} />
+        <ConfirmProjectDelete
+          isOpen={showDeleteModal}
+          onClose={handleCloseModal}
+          projectId={selectedProjectId}
+        />
       )}
-      
+
       <div className="posts-grid">
         {projects.map((project) => (
           <div key={project.id} className="post-card">
-             <div className="post-card-header">
+            <div className="post-card-header">
               <h3 className="post-title">{project.title}</h3>
               <span className={`post-status ${project.published ? 'published' : 'draft'}`}>
-                {project.published ? "Published" : "Draft"}
+                {project.published ? 'Published' : 'Draft'}
               </span>
             </div>
-            
+
             <div className="post-card-actions">
               <Link href={`./projects/edit/${project.id}`} className="btn btn-sm btn-secondary">
                 <FaEdit /> Edit
               </Link>
-              
-              <button 
-                className="btn btn-sm btn-danger" 
-                onClick={() => handleDelete(project.id)}
-              >
+
+              <button className="btn btn-sm btn-danger" onClick={() => handleDelete(project.id)}>
                 <FaTrashAlt /> Delete
               </button>
             </div>
           </div>
         ))}
       </div>
-      
+
       {projects.length === 0 && (
         <div className="empty-state">
           <span className="empty-icon">📝</span>

@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useRouter } from "next/navigation";
-import { MediaGallery } from "./MediaGalery";
+import { useRouter } from 'next/navigation';
+import { MediaGallery } from './MediaGalery';
 
 export default function DashboardPage() {
   return (

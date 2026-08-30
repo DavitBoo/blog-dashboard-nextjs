@@ -1,6 +1,6 @@
-import { ILabel } from "./Label";
-import  IUser  from "./User";
-import  IComment  from "./Comment";
+import { ILabel } from './Label';
+import IUser from './User';
+import IComment from './Comment';
 
 interface IPost {
   id: number;

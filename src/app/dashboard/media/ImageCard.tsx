@@ -1,7 +1,7 @@
-import { FaTrash, FaCopy } from "react-icons/fa";
-import { Image } from "@/interfaces/Image";
-import { useState } from "react";
-import styles from "./ImageCard.module.css";
+import { FaTrash, FaCopy } from 'react-icons/fa';
+import { Image } from '@/interfaces/Image';
+import { useState } from 'react';
+import styles from './ImageCard.module.css';
 
 interface ImageCardProps {
   image: Image;

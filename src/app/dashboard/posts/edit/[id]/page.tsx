@@ -1,31 +1,31 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from "react";
-import { useRouter, useParams } from "next/navigation";
-import { ChangeEvent } from "react";
-import { createPost, editPost, fetchLabels, fetchPostById } from "../../../../../utils/api";
-import dynamic from "next/dynamic";
-const RichTextEditor = dynamic(() => import("../../../../components/RichTextEditor"), {
+import React, { useEffect, useState } from 'react';
+import { useRouter, useParams } from 'next/navigation';
+import { ChangeEvent } from 'react';
+import { createPost, editPost, fetchLabels, fetchPostById } from '../../../../../utils/api';
+import dynamic from 'next/dynamic';
+const RichTextEditor = dynamic(() => import('../../../../components/RichTextEditor'), {
   ssr: false,
   loading: () => <p>Loading editor...</p>,
 });
-import BackButton from "../../../../components/BackButton";
-import DisplayLabelsAdd from "../../new/DisplayLabelsAdd/DisplayLabelsAdd";
+import BackButton from '../../../../components/BackButton';
+import DisplayLabelsAdd from '../../new/DisplayLabelsAdd/DisplayLabelsAdd';
 
-import { ILabel } from "../../../../../interfaces/Label";
+import { ILabel } from '../../../../../interfaces/Label';
 
 const EditPost = () => {
   const params = useParams();
   const postId = params?.id;
 
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
   const [cover, setCover] = useState<File | null>(null);
   const [coverPreview, setCoverPreview] = useState<string | null>(null);
   const [currentCoverUrl, setCurrentCoverUrl] = useState<string | null>(null);
-  const [metaTitle, setMetaTitle] = useState("");
-  const [metaDescription, setMetaDescription] = useState("");
-  const [error, setError] = useState("");
+  const [metaTitle, setMetaTitle] = useState('');
+  const [metaDescription, setMetaDescription] = useState('');
+  const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const [labelList, setLabelList] = useState<ILabel[]>([]);
   const [selectedLabels, setSelectedLabels] = useState<string[]>([]);
@@ -42,14 +42,14 @@ const EditPost = () => {
         if (post) {
           setTitle(post.title);
           setContent(post.content);
-          setMetaTitle(post.metaTitle)
-          setMetaDescription(post.metaDescription)
+          setMetaTitle(post.metaTitle);
+          setMetaDescription(post.metaDescription);
           setSelectedLabels(post.labels.map((label: any) => label.id.toString()));
           setIsPublished(post.published);
           setCurrentCoverUrl(post.coverUrl ?? null);
         }
       } catch (error) {
-        console.error("Error fetching post data:", error);
+        console.error('Error fetching post data:', error);
       } finally {
         setLoading(false);
       }
@@ -72,7 +72,7 @@ const EditPost = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!title || !content) {
-      setError("Title and content are required.");
+      setError('Title and content are required.');
       return;
     }
 
@@ -87,14 +87,14 @@ const EditPost = () => {
         cover,
       };
 
-      if (!postId || typeof postId !== "string") {
-        throw new Error("Invalid post ID");
+      if (!postId || typeof postId !== 'string') {
+        throw new Error('Invalid post ID');
       }
       await editPost(postData, postId);
       setSuccess(true);
     } catch (err) {
       console.error(err);
-      setError("Failed to update post. Please try again.");
+      setError('Failed to update post. Please try again.');
     }
   };
 
@@ -124,14 +124,14 @@ const EditPost = () => {
             <img
               src={coverPreview}
               alt="Vista previa de la nueva portada"
-              style={{ maxWidth: "200px", display: "block", marginBottom: "0.5rem" }}
+              style={{ maxWidth: '200px', display: 'block', marginBottom: '0.5rem' }}
             />
           ) : (
             currentCoverUrl && (
               <img
                 src={currentCoverUrl}
                 alt="Portada actual"
-                style={{ maxWidth: "200px", display: "block", marginBottom: "0.5rem" }}
+                style={{ maxWidth: '200px', display: 'block', marginBottom: '0.5rem' }}
               />
             )
           )}
@@ -151,7 +151,11 @@ const EditPost = () => {
         </div>
         <div className="form-field">
           <h2>Contenido</h2>
-          {loading ? <p>Cargando contenido...</p> : <RichTextEditor value={content} onChange={setContent} />}
+          {loading ? (
+            <p>Cargando contenido...</p>
+          ) : (
+            <RichTextEditor value={content} onChange={setContent} />
+          )}
         </div>
         <div className="form-field">
           <h2>Meta título (SEO)</h2>

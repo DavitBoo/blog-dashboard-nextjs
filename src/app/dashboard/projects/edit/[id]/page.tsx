@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from "react";
-import { ChangeEvent } from "react";
-import { editProject, fetchProjectById, fetchProjectCategories } from "../../../../../utils/api";
-import dynamic from "next/dynamic";
-const RichTextEditor = dynamic(() => import("../../../../components/RichTextEditor"), {
+import React, { useEffect, useState } from 'react';
+import { ChangeEvent } from 'react';
+import { editProject, fetchProjectById, fetchProjectCategories } from '../../../../../utils/api';
+import dynamic from 'next/dynamic';
+const RichTextEditor = dynamic(() => import('../../../../components/RichTextEditor'), {
   ssr: false,
   loading: () => <p>Loading editor...</p>,
 });
-import BackButton from "../../../../components/BackButton";
-import { useParams } from "next/navigation";
+import BackButton from '../../../../components/BackButton';
+import { useParams } from 'next/navigation';
 
 interface IProjectCategory {
   id: string;
@@ -19,11 +19,11 @@ interface IProjectCategory {
 const EditProject = () => {
   const { id } = useParams() as { id: string };
 
-  const [title, setTitle] = useState("");
+  const [title, setTitle] = useState('');
   const [cover, setCover] = useState<File | null>(null);
-  const [content, setContent] = useState("");
-  const [categoryId, setCategoryId] = useState<string>("");
-  const [error, setError] = useState("");
+  const [content, setContent] = useState('');
+  const [categoryId, setCategoryId] = useState<string>('');
+  const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const [categoryList, setCategoryList] = useState<IProjectCategory[]>([]);
   const [isPublished, setIsPublished] = useState(false);
@@ -33,17 +33,17 @@ const EditProject = () => {
       try {
         const catData = await fetchProjectCategories();
         setCategoryList(catData);
-        
+
         if (id) {
           const projectData = await fetchProjectById(parseInt(id, 10));
           setTitle(projectData.title);
           setContent(projectData.content);
-          setCategoryId(projectData.categoryId ? String(projectData.categoryId) : "");
+          setCategoryId(projectData.categoryId ? String(projectData.categoryId) : '');
           setIsPublished(projectData.published);
         }
       } catch (e) {
         console.error(e);
-        setError("Error loading project information");
+        setError('Error loading project information');
       }
     };
     fetchData();
@@ -52,7 +52,7 @@ const EditProject = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!title || !content) {
-      setError("Title and content are required.");
+      setError('Title and content are required.');
       return;
     }
 
@@ -64,12 +64,12 @@ const EditProject = () => {
         isPublished,
         cover,
       });
-      setError("");
+      setError('');
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3000);
     } catch (err) {
       console.error(err);
-      setError("Failed to update project. Please try again.");
+      setError('Failed to update project. Please try again.');
     }
   };
 
@@ -91,8 +91,10 @@ const EditProject = () => {
           <h2>Categoría</h2>
           <select value={categoryId} onChange={(e) => setCategoryId(e.target.value)}>
             <option value="">-- Selecciona una categoría (Opcional) --</option>
-            {categoryList.map(c => (
-              <option key={c.id} value={c.id}>{c.name}</option>
+            {categoryList.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.name}
+              </option>
             ))}
           </select>
         </div>
@@ -117,7 +119,7 @@ const EditProject = () => {
           <h2>Contenido</h2>
           <RichTextEditor value={content} onChange={setContent} />
         </div>
-        
+
         <div className="create-article-publish-options">
           <div className="checkbox-container">
             <input

@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import { IVidaLibro } from "@/interfaces/Vida";
+import React, { useState } from 'react';
+import { IVidaLibro } from '@/interfaces/Vida';
 
 interface Props {
   initial?: IVidaLibro;
@@ -10,22 +10,22 @@ interface Props {
 }
 
 const VidaLibroForm: React.FC<Props> = ({ initial, onSubmit, submitLabel }) => {
-  const [titulo, setTitulo] = useState(initial?.titulo || "");
-  const [autor, setAutor] = useState(initial?.autor || "");
+  const [titulo, setTitulo] = useState(initial?.titulo || '');
+  const [autor, setAutor] = useState(initial?.autor || '');
   const [anioLectura, setAnioLectura] = useState(initial?.anioLectura ?? new Date().getFullYear());
-  const [genero, setGenero] = useState(initial?.genero || "");
-  const [nota, setNota] = useState(initial?.nota || "");
-  const [color, setColor] = useState(initial?.color || "#04adbf");
-  const [paginas, setPaginas] = useState(initial?.paginas != null ? String(initial.paginas) : "");
+  const [genero, setGenero] = useState(initial?.genero || '');
+  const [nota, setNota] = useState(initial?.nota || '');
+  const [color, setColor] = useState(initial?.color || '#04adbf');
+  const [paginas, setPaginas] = useState(initial?.paginas != null ? String(initial.paginas) : '');
   const [destacado, setDestacado] = useState(initial?.destacado ?? false);
   const [orden, setOrden] = useState(initial?.orden ?? 0);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const [saving, setSaving] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!titulo.trim() || !autor.trim()) {
-      setError("Título y autor son obligatorios.");
+      setError('Título y autor son obligatorios.');
       return;
     }
     setSaving(true);
@@ -37,13 +37,13 @@ const VidaLibroForm: React.FC<Props> = ({ initial, onSubmit, submitLabel }) => {
         genero: genero || null,
         nota: nota || null,
         color,
-        paginas: paginas !== "" ? Number(paginas) : null,
+        paginas: paginas !== '' ? Number(paginas) : null,
         destacado,
         orden: Number(orden),
       });
     } catch (err) {
       console.error(err);
-      setError(err instanceof Error ? err.message : "Error al guardar el libro.");
+      setError(err instanceof Error ? err.message : 'Error al guardar el libro.');
     } finally {
       setSaving(false);
     }
@@ -54,7 +54,7 @@ const VidaLibroForm: React.FC<Props> = ({ initial, onSubmit, submitLabel }) => {
       {error && <p className="error">{error}</p>}
       <form onSubmit={handleSubmit}>
         <header className="add-article-header">
-          <h1 className="add-article-heading">{initial ? "Editar libro" : "Nuevo libro"}</h1>
+          <h1 className="add-article-heading">{initial ? 'Editar libro' : 'Nuevo libro'}</h1>
         </header>
 
         <div className="add-article-title-container">
@@ -67,10 +67,15 @@ const VidaLibroForm: React.FC<Props> = ({ initial, onSubmit, submitLabel }) => {
           <input value={autor} onChange={(e) => setAutor(e.target.value)} />
         </div>
 
-        <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+        <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
           <div className="form-field">
             <h2>Año de lectura</h2>
-            <input type="number" value={anioLectura} onChange={(e) => setAnioLectura(Number(e.target.value))} style={{ width: 100 }} />
+            <input
+              type="number"
+              value={anioLectura}
+              onChange={(e) => setAnioLectura(Number(e.target.value))}
+              style={{ width: 100 }}
+            />
           </div>
           <div className="form-field">
             <h2>Color del lomo</h2>
@@ -78,15 +83,29 @@ const VidaLibroForm: React.FC<Props> = ({ initial, onSubmit, submitLabel }) => {
           </div>
           <div className="form-field">
             <h2>Páginas</h2>
-            <input type="number" value={paginas} onChange={(e) => setPaginas(e.target.value)} style={{ width: 100 }} />
+            <input
+              type="number"
+              value={paginas}
+              onChange={(e) => setPaginas(e.target.value)}
+              style={{ width: 100 }}
+            />
           </div>
           <div className="form-field">
             <h2>Orden</h2>
-            <input type="number" value={orden} onChange={(e) => setOrden(Number(e.target.value))} style={{ width: 80 }} />
+            <input
+              type="number"
+              value={orden}
+              onChange={(e) => setOrden(Number(e.target.value))}
+              style={{ width: 80 }}
+            />
           </div>
           <div className="form-field">
             <h2>Género</h2>
-            <input value={genero} onChange={(e) => setGenero(e.target.value)} placeholder="Novela, Ensayo, Técnico..." />
+            <input
+              value={genero}
+              onChange={(e) => setGenero(e.target.value)}
+              placeholder="Novela, Ensayo, Técnico..."
+            />
           </div>
         </div>
 
@@ -96,12 +115,17 @@ const VidaLibroForm: React.FC<Props> = ({ initial, onSubmit, submitLabel }) => {
         </div>
 
         <div className="checkbox-container">
-          <input id="destacado" type="checkbox" checked={destacado} onChange={(e) => setDestacado(e.target.checked)} />
+          <input
+            id="destacado"
+            type="checkbox"
+            checked={destacado}
+            onChange={(e) => setDestacado(e.target.checked)}
+          />
           <label htmlFor="destacado">Destacado (aparece en el panel de la isla)</label>
         </div>
 
         <button type="submit" className="button" disabled={saving}>
-          {saving ? "Guardando..." : submitLabel}
+          {saving ? 'Guardando...' : submitLabel}
         </button>
       </form>
     </div>

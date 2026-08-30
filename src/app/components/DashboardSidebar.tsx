@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useState } from "react";
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useState } from 'react';
 
 type MenuItemWithLink = {
   href: string;
@@ -34,94 +34,94 @@ const DashboardSidebar = () => {
 
   const menuItems: MenuItem[] = [
     {
-      href: "/dashboard",
-      label: "Dashboard Home",
-      icon: "📊",
+      href: '/dashboard',
+      label: 'Dashboard Home',
+      icon: '📊',
       exact: true,
     },
     {
-      label: "Posts",
-      icon: "📝",
+      label: 'Posts',
+      icon: '📝',
       children: [
         {
-          href: "/dashboard/posts",
-          label: "Manage Posts",
+          href: '/dashboard/posts',
+          label: 'Manage Posts',
           exact: false,
         },
         {
-          href: "/dashboard/posts/new",
-          label: "Create New Post",
+          href: '/dashboard/posts/new',
+          label: 'Create New Post',
           exact: true,
         },
       ],
     },
     {
-      href: "/dashboard/comments",
-      label: "Manage Comments",
-      icon: "💬",
+      href: '/dashboard/comments',
+      label: 'Manage Comments',
+      icon: '💬',
       exact: true,
     },
     {
-      href: "/dashboard/manageLabels",
-      label: "Manage Labels",
-      icon: "🏷️",
+      href: '/dashboard/manageLabels',
+      label: 'Manage Labels',
+      icon: '🏷️',
       exact: true,
     },
     {
-      label: "Proyectos",
-      icon: "🗂️",
+      label: 'Proyectos',
+      icon: '🗂️',
       children: [
         {
-          href: "/dashboard/projects",
-          label: "Manage Projects",
+          href: '/dashboard/projects',
+          label: 'Manage Projects',
           exact: false,
         },
         {
-          href: "/dashboard/projects/new",
-          label: "Create New Project",
+          href: '/dashboard/projects/new',
+          label: 'Create New Project',
           exact: true,
         },
       ],
     },
     {
-      href: "/dashboard/projectCategories",
-      label: "Project Categories",
-      icon: "📂",
+      href: '/dashboard/projectCategories',
+      label: 'Project Categories',
+      icon: '📂',
       exact: true,
     },
     {
-      href: "/dashboard/media",
-      label: "Media Manager",
-      icon: "📷",
+      href: '/dashboard/media',
+      label: 'Media Manager',
+      icon: '📷',
       exact: true,
     },
     {
-      label: "Vida",
-      icon: "🏝️",
+      label: 'Vida',
+      icon: '🏝️',
       children: [
         {
-          href: "/dashboard/vida/categorias",
-          label: "Islas (categorías)",
+          href: '/dashboard/vida/categorias',
+          label: 'Islas (categorías)',
           exact: true,
         },
         {
-          href: "/dashboard/vida/items",
-          label: "Ítems",
+          href: '/dashboard/vida/items',
+          label: 'Ítems',
           exact: false,
         },
         {
-          href: "/dashboard/vida/items/new",
-          label: "Nuevo ítem",
+          href: '/dashboard/vida/items/new',
+          label: 'Nuevo ítem',
           exact: true,
         },
         {
-          href: "/dashboard/vida/tags",
-          label: "Tags",
+          href: '/dashboard/vida/tags',
+          label: 'Tags',
           exact: true,
         },
         {
-          href: "/dashboard/vida/libros",
-          label: "Lecturas",
+          href: '/dashboard/vida/libros',
+          label: 'Lecturas',
           exact: false,
         },
       ],
@@ -132,15 +132,18 @@ const DashboardSidebar = () => {
     if (exact) {
       return pathname === href;
     }
-    return pathname.startsWith(href) && pathname !== "/dashboard";
+    return pathname.startsWith(href) && pathname !== '/dashboard';
   };
 
   const renderMenuItem = (item: MenuItem) => {
-    if ("href" in item) {
+    if ('href' in item) {
       // Render simple link item
       return (
         <li key={item.href}>
-          <Link href={item.href} className={`nav-link ${isActive(item.href, item.exact) ? "active" : ""}`}>
+          <Link
+            href={item.href}
+            className={`nav-link ${isActive(item.href, item.exact) ? 'active' : ''}`}
+          >
             <span className="nav-icon">{item.icon}</span>
             {item.label}
           </Link>
@@ -154,14 +157,14 @@ const DashboardSidebar = () => {
       return (
         <li key={item.label}>
           <div
-            className={`nav-link ${isPostsActive ? "active" : ""}`}
+            className={`nav-link ${isPostsActive ? 'active' : ''}`}
             onClick={() => toggleMenu(item.label)}
-            style={{ cursor: "pointer" }}
+            style={{ cursor: 'pointer' }}
           >
             <span className="nav-icon">{item.icon}</span>
             {item.label}
-            <span className="menu-arrow" style={{ marginLeft: "auto" }}>
-              {isExpanded ? "▼" : "▶"}
+            <span className="menu-arrow" style={{ marginLeft: 'auto' }}>
+              {isExpanded ? '▼' : '▶'}
             </span>
           </div>
           {isExpanded && (
@@ -170,7 +173,7 @@ const DashboardSidebar = () => {
                 <li key={child.href}>
                   <Link
                     href={child.href}
-                    className={`submenu-link ${isActive(child.href, child.exact) ? "active" : ""}`}
+                    className={`submenu-link ${isActive(child.href, child.exact) ? 'active' : ''}`}
                   >
                     {child.label}
                   </Link>
@@ -189,14 +192,14 @@ const DashboardSidebar = () => {
         ☰
       </button>
       <div className="dashboard-container">
-          <aside className={`dashboard-sidebar ${sidebarOpen ? "open" : "closed"}`}>
-            <div className="sidebar-header">
-              <h2>Dashboard</h2>
-            </div>
-            <nav className="sidebar-nav">
-              <ul>{menuItems.map(renderMenuItem)}</ul>
-            </nav>
-          </aside>
+        <aside className={`dashboard-sidebar ${sidebarOpen ? 'open' : 'closed'}`}>
+          <div className="sidebar-header">
+            <h2>Dashboard</h2>
+          </div>
+          <nav className="sidebar-nav">
+            <ul>{menuItems.map(renderMenuItem)}</ul>
+          </nav>
+        </aside>
       </div>
     </>
   );

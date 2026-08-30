@@ -1,25 +1,25 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from "react";
-import { ChangeEvent } from "react";
-import { createPost, fetchLabels } from "../../../../utils/api";
-import dynamic from "next/dynamic";
-const RichTextEditor = dynamic(() => import("../../../components/RichTextEditor"), {
+import React, { useEffect, useState } from 'react';
+import { ChangeEvent } from 'react';
+import { createPost, fetchLabels } from '../../../../utils/api';
+import dynamic from 'next/dynamic';
+const RichTextEditor = dynamic(() => import('../../../components/RichTextEditor'), {
   ssr: false,
   loading: () => <p>Loading editor...</p>,
 });
-import BackButton from "../../../components/BackButton";
-import DisplayLabelsAdd from "./DisplayLabelsAdd/DisplayLabelsAdd";
+import BackButton from '../../../components/BackButton';
+import DisplayLabelsAdd from './DisplayLabelsAdd/DisplayLabelsAdd';
 
-import { ILabel } from "../../../../interfaces/Label";
+import { ILabel } from '../../../../interfaces/Label';
 
 const NewPost = () => {
-  const [title, setTitle] = useState("");
+  const [title, setTitle] = useState('');
   const [cover, setCover] = useState<File | null>(null);
-  const [content, setContent] = useState("");
-  const [metaTitle, setMetaTitle] = useState("");
-  const [metaDescription, setMetaDescription] = useState("");
-  const [error, setError] = useState("");
+  const [content, setContent] = useState('');
+  const [metaTitle, setMetaTitle] = useState('');
+  const [metaDescription, setMetaDescription] = useState('');
+  const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const [labelList, setLabelList] = useState<ILabel[]>([]);
   const [selectedLabels, setSelectedLabels] = useState<string[]>([]);
@@ -36,7 +36,7 @@ const NewPost = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!title || !content) {
-      setError("Title and content are required.");
+      setError('Title and content are required.');
       return;
     }
 
@@ -50,16 +50,16 @@ const NewPost = () => {
         isPublished,
         cover,
       });
-      setTitle("");
-      setContent("");
+      setTitle('');
+      setContent('');
       setSelectedLabels([]);
       setIsPublished(false);
       setCover(null);
-      setError("");
+      setError('');
       setSuccess(true);
     } catch (err) {
       console.error(err);
-      setError("Failed to create post. Please try again.");
+      setError('Failed to create post. Please try again.');
     }
   };
 
