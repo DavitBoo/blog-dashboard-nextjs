@@ -125,6 +125,13 @@ const MenuBar = () => {
         Ordered List
       </button>
       <button
+        onClick={() => editor.chain().focus().toggleBlockquote().run()}
+        className={editor.isActive('blockquote') ? 'active' : ''}
+        title="Insertar cita"
+      >
+        Quote
+      </button>
+      <button
         onClick={() =>
           editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()
         }
