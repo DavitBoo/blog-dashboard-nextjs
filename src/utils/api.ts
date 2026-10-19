@@ -26,7 +26,7 @@ export const fetchPosts = async () => {
     method: 'GET',
     headers: getAuthHeaders('application/json'),
   });
-  console.log(response);
+  await assertOk(response, 'Failed to fetch posts');
   return response.json();
 };
 
@@ -406,6 +406,7 @@ export const fetchProjects = async () => {
     method: 'GET',
     headers: getAuthHeaders('application/json'),
   });
+  await assertOk(response, 'Failed to fetch projects');
   return response.json();
 };
 
