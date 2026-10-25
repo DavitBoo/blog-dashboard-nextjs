@@ -179,30 +179,195 @@ p {
 }
 
 .toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
   display: flex;
-  gap: 10px;
+  flex-direction: column;
+  gap: 6px;
   margin-bottom: 10px;
-  flex-wrap: wrap;
+  padding: 6px;
+  border: 1px solid var(--color-font-secondary);
+  border-radius: 4px;
+  background-color: var(--color-background-lighter);
 }
 
-.toolbar button {
-  padding: 0.25rem 0.5rem;
+.toolbar-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+}
+
+.toolbar-table {
+  padding-top: 6px;
+  border-top: 1px dashed var(--color-font-secondary);
+}
+
+.toolbar-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-font-secondary);
+  margin-right: 4px;
+}
+
+.toolbar-divider {
+  width: 1px;
+  height: 22px;
+  margin: 0 4px;
+  background-color: #ccc;
+}
+
+.toolbar button,
+.bubble-menu button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 0.4rem;
   border: 1px solid #ccc;
   border-radius: 0.25rem;
   background-color: #f5f5f5;
   cursor: pointer;
   color: #000;
+  font-size: 0.85rem;
 }
 
-.toolbar button:hover {
+.toolbar button svg,
+.bubble-menu button svg {
+  width: 18px;
+  height: 18px;
+}
+
+.toolbar button:hover:not(:disabled),
+.bubble-menu button:hover:not(:disabled) {
   background-color: var(--color-primary);
   color: var(--color-background);
 }
 
-.toolbar button.active {
+.toolbar button.active,
+.bubble-menu button.active {
   background-color: var(--color-primary-darker);
   color: var(--color-background);
   border-color: var(--color-primary-darker);
+}
+
+.toolbar button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.toolbar-select {
+  height: 32px;
+  width: auto;
+  padding: 0 0.4rem;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+  background-color: #f5f5f5;
+  color: #000;
+  cursor: pointer;
+}
+
+/* El label absoluto genérico de los formularios no aplica aquí */
+label.toolbar-color {
+  position: static;
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  height: 32px;
+  padding: 0 0.3rem;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+  background-color: #f5f5f5;
+  color: #000;
+  cursor: pointer;
+}
+
+.toolbar-color input[type='color'] {
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.bubble-menu {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid var(--color-font-secondary);
+  border-radius: 6px;
+  background-color: var(--color-background);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.editor-footer {
+  margin-top: 6px;
+  font-size: 0.8rem;
+  text-align: right;
+  color: var(--color-font-secondary);
+}
+
+.ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+  color: #9aa5ab;
+}
+
+.ProseMirror a {
+  color: var(--color-font-secondary);
+  text-decoration: underline;
+}
+
+.ProseMirror mark {
+  padding: 0 0.1em;
+  border-radius: 2px;
+}
+
+.ProseMirror hr {
+  margin: 1.5rem 0;
+  border: none;
+  border-top: 2px solid var(--color-primary);
+}
+
+.ProseMirror ul[data-type='taskList'] {
+  list-style: none;
+  padding-left: 0.5rem;
+}
+
+.ProseMirror ul[data-type='taskList'] li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.ProseMirror ul[data-type='taskList'] li > label {
+  position: static;
+  pointer-events: auto;
+  margin-top: 0.3rem;
+}
+
+.ProseMirror ul[data-type='taskList'] li > div {
+  flex: 1;
+}
+
+.ProseMirror div[data-youtube-video] iframe {
+  width: 100%;
+  max-width: 640px;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  border: 0;
+  border-radius: 8px;
+}
+
+.ProseMirror img.ProseMirror-selectednode,
+.ProseMirror div[data-youtube-video].ProseMirror-selectednode {
+  outline: 3px solid var(--color-primary);
 }
 
 /*carousel*/
