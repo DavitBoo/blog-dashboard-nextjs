@@ -143,7 +143,9 @@ export const editPost = async (
 };
 
 export const fetchCommentsByPostId = async (postId: string) => {
-  const response = await fetch(`${API_URL}/comments/${postId}`);
+  // Con sesión: el email de quien comenta solo se devuelve al panel
+  const response = await fetch(`${API_URL}/comments/${postId}`, { headers: getAuthHeaders() });
+  await assertOk(response, 'Failed to fetch comments');
   return response.json();
 };
 
@@ -410,8 +412,9 @@ export const fetchProjects = async () => {
 };
 
 export const fetchProjectById = async (id: number) => {
-  const response = await fetch(`${API_URL}/projects/${id}`);
-  if (!response.ok) throw new Error('Failed to fetch project');
+  // Con sesión: los borradores no son accesibles de forma anónima
+  const response = await fetch(`${API_URL}/projects/${id}`, { headers: getAuthHeaders() });
+  await assertOk(response, 'Failed to fetch project');
   return response.json();
 };
 
