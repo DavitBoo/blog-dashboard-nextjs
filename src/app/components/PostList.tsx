@@ -3,8 +3,9 @@
 import React, { useState } from 'react';
 
 import ConfirmArticleDelete from './ConfirmArticleDelete';
-import { FaTrashAlt, FaEdit, FaEye } from 'react-icons/fa';
+import { FaTrashAlt, FaEdit, FaEye, FaDownload } from 'react-icons/fa';
 import Link from 'next/link';
+import { exportPostAsMarkdown } from '@/utils/postToMarkdown';
 
 type Post = {
   id: number;
@@ -20,6 +21,21 @@ type PostListProps = {
 const PostList: React.FC<PostListProps> = ({ posts, onTogglePublish }) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedPostId, setSelectedPostId] = useState<number | null>(null);
+  const [exportingPostId, setExportingPostId] = useState<number | null>(null);
+  const [exportError, setExportError] = useState('');
+
+  const handleExport = async (postId: number) => {
+    setExportingPostId(postId);
+    setExportError('');
+    try {
+      await exportPostAsMarkdown(postId);
+    } catch (error) {
+      console.error('Error exporting post: ', error);
+      setExportError('No se pudo exportar el artículo. Inténtalo de nuevo.');
+    } finally {
+      setExportingPostId(null);
+    }
+  };
 
   const handleDelete = (postId: number) => {
     setSelectedPostId(postId);
@@ -40,6 +56,8 @@ const PostList: React.FC<PostListProps> = ({ posts, onTogglePublish }) => {
           postId={selectedPostId}
         />
       )}
+
+      {exportError && <p className="error">{exportError}</p>}
 
       <div className="posts-grid">
         {posts.map((post) => (
@@ -68,6 +86,14 @@ const PostList: React.FC<PostListProps> = ({ posts, onTogglePublish }) => {
               <Link href={`./posts/edit/${post.id}`} className="btn btn-sm btn-secondary">
                 <FaEdit /> Edit
               </Link>
+
+              <button
+                className="btn btn-sm btn-secondary"
+                onClick={() => handleExport(post.id)}
+                disabled={exportingPostId === post.id}
+              >
+                <FaDownload /> Export .md
+              </button>
 
               <button className="btn btn-sm btn-danger" onClick={() => handleDelete(post.id)}>
                 <FaTrashAlt /> Delete
