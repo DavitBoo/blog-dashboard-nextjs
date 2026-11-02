@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 
 import ConfirmProjectDelete from './ConfirmProjectDelete';
-import { FaTrashAlt, FaEdit, FaEye } from 'react-icons/fa';
+import { FaTrashAlt, FaEdit } from 'react-icons/fa';
 import Link from 'next/link';
 
 type Project = {
@@ -14,10 +14,9 @@ type Project = {
 
 type ProjectListProps = {
   projects: Project[];
-  onTogglePublish?: (id: number, isPublished: boolean) => void;
 };
 
-const ProjectList: React.FC<ProjectListProps> = ({ projects, onTogglePublish }) => {
+const ProjectList: React.FC<ProjectListProps> = ({ projects }) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedProjectId, setSelectedProjectId] = useState<number | null>(null);
 

@@ -30,7 +30,7 @@ export function MediaGallery() {
       setIsLoading(true);
       const data = await listImages();
       setImages(data.images);
-    } catch (error) {
+    } catch {
       console.log('Error: No se pudieron cargar las imágenes');
     } finally {
       setIsLoading(false);
@@ -51,7 +51,7 @@ export function MediaGallery() {
       await deleteImage(fileName);
       console.log('Éxito: Imagen eliminada correctamente');
       loadImages();
-    } catch (error) {
+    } catch {
       console.log('Error: No se pudo eliminar la imagen');
     }
   };
@@ -64,7 +64,7 @@ export function MediaGallery() {
       setSelectedImages(new Set());
       setDeleteDialogOpen(false);
       loadImages();
-    } catch (error) {
+    } catch {
       console.log('Error: No se pudieron eliminar las imágenes');
     }
   };

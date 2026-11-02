@@ -4,7 +4,7 @@ import { NodeViewProps, NodeViewWrapper } from '@tiptap/react';
 const CarouselComponent: React.FC<NodeViewProps> = ({ node, deleteNode }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const images = node.content.content.map((child: any) => child.attrs.src);
+  const images = node.content.content.map((child) => child.attrs.src);
 
   const nextSlide = () => {
     setCurrentIndex((prevIndex) => (prevIndex === images.length - 1 ? 0 : prevIndex + 1));
@@ -47,7 +47,7 @@ const CarouselComponent: React.FC<NodeViewProps> = ({ node, deleteNode }) => {
             marginTop: '10px',
           }}
         >
-          {images.map((_: any, index: number) => (
+          {images.map((_, index) => (
             <button
               key={index}
               onClick={() => setCurrentIndex(index)}

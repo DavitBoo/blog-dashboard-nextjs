@@ -1,9 +1,10 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useRouter, useParams } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { ChangeEvent } from 'react';
-import { createPost, editPost, fetchLabels, fetchPostById } from '../../../../../utils/api';
+import { editPost, fetchLabels, fetchPostById } from '../../../../../utils/api';
+import { downloadPostAsMarkdown, type ExportablePost } from '../../../../../utils/postToMarkdown';
 import dynamic from 'next/dynamic';
 const RichTextEditor = dynamic(() => import('../../../../components/RichTextEditor'), {
   ssr: false,
@@ -31,6 +32,7 @@ const EditPost = () => {
   const [selectedLabels, setSelectedLabels] = useState<string[]>([]);
   const [isPublished, setIsPublished] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [savedPost, setSavedPost] = useState<ExportablePost | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,11 +42,12 @@ const EditPost = () => {
 
         setLabelList(labels);
         if (post) {
+          setSavedPost(post);
           setTitle(post.title);
           setContent(post.content);
           setMetaTitle(post.metaTitle);
           setMetaDescription(post.metaDescription);
-          setSelectedLabels(post.labels.map((label: any) => label.id.toString()));
+          setSelectedLabels(post.labels.map((label: ILabel) => label.id.toString()));
           setIsPublished(post.published);
           setCurrentCoverUrl(post.coverUrl ?? null);
         }
@@ -90,12 +93,27 @@ const EditPost = () => {
       if (!postId || typeof postId !== 'string') {
         throw new Error('Invalid post ID');
       }
-      await editPost(postData, postId);
+      setSavedPost(await editPost(postData, postId));
       setSuccess(true);
     } catch (err) {
       console.error(err);
       setError('Failed to update post. Please try again.');
     }
+  };
+
+  // Exporta lo que hay en el formulario, incluidos los cambios sin guardar. Una portada nueva aún no
+  // tiene URL hasta que se guarda, así que se exporta la última guardada.
+  const handleExport = () => {
+    if (!savedPost) return;
+    downloadPostAsMarkdown({
+      ...savedPost,
+      title,
+      content,
+      metaTitle,
+      metaDescription,
+      published: isPublished,
+      labels: labelList.filter((label) => selectedLabels.includes(label.id.toString())),
+    });
   };
 
   const handleIsPublishedCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -178,9 +196,14 @@ const EditPost = () => {
             <label htmlFor="publishArticle">Publicar artículo</label>
           </div>
         </div>
-        <button type="submit" className="button">
-          Update Post
-        </button>
+        <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+          <button type="submit" className="button">
+            Update Post
+          </button>
+          <button type="button" className="button" onClick={handleExport} disabled={!savedPost}>
+            Exportar .md
+          </button>
+        </div>
       </form>
     </div>
   );

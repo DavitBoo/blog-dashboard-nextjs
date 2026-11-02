@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-type Comment = {
+export type Comment = {
   id: number;
   content: string;
   email: string;

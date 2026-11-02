@@ -2,7 +2,6 @@
 
 import BackButton from '@/app/components/BackButton';
 import InfoText from '@/app/components/InfoText';
-import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 import {
@@ -20,8 +19,6 @@ interface IProjectCategory {
 }
 
 const ProjectCategoriesPage = () => {
-  const router = useRouter();
-
   const [showInfoText, setShowInfoText] = useState<boolean>(false);
   const [infoTextMessage, setInfoTextMessage] = useState<string | null>(null);
   const [categoryList, setCategoryList] = useState<IProjectCategory[]>();

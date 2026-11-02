@@ -7,7 +7,7 @@ import { FaTrashAlt, FaEdit, FaEye, FaDownload } from 'react-icons/fa';
 import Link from 'next/link';
 import { exportPostAsMarkdown } from '@/utils/postToMarkdown';
 
-type Post = {
+export type Post = {
   id: number;
   title: string;
   published: boolean;

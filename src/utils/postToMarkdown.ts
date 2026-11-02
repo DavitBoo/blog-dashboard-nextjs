@@ -1,7 +1,8 @@
+import { strToU8, zipSync } from 'fflate';
 import TurndownService from 'turndown';
-import { fetchPostById } from './api';
+import { fetchPostById, fetchPosts } from './api';
 
-type ExportablePost = {
+export type ExportablePost = {
   id: number;
   title: string;
   slug?: string | null;
@@ -142,8 +143,10 @@ export const postToMarkdown = (post: ExportablePost) => {
   return `${sections.join('\n\n')}\n`;
 };
 
-const downloadFile = (fileName: string, content: string) => {
-  const url = URL.createObjectURL(new Blob([content], { type: 'text/markdown;charset=utf-8' }));
+const postFileName = (post: ExportablePost) => `${post.slug || `articulo-${post.id}`}.md`;
+
+const downloadFile = (fileName: string, file: Blob) => {
+  const url = URL.createObjectURL(file);
   const link = document.createElement('a');
   link.href = url;
   link.download = fileName;
@@ -151,8 +154,21 @@ const downloadFile = (fileName: string, content: string) => {
   URL.revokeObjectURL(url);
 };
 
-// El listado de posts no incluye las etiquetas, por eso se pide el post completo
+export const downloadPostAsMarkdown = (post: ExportablePost) => {
+  const file = new Blob([postToMarkdown(post)], { type: 'text/markdown;charset=utf-8' });
+  downloadFile(postFileName(post), file);
+};
+
 export const exportPostAsMarkdown = async (id: number) => {
-  const post: ExportablePost = await fetchPostById(id);
-  downloadFile(`${post.slug || `articulo-${post.id}`}.md`, postToMarkdown(post));
+  downloadPostAsMarkdown(await fetchPostById(id));
+};
+
+// Incluye también los borradores: sirve como copia de seguridad de todos los artículos
+export const exportAllPostsAsZip = async () => {
+  const posts: ExportablePost[] = await fetchPosts();
+  const files = Object.fromEntries(
+    posts.map((post) => [postFileName(post), strToU8(postToMarkdown(post))]),
+  );
+  const date = new Date().toISOString().slice(0, 10);
+  downloadFile(`articulos-${date}.zip`, new Blob([zipSync(files)], { type: 'application/zip' }));
 };

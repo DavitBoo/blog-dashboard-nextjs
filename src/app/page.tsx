@@ -18,7 +18,7 @@ export default function Home() {
         {} as Record<string, string>,
       );
       isLoggedIn = !!cookies['token'];
-    } catch (error) {
+    } catch {
       isLoggedIn = false;
     }
 

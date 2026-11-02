@@ -31,8 +31,8 @@ const Login = () => {
 
       // Redirect to dashboard after login
       router.push('/dashboard');
-    } catch (err: any) {
-      setError(err.message || 'Login failed');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Login failed');
     }
   };
 

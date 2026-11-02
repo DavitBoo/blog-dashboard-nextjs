@@ -32,10 +32,9 @@ export const fetchPosts = async () => {
 
 export const fetchPostById = async (id: number) => {
   console.log(id);
-  const response = await fetch(`${API_URL}/posts/${id}`);
-  if (!response.ok) {
-    throw new Error('Failed to fetch post');
-  }
+  // Con sesión: los borradores no son accesibles de forma anónima
+  const response = await fetch(`${API_URL}/posts/${id}`, { headers: getAuthHeaders() });
+  await assertOk(response, 'Failed to fetch post');
   return response.json();
 };
 
@@ -266,7 +265,7 @@ export const listImages = async () => {
   }
 };
 
-export const uploadImage = async (file: File): Promise<any> => {
+export const uploadImage = async (file: File) => {
   const formData = new FormData();
   formData.append('image', file);
 

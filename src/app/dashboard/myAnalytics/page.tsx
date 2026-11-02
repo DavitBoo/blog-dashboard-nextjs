@@ -21,7 +21,7 @@ export default function AnalyticsPage() {
     fetchPosts()
       .then((data) => {
         const sorted = (data ?? [])
-          .map((p: any) => ({
+          .map((p: PostStat) => ({
             id: p.id,
             title: p.title,
             slug: p.slug ?? '',

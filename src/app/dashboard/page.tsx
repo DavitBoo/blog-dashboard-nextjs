@@ -42,13 +42,16 @@ const DashboardHome = () => {
 
       setStats({
         totalPosts: postsData.length,
-        publishedPosts: postsData.filter((p: any) => p.published).length,
-        draftPosts: postsData.filter((p: any) => !p.published).length,
-        totalViews: postsData.reduce((sum: number, p: any) => sum + (p.views ?? 0), 0),
+        publishedPosts: postsData.filter((p: { published: boolean }) => p.published).length,
+        draftPosts: postsData.filter((p: { published: boolean }) => !p.published).length,
+        totalViews: postsData.reduce(
+          (sum: number, p: { views?: number }) => sum + (p.views ?? 0),
+          0,
+        ),
         totalLabels: labelsData.length,
         totalProjects: projectsData.length,
         totalComments: commentsData.length,
-        hiddenComments: commentsData.filter((c: any) => !c.approved).length,
+        hiddenComments: commentsData.filter((c: { approved: boolean }) => !c.approved).length,
       });
     };
 

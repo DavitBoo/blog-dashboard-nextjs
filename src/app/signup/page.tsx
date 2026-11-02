@@ -39,8 +39,8 @@ const SignUp = () => {
 
       setSuccess(true);
       setTimeout(() => router.push('/dashboard/login'), 2000); // Redirect to login after 2 seconds
-    } catch (err: any) {
-      setError(err.message || 'Sign up failed');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Sign up failed');
     }
   };
 

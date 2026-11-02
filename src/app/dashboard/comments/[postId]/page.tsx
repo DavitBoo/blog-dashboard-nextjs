@@ -3,11 +3,11 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { fetchCommentsByPostId, deleteComment } from '../../../../utils/api';
-import CommentList from '../../../components/CommentList';
+import CommentList, { type Comment } from '../../../components/CommentList';
 
 const CommentManagement = () => {
   const { postId } = useParams() as { postId: string };
-  const [comments, setComments] = useState([]);
+  const [comments, setComments] = useState<Comment[]>([]);
 
   useEffect(() => {
     const loadComments = async () => {
@@ -19,7 +19,7 @@ const CommentManagement = () => {
 
   const handleDelete = async (id: number) => {
     await deleteComment(id);
-    setComments((prev) => prev.filter((comment: any) => comment.id !== id));
+    setComments((prev) => prev.filter((comment) => comment.id !== id));
   };
 
   return (

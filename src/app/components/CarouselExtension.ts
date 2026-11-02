@@ -1,4 +1,4 @@
-import { Extension, type CommandProps } from '@tiptap/core';
+import { type CommandProps } from '@tiptap/core';
 import { Node, type NodeConfig } from '@tiptap/core';
 import { ReactNodeViewRenderer } from '@tiptap/react';
 import CarouselComponent from './CarouselComponent';

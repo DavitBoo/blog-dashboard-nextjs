@@ -2,16 +2,13 @@
 
 import BackButton from '@/app/components/BackButton';
 import InfoText from '@/app/components/InfoText';
-import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 import { ILabel } from '../../../interfaces/Label';
 import { createLabel, deleteLabel, fetchLabels, updateLabel } from '@/utils/api';
 import { FaEdit, FaTimes, FaCheck, FaTimesCircle, FaTag, FaPlus } from 'react-icons/fa';
 
-const page = () => {
-  const router = useRouter();
-
+const ManageLabelsPage = () => {
   const [showInfoText, setShowInfoText] = useState<boolean>(false);
   const [infoTextMessage, setInfoTextMessage] = useState<string | null>(null);
   const [labelList, setLabelList] = useState<ILabel[]>();
@@ -237,4 +234,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default ManageLabelsPage;
