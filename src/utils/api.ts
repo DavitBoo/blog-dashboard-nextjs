@@ -40,7 +40,6 @@ export const fetchPostById = async (id: number) => {
 
 // Toggle post publish status (protected)
 export const togglePublishPost = async (id: number, publish: boolean) => {
-  console.log(getAuthHeaders());
   const response = await fetch(`${API_URL}/posts/${id}`, {
     method: 'PATCH',
     headers: getAuthHeaders('application/json'),
